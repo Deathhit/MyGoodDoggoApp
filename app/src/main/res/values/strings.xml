@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">My Good Doggo App</string>
+
+    <!--Sample-->
+    <string name="sample_text">Sample Text</string>
+
+    <!--Thumbnail List-->
+    <string name="thumbnail_list_retry">Retry</string>
+</resources>

@@ -1,0 +1,143 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "b887b1a7f208a2a68025c5465c433b61",
+    "entities": [
+      {
+        "tableName": "BreedEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`breedId` TEXT NOT NULL, `bredFor` TEXT, `breedGroup` TEXT, `breedName` TEXT, `lifespan` TEXT, `temperament` TEXT, PRIMARY KEY(`breedId`))",
+        "fields": [
+          {
+            "fieldPath": "breedId",
+            "columnName": "breedId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bredFor",
+            "columnName": "bredFor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "breedGroup",
+            "columnName": "breedGroup",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "breedName",
+            "columnName": "breedName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lifespan",
+            "columnName": "lifespan",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "temperament",
+            "columnName": "temperament",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "breedId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BreedThumbnailRefEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`breedId` TEXT NOT NULL, `thumbnailId` TEXT NOT NULL, PRIMARY KEY(`breedId`, `thumbnailId`))",
+        "fields": [
+          {
+            "fieldPath": "breedId",
+            "columnName": "breedId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "thumbnailId",
+            "columnName": "thumbnailId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "breedId",
+            "thumbnailId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ThumbnailEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`thumbnailId` TEXT NOT NULL, `thumbnailUrl` TEXT NOT NULL, PRIMARY KEY(`thumbnailId`))",
+        "fields": [
+          {
+            "fieldPath": "thumbnailId",
+            "columnName": "thumbnailId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "thumbnailUrl",
+            "columnName": "thumbnailUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "thumbnailId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "RemoteKeyEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`label` TEXT NOT NULL, `nextKey` INTEGER, PRIMARY KEY(`label`))",
+        "fields": [
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextKey",
+            "columnName": "nextKey",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "label"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b887b1a7f208a2a68025c5465c433b61')"
+    ]
+  }
+}
