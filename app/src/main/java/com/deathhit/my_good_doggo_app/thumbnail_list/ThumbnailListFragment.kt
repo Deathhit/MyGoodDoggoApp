@@ -30,16 +30,14 @@ class ThumbnailListFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        savedInstanceState ?: kotlin.run { viewModel.loadThumbnailList() }
+        viewModel.loadThumbnailList()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(LAYOUT, container, false)
-    }
+    ): View = inflater.inflate(LAYOUT, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,23 +70,18 @@ class ThumbnailListFragment :
 
     }
 
-    private fun createConcatAdapter(): RecyclerView.Adapter<*> {
-        return thumbnailAdapter!!.withLoadStateFooter(createLoadStateAdapter())
-    }
+    private fun createConcatAdapter(): RecyclerView.Adapter<*> =
+        thumbnailAdapter!!.withLoadStateFooter(createLoadStateAdapter())
 
-    private fun createLoadStateAdapter(): LoadStateAdapter {
-        return object : LoadStateAdapter() {
-            override fun onRetryLoading() {
-                thumbnailAdapter!!.retry()
-            }
+    private fun createLoadStateAdapter(): LoadStateAdapter = object : LoadStateAdapter() {
+        override fun onRetryLoading() {
+            thumbnailAdapter!!.retry()
         }
     }
 
-    private fun createThumbnailAdapter(): ThumbnailAdapter {
-        return object : ThumbnailAdapter() {
-            override fun onClickItem(thumbnailVO: ThumbnailVO) {
-                viewModel.goToThumbnailInfoActivity(thumbnailVO)
-            }
+    private fun createThumbnailAdapter(): ThumbnailAdapter = object : ThumbnailAdapter() {
+        override fun onClickItem(thumbnailVO: ThumbnailVO) {
+            viewModel.goToThumbnailInfoActivity(thumbnailVO)
         }
     }
 }

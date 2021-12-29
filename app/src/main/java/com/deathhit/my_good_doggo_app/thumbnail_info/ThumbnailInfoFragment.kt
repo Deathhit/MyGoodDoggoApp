@@ -36,16 +36,14 @@ class ThumbnailInfoFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        savedInstanceState ?: kotlin.run { viewModel.loadBreedList() }
+        viewModel.loadBreedList()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(LAYOUT, container, false)
-    }
+    ): View = inflater.inflate(LAYOUT, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,11 +52,11 @@ class ThumbnailInfoFragment :
         breedAdapter = createBreedAdapter()
 
         recyclerView?.setHasFixedSize(true)
-        recyclerView?.adapter = createConcatAdapter()
+        recyclerView?.adapter = createConcatAdapter(breedAdapter!!)
 
         viewModel.getStateLiveData().observe(viewLifecycleOwner, { state ->
             state.statusBreedList.signForStatus(this)
-                ?.let { breedAdapter?.submitList(ArrayList(it)) }
+                ?.let { breedAdapter!!.submitList(ArrayList(it)) }
         })
     }
 
@@ -98,6 +96,6 @@ class ThumbnailInfoFragment :
 
     private fun createBreedAdapter() = BreedAdapter()
 
-    private fun createConcatAdapter(): RecyclerView.Adapter<*> =
+    private fun createConcatAdapter(breedAdapter: BreedAdapter): RecyclerView.Adapter<*> =
         ConcatAdapter(createBannerAdapter(), breedAdapter)
 }

@@ -30,9 +30,7 @@ class ThumbnailListViewModel(application: Application) :
     private val eventGoToThumbnailInfoActivity = StatePackage<ThumbnailVO>()
     private val statusThumbnailList = StatePackage<PagingData<ThumbnailVO>>()
 
-    override fun createState(): State {
-        return State(eventGoToThumbnailInfoActivity, statusThumbnailList)
-    }
+    override fun createState(): State = State(eventGoToThumbnailInfoActivity, statusThumbnailList)
 
     fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
         eventGoToThumbnailInfoActivity.content = thumbnailVO

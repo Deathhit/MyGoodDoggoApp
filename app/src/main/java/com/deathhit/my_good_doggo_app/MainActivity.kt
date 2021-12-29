@@ -32,7 +32,7 @@ class MainActivity : StateActivity<MainActivityViewModel.State, MainActivityView
                 ?.let { goToThumbnailInfoActivity(it) }
         })
 
-        savedInstanceState ?: kotlin.run { viewModel.addThumbnailListFragment() }
+        savedInstanceState ?: viewModel.addThumbnailListFragment()
     }
 
     override fun createViewModel(args: Bundle): MainActivityViewModel {

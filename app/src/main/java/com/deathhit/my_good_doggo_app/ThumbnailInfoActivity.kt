@@ -34,7 +34,7 @@ class ThumbnailInfoActivity :
                 ?.let { addThumbnailListFragment(it) }
         })
 
-        savedInstanceState ?: kotlin.run { viewModel.addThumbnailInfoFragment() }
+        savedInstanceState ?: viewModel.addThumbnailInfoFragment()
     }
 
     override fun createViewModel(args: Bundle): ThumbnailInfoActivityViewModel {

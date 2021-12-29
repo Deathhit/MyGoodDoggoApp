@@ -16,9 +16,7 @@ class ThumbnailInfoActivityViewModel(application: Application) :
 
     var thumbnailVO: ThumbnailVO? = null
 
-    override fun createState(): State {
-        return State(eventAddThumbnailInfoFragment)
-    }
+    override fun createState(): State = State(eventAddThumbnailInfoFragment)
 
     fun addThumbnailInfoFragment() {
         eventAddThumbnailInfoFragment.content = thumbnailVO

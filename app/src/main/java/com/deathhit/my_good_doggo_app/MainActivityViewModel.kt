@@ -16,12 +16,10 @@ class MainActivityViewModel(application: Application) :
     private val eventAddThumbnailListFragment = StatePackage<Unit>()
     private val eventGoToThumbnailInfoActivity = StatePackage<ThumbnailVO>()
 
-    override fun createState(): State {
-        return State(
-            eventAddThumbnailListFragment,
-            eventGoToThumbnailInfoActivity
-        )
-    }
+    override fun createState(): State = State(
+        eventAddThumbnailListFragment,
+        eventGoToThumbnailInfoActivity
+    )
 
     fun addThumbnailListFragment() {
         eventAddThumbnailListFragment.content = Unit
