@@ -1,17 +1,17 @@
-package com.deathhit.domain.database
+package com.deathhit.domain
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.deathhit.domain.database.dao.BreedDao
-import com.deathhit.domain.database.dao.BreedThumbnailRefDao
-import com.deathhit.domain.database.dao.ThumbnailDao
-import com.deathhit.domain.database.dao.RemoteKeyDao
-import com.deathhit.domain.database.entity.BreedEntity
-import com.deathhit.domain.database.entity.BreedThumbnailRefEntity
-import com.deathhit.domain.database.entity.ThumbnailEntity
-import com.deathhit.domain.database.entity.RemoteKeyEntity
+import com.deathhit.domain.dao.BreedDao
+import com.deathhit.domain.dao.BreedThumbnailRefDao
+import com.deathhit.domain.dao.ThumbnailDao
+import com.deathhit.domain.dao.RemoteKeyDao
+import com.deathhit.domain.entity.BreedEntity
+import com.deathhit.domain.entity.BreedThumbnailRefEntity
+import com.deathhit.domain.entity.ThumbnailEntity
+import com.deathhit.domain.entity.RemoteKeyEntity
 
 @Database(
     entities = [BreedEntity::class, BreedThumbnailRefEntity::class, ThumbnailEntity::class, RemoteKeyEntity::class],

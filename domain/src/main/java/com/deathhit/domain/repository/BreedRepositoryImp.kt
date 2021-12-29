@@ -1,7 +1,7 @@
 package com.deathhit.domain.repository
 
 import android.content.Context
-import com.deathhit.domain.database.DomainDatabase
+import com.deathhit.domain.DomainDatabase
 import com.deathhit.domain.model.BreedDO
 
 internal class BreedRepositoryImp(context: Context) : BreedRepository {

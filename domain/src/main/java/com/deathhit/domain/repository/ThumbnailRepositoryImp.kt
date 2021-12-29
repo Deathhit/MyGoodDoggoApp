@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.paging.*
 import androidx.room.withTransaction
 import com.deathhit.data_source_dog_api.ApiService
-import com.deathhit.domain.database.DomainDatabase
-import com.deathhit.domain.database.entity.BreedEntity
-import com.deathhit.domain.database.entity.BreedThumbnailRefEntity
-import com.deathhit.domain.database.entity.ThumbnailEntity
-import com.deathhit.domain.database.entity.RemoteKeyEntity
+import com.deathhit.domain.DomainDatabase
+import com.deathhit.domain.entity.BreedEntity
+import com.deathhit.domain.entity.BreedThumbnailRefEntity
+import com.deathhit.domain.entity.ThumbnailEntity
+import com.deathhit.domain.entity.RemoteKeyEntity
 import com.deathhit.domain.model.ThumbnailDO
 import retrofit2.HttpException
 import java.io.IOException

@@ -1,8 +1,8 @@
-package com.deathhit.domain.database.dao
+package com.deathhit.domain.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
-import com.deathhit.domain.database.entity.ThumbnailEntity
+import com.deathhit.domain.entity.ThumbnailEntity
 import com.deathhit.domain.model.ThumbnailDO
 
 @Dao

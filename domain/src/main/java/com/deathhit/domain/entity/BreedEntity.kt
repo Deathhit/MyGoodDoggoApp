@@ -1,12 +1,12 @@
-package com.deathhit.domain.database.entity
+package com.deathhit.domain.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.deathhit.domain.database.Column
+import com.deathhit.domain.Column
 
 @Entity
-open class BreedEntity(
+data class BreedEntity(
     @PrimaryKey @ColumnInfo(name = Column.BREED_ID) val breedId: String,
     @ColumnInfo(name = Column.BRED_FOR) val bredFor: String?,
     @ColumnInfo(name = Column.BREED_GROUP) val breedGroup: String?,

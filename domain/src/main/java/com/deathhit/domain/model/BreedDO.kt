@@ -1,19 +1,14 @@
 package com.deathhit.domain.model
 
-import com.deathhit.domain.database.entity.BreedEntity
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
+import com.deathhit.domain.Column
 
-class BreedDO(
-    breedId: String,
-    bredFor: String?,
-    breedGroup: String?,
-    breedName: String?,
-    lifespan: String?,
-    temperament: String?
-) : BreedEntity(
-    breedId,
-    bredFor,
-    breedGroup,
-    breedName,
-    lifespan,
-    temperament
+data class BreedDO(
+    @PrimaryKey @ColumnInfo(name = Column.BREED_ID) val breedId: String,
+    @ColumnInfo(name = Column.BRED_FOR) val bredFor: String?,
+    @ColumnInfo(name = Column.BREED_GROUP) val breedGroup: String?,
+    @ColumnInfo(name = Column.BREED_NAME) val breedName: String?,
+    @ColumnInfo(name = Column.LIFESPAN) val lifespan: String?,
+    @ColumnInfo(name = Column.TEMPERAMENT) val temperament: String?
 )

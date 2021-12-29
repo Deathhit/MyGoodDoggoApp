@@ -1,4 +1,4 @@
-package com.deathhit.domain.database
+package com.deathhit.domain
 
 object Column {
     const val BRED_FOR = "bredFor"

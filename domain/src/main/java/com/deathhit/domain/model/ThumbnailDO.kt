@@ -1,8 +1,10 @@
 package com.deathhit.domain.model
 
-import com.deathhit.domain.database.entity.ThumbnailEntity
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
+import com.deathhit.domain.Column
 
-class ThumbnailDO(thumbnailId: String, thumbnailUrl: String) : ThumbnailEntity(
-    thumbnailId,
-    thumbnailUrl
+data class ThumbnailDO(
+    @PrimaryKey @ColumnInfo(name = Column.THUMBNAIL_ID) val thumbnailId: String,
+    @ColumnInfo(name = Column.THUMBNAIL_URL) val thumbnailUrl: String
 )

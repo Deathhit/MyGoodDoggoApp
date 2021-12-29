@@ -1,10 +1,10 @@
-package com.deathhit.domain.database.dao
+package com.deathhit.domain.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.deathhit.domain.database.entity.RemoteKeyEntity
+import com.deathhit.domain.entity.RemoteKeyEntity
 
 @Dao
 interface RemoteKeyDao {
