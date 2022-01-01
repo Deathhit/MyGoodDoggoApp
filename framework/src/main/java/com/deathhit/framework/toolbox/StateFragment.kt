@@ -1,13 +1,14 @@
 package com.deathhit.framework.toolbox
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentOnAttachListener
 import com.deathhit.framework.StateViewModel
 
 abstract class StateFragment<State, ViewModel : StateViewModel<State>> : Fragment(),
     StateComponent<State, ViewModel> {
-    val viewModel: ViewModel by lazy { createViewModelInternal() }
+    override val viewModel by lazy { createViewModelInternal() }
 
     private val fragmentOnAttachListener: FragmentOnAttachListener =
         FragmentOnAttachListener { _, fragment ->
@@ -24,6 +25,11 @@ abstract class StateFragment<State, ViewModel : StateViewModel<State>> : Fragmen
         this.savedInstanceState = savedInstanceState
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getStateLiveData().observe(viewLifecycleOwner, { onRenderState(it) })
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         stopObservingFragmentAttachment()
@@ -38,18 +44,9 @@ abstract class StateFragment<State, ViewModel : StateViewModel<State>> : Fragmen
         super.onSaveInstanceState(outState)
     }
 
-    private fun createViewModelInternal(): ViewModel {
-        return createViewModel(getViewModelArgs())
-    }
+    private fun createViewModelInternal(): ViewModel = createViewModel(getViewModelArgs())
 
-    private fun getViewModelArgs(): Bundle {
-        var args = savedInstanceState
-        if (args == null)
-            args = arguments
-        if (args == null)
-            args = Bundle()
-        return args
-    }
+    private fun getViewModelArgs(): Bundle = savedInstanceState ?: arguments ?: Bundle()
 
     private fun observeFragmentAttachment() {
         childFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)

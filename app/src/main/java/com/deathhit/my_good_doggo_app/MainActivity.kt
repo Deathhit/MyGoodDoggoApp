@@ -25,13 +25,6 @@ class MainActivity : StateActivity<MainActivityViewModel.State, MainActivityView
         setContentView(LAYOUT)
         materialToolbar = findViewById(ID_TOOLBAR)
 
-        viewModel.getStateLiveData().observe(this, { state ->
-            state.eventAddThumbnailListFragment.signForEvent(this)
-                ?.let { addThumbnailListFragment() }
-            state.eventGoToThumbnailInfoActivity.signForEvent(this)
-                ?.let { goToThumbnailInfoActivity(it) }
-        })
-
         savedInstanceState ?: viewModel.addThumbnailListFragment()
     }
 
@@ -41,12 +34,18 @@ class MainActivity : StateActivity<MainActivityViewModel.State, MainActivityView
     }
 
     override fun onFragmentAttach(fragment: Fragment) {
-        if (fragment is ThumbnailListFragment) {
-            fragment.viewModel.getStateLiveData().observe(this, { state ->
+        if (fragment is ThumbnailListFragment)
+            observeState(fragment) { state ->
                 state.eventGoToThumbnailInfoActivity.signForEvent(this)
                     ?.let { viewModel.goToThumbnailInfoActivity(it) }
-            })
-        }
+            }
+    }
+
+    override fun onRenderState(state: MainActivityViewModel.State) {
+        state.eventAddThumbnailListFragment.signForEvent(this)
+            ?.let { addThumbnailListFragment() }
+        state.eventGoToThumbnailInfoActivity.signForEvent(this)
+            ?.let { goToThumbnailInfoActivity(it) }
     }
 
     override fun onSaveViewModelArgs(args: Bundle) {

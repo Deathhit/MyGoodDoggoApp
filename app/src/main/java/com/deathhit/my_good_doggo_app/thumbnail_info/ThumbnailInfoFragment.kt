@@ -51,13 +51,7 @@ class ThumbnailInfoFragment :
 
         breedAdapter = createBreedAdapter()
 
-        recyclerView?.setHasFixedSize(true)
-        recyclerView?.adapter = createConcatAdapter(breedAdapter!!)
-
-        viewModel.getStateLiveData().observe(viewLifecycleOwner, { state ->
-            state.statusBreedList.signForStatus(this)
-                ?.let { breedAdapter!!.submitList(ArrayList(it)) }
-        })
+        configureRecyclerView(breedAdapter!!, recyclerView!!)
     }
 
     override fun onDestroyView() {
@@ -73,8 +67,18 @@ class ThumbnailInfoFragment :
         return viewModel
     }
 
+    override fun onRenderState(state: ThumbnailInfoViewModel.State) {
+        state.statusBreedList.signForStatus(this)
+            ?.let { breedAdapter!!.submitList(ArrayList(it)) }
+    }
+
     override fun onSaveViewModelArgs(args: Bundle) {
         args.putParcelable(KEY_THUMBNAIL_VO, viewModel.thumbnailVO)
+    }
+
+    private fun configureRecyclerView(breedAdapter: BreedAdapter, recyclerView: RecyclerView) {
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = createConcatAdapter(breedAdapter)
     }
 
     private fun createBannerAdapter() =

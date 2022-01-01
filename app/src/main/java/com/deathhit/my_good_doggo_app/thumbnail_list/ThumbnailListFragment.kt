@@ -43,15 +43,9 @@ class ThumbnailListFragment :
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(ID_RECYCLER_VIEW)
 
-        recyclerView?.setHasFixedSize(true)
-
         thumbnailAdapter = createThumbnailAdapter()
-        recyclerView?.adapter = createConcatAdapter()
 
-        viewModel.getStateLiveData().observe(viewLifecycleOwner, { state ->
-            state.statusThumbnailList.signForStatus(this)
-                ?.let { thumbnailAdapter?.submitData(lifecycle, it) }
-        })
+        configureRecyclerView(recyclerView!!, thumbnailAdapter!!)
     }
 
     override fun onDestroyView() {
@@ -66,12 +60,22 @@ class ThumbnailListFragment :
         return viewModel
     }
 
+    override fun onRenderState(state: ThumbnailListViewModel.State) {
+        state.statusThumbnailList.signForStatus(this)
+            ?.let { thumbnailAdapter?.submitData(lifecycle, it) }
+    }
+
     override fun onSaveViewModelArgs(args: Bundle) {
 
     }
 
-    private fun createConcatAdapter(): RecyclerView.Adapter<*> =
-        thumbnailAdapter!!.withLoadStateFooter(createLoadStateAdapter())
+    private fun configureRecyclerView(recyclerView: RecyclerView, thumbnailAdapter: ThumbnailAdapter) {
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = createConcatAdapter(thumbnailAdapter)
+    }
+
+    private fun createConcatAdapter(thumbnailAdapter: ThumbnailAdapter): RecyclerView.Adapter<*> =
+        thumbnailAdapter.withLoadStateFooter(createLoadStateAdapter())
 
     private fun createLoadStateAdapter(): LoadStateAdapter = object : LoadStateAdapter() {
         override fun onRetryLoading() {

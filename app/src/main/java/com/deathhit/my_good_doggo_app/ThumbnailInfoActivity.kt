@@ -29,11 +29,6 @@ class ThumbnailInfoActivity :
         super.onCreate(savedInstanceState)
         setContentView(LAYOUT)
 
-        viewModel.getStateLiveData().observe(this, { state ->
-            state.eventAddThumbnailInfoFragment.signForEvent(this)
-                ?.let { addThumbnailListFragment(it) }
-        })
-
         savedInstanceState ?: viewModel.addThumbnailInfoFragment()
     }
 
@@ -45,6 +40,11 @@ class ThumbnailInfoActivity :
 
     override fun onFragmentAttach(fragment: Fragment) {
 
+    }
+
+    override fun onRenderState(state: ThumbnailInfoActivityViewModel.State) {
+        state.eventAddThumbnailInfoFragment.signForEvent(this)
+            ?.let { addThumbnailListFragment(it) }
     }
 
     override fun onSaveViewModelArgs(args: Bundle) {
