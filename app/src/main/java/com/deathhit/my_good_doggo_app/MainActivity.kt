@@ -28,7 +28,7 @@ class MainActivity : StateActivity<MainActivityViewModel.State, MainActivityView
         savedInstanceState ?: viewModel.addThumbnailListFragment()
     }
 
-    override fun createViewModel(args: Bundle): MainActivityViewModel {
+    override fun createViewModel(savedInstanceState: Bundle?): MainActivityViewModel {
         val viewModel: MainActivityViewModel by viewModels()
         return viewModel
     }
@@ -46,10 +46,6 @@ class MainActivity : StateActivity<MainActivityViewModel.State, MainActivityView
             ?.let { addThumbnailListFragment() }
         state.eventGoToThumbnailInfoActivity.signForEvent(this)
             ?.let { goToThumbnailInfoActivity(it) }
-    }
-
-    override fun onSaveViewModelArgs(args: Bundle) {
-
     }
 
     private fun addThumbnailListFragment() {
