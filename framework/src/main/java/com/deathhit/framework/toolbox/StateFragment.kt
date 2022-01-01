@@ -39,14 +39,7 @@ abstract class StateFragment<State, ViewModel : StateViewModel<State>> : Fragmen
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        onSaveViewModelArgs(outState)
-        super.onSaveInstanceState(outState)
-    }
-
-    private fun createViewModelInternal(): ViewModel = createViewModel(getViewModelArgs())
-
-    private fun getViewModelArgs(): Bundle = savedInstanceState ?: arguments ?: Bundle()
+    private fun createViewModelInternal(): ViewModel = createViewModel(savedInstanceState)
 
     private fun observeFragmentAttachment() {
         childFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)

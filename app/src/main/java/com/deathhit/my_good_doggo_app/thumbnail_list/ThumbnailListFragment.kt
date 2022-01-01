@@ -55,7 +55,7 @@ class ThumbnailListFragment :
         thumbnailAdapter = null
     }
 
-    override fun createViewModel(args: Bundle): ThumbnailListViewModel {
+    override fun createViewModel(savedInstanceState: Bundle?): ThumbnailListViewModel {
         val viewModel: ThumbnailListViewModel by viewModels()
         return viewModel
     }
@@ -63,10 +63,6 @@ class ThumbnailListFragment :
     override fun onRenderState(state: ThumbnailListViewModel.State) {
         state.statusThumbnailList.signForStatus(this)
             ?.let { thumbnailAdapter?.submitData(lifecycle, it) }
-    }
-
-    override fun onSaveViewModelArgs(args: Bundle) {
-
     }
 
     private fun configureRecyclerView(recyclerView: RecyclerView, thumbnailAdapter: ThumbnailAdapter) {

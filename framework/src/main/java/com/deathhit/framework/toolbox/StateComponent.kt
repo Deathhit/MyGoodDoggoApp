@@ -8,10 +8,9 @@ import com.deathhit.framework.StateViewModel
 
 interface StateComponent<State, ViewModel : StateViewModel<State>> : LifecycleOwner {
     val viewModel: ViewModel
-    fun createViewModel(args: Bundle): ViewModel
+    fun createViewModel(savedInstanceState: Bundle?): ViewModel
     fun onFragmentAttach(fragment: Fragment)
     fun onRenderState(state: State)
-    fun onSaveViewModelArgs(args: Bundle)
 
     fun <State, ViewModel : StateViewModel<State>> observeState(
         stateComponent: StateComponent<State, ViewModel>,

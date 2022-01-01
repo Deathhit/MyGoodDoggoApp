@@ -32,7 +32,8 @@ class ThumbnailInfoActivity :
         savedInstanceState ?: viewModel.addThumbnailInfoFragment()
     }
 
-    override fun createViewModel(args: Bundle): ThumbnailInfoActivityViewModel {
+    override fun createViewModel(savedInstanceState: Bundle?): ThumbnailInfoActivityViewModel {
+        val args = savedInstanceState ?: intent.extras ?: Bundle()
         val viewModel: ThumbnailInfoActivityViewModel by viewModels()
         viewModel.thumbnailVO = args.getParcelable(KEY_THUMBNAIL_VO)
         return viewModel
@@ -47,8 +48,9 @@ class ThumbnailInfoActivity :
             ?.let { addThumbnailListFragment(it) }
     }
 
-    override fun onSaveViewModelArgs(args: Bundle) {
-        args.putParcelable(KEY_THUMBNAIL_VO, viewModel.thumbnailVO)
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(KEY_THUMBNAIL_VO, viewModel.thumbnailVO)
+        super.onSaveInstanceState(outState)
     }
 
     private fun addThumbnailListFragment(thumbnailVO: ThumbnailVO) {

@@ -61,7 +61,8 @@ class ThumbnailInfoFragment :
         breedAdapter = null
     }
 
-    override fun createViewModel(args: Bundle): ThumbnailInfoViewModel {
+    override fun createViewModel(savedInstanceState: Bundle?): ThumbnailInfoViewModel {
+        val args = savedInstanceState ?: arguments ?: Bundle()
         val viewModel: ThumbnailInfoViewModel by viewModels()
         viewModel.thumbnailVO = args.getParcelable(KEY_THUMBNAIL_VO)
         return viewModel
@@ -72,8 +73,9 @@ class ThumbnailInfoFragment :
             ?.let { breedAdapter!!.submitList(ArrayList(it)) }
     }
 
-    override fun onSaveViewModelArgs(args: Bundle) {
-        args.putParcelable(KEY_THUMBNAIL_VO, viewModel.thumbnailVO)
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(KEY_THUMBNAIL_VO, viewModel.thumbnailVO)
+        super.onSaveInstanceState(outState)
     }
 
     private fun configureRecyclerView(breedAdapter: BreedAdapter, recyclerView: RecyclerView) {

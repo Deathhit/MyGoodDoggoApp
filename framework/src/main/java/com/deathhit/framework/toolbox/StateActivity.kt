@@ -30,14 +30,7 @@ abstract class StateActivity<State, ViewModel : StateViewModel<State>> : AppComp
         stopObservingFragmentAttachment()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        onSaveViewModelArgs(outState)
-        super.onSaveInstanceState(outState)
-    }
-
-    private fun createViewModelInternal(): ViewModel = createViewModel(getViewModelArgs())
-
-    private fun getViewModelArgs(): Bundle = savedInstanceState ?: intent.extras ?: Bundle()
+    private fun createViewModelInternal(): ViewModel = createViewModel(savedInstanceState)
 
     private fun observeFragmentAttachment() {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
