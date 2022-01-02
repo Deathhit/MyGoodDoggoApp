@@ -26,7 +26,12 @@ class ThumbnailInfoViewModel(application: Application) :
 
     override fun createState(): State = State(statusBreedList)
 
-    fun loadBreedList() {
+    override fun onLoadData() {
+        super.onLoadData()
+        loadBreedList()
+    }
+
+    private fun loadBreedList() {
         viewModelScope.launch {
             statusBreedList.content =
                 breedRepository.getBreedListByThumbnailId(requireNotNull(thumbnailVO).thumbnailId)

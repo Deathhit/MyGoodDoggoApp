@@ -28,11 +28,6 @@ class ThumbnailListFragment :
 
     private var thumbnailAdapter: ThumbnailAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.loadThumbnailList()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

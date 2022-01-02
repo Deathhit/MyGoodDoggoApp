@@ -32,12 +32,17 @@ class ThumbnailListViewModel(application: Application) :
 
     override fun createState(): State = State(eventGoToThumbnailInfoActivity, statusThumbnailList)
 
+    override fun onLoadData() {
+        super.onLoadData()
+        loadThumbnailList()
+    }
+
     fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
         eventGoToThumbnailInfoActivity.content = thumbnailVO
         postState()
     }
 
-    fun loadThumbnailList() {
+    private fun loadThumbnailList() {
         viewModelScope.launch {
             thumbnailRepository.getThumbnailPager().flow
                 .map { pagingData -> pagingData.map { ThumbnailVO.valueOf(it) } }

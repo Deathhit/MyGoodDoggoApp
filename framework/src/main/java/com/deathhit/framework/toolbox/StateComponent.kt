@@ -9,13 +9,22 @@ import com.deathhit.framework.StateViewModel
 interface StateComponent<State, ViewModel : StateViewModel<State>> : LifecycleOwner {
     val viewModel: ViewModel
     fun createViewModel(savedInstanceState: Bundle?): ViewModel
-    fun onFragmentAttach(fragment: Fragment)
     fun onRenderState(state: State)
+
+    fun createViewModelInternal(savedInstanceState: Bundle?): ViewModel {
+        val viewModel = createViewModel(savedInstanceState)
+        viewModel.loadData(false)
+        return viewModel
+    }
 
     fun <State, ViewModel : StateViewModel<State>> observeState(
         stateComponent: StateComponent<State, ViewModel>,
         observer: Observer<State>
     ) {
         stateComponent.viewModel.getStateLiveData().observe(this, observer)
+    }
+
+    fun onFragmentAttach(fragment: Fragment) {
+
     }
 }

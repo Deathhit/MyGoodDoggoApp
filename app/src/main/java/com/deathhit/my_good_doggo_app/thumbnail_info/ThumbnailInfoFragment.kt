@@ -34,11 +34,6 @@ class ThumbnailInfoFragment :
 
     private var breedAdapter: BreedAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.loadBreedList()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -89,7 +84,7 @@ class ThumbnailInfoFragment :
                 BannerViewHolder(parent)
 
             override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-                viewModel.thumbnailVO?.let { bindImageThumbnail(holder, it) }
+                bindImageThumbnail(holder, viewModel.thumbnailVO!!)
             }
 
             override fun getItemCount(): Int = 1

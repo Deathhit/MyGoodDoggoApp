@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
 import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.thumbnail_info.ThumbnailInfoFragment
 import com.deathhit.framework.toolbox.StateActivity
@@ -37,10 +36,6 @@ class ThumbnailInfoActivity :
         val viewModel: ThumbnailInfoActivityViewModel by viewModels()
         viewModel.thumbnailVO = args.getParcelable(KEY_THUMBNAIL_VO)
         return viewModel
-    }
-
-    override fun onFragmentAttach(fragment: Fragment) {
-
     }
 
     override fun onRenderState(state: ThumbnailInfoActivityViewModel.State) {

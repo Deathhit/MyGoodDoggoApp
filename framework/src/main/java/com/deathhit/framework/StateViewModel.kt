@@ -8,8 +8,21 @@ abstract class StateViewModel<State>(application: Application) : AndroidViewMode
 
     private val stateLiveData: MutableLiveData<State> by lazyOf(MutableLiveData<State>())
 
+    private var isDataInvalid: Boolean = true
+
     fun getStateLiveData(): LiveData<State> {
         return stateLiveData
+    }
+
+    fun loadData(isReload: Boolean = true) {
+        if (isDataInvalid || isReload) {
+            isDataInvalid = false
+            onLoadData()
+        }
+    }
+
+    protected open fun onLoadData() {
+
     }
 
     protected fun postState() {
