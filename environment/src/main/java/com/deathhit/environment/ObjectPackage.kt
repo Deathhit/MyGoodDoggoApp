@@ -30,6 +30,6 @@ open class ObjectPackage<Content, Signature> {
     }
 
     private fun isSigned(signature: Signature): Boolean {
-        signatureMap[signature]?.let { return it } ?: kotlin.run { return false }
+        signatureMap[signature]?.let { return it } ?: run { return false }
     }
 }
