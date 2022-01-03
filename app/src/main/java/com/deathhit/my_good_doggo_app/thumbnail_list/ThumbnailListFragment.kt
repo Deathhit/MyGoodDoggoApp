@@ -36,11 +36,10 @@ class ThumbnailListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(ID_RECYCLER_VIEW)
-
-        thumbnailAdapter = createThumbnailAdapter()
-
-        configureRecyclerView(recyclerView!!, thumbnailAdapter!!)
+        recyclerView = view.findViewById<RecyclerView>(ID_RECYCLER_VIEW).apply {
+            setHasFixedSize(true)
+            thumbnailAdapter = createThumbnailAdapter().also { adapter = createConcatAdapter(it) }
+        }
     }
 
     override fun onDestroyView() {
@@ -60,17 +59,12 @@ class ThumbnailListFragment :
             ?.let { thumbnailAdapter?.submitData(lifecycle, it) }
     }
 
-    private fun configureRecyclerView(recyclerView: RecyclerView, thumbnailAdapter: ThumbnailAdapter) {
-        recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = createConcatAdapter(thumbnailAdapter)
-    }
-
     private fun createConcatAdapter(thumbnailAdapter: ThumbnailAdapter): RecyclerView.Adapter<*> =
         thumbnailAdapter.withLoadStateFooter(createLoadStateAdapter())
 
     private fun createLoadStateAdapter(): LoadStateAdapter = object : LoadStateAdapter() {
         override fun onRetryLoading() {
-            thumbnailAdapter!!.retry()
+            thumbnailAdapter?.retry()
         }
     }
 

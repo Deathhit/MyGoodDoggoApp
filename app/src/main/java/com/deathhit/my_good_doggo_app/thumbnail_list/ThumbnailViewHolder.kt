@@ -18,8 +18,8 @@ class ThumbnailViewHolder(parent: ViewGroup) :
         private const val LAYOUT = R.layout.item_thumbnail_list_thumbnail
     }
 
-    val imageThumbnail = requireNotNull(itemView.findViewById<ImageView>(ID_IMAGE_THUMBNAIL))
-    val textId = requireNotNull(itemView.findViewById<TextView>(ID_TEXT_ID))
+    val imageThumbnail: ImageView = itemView.findViewById(ID_IMAGE_THUMBNAIL)
+    val textId: TextView = itemView.findViewById(ID_TEXT_ID)
 
     var item: ThumbnailVO? = null
 }

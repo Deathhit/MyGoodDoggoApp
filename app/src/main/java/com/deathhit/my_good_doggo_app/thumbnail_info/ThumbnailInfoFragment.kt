@@ -42,11 +42,10 @@ class ThumbnailInfoFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(ID_RECYCLER_VIEW)
-
-        breedAdapter = createBreedAdapter()
-
-        configureRecyclerView(breedAdapter!!, recyclerView!!)
+        recyclerView = view.findViewById<RecyclerView>(ID_RECYCLER_VIEW).apply {
+            setHasFixedSize(true)
+            breedAdapter = createBreedAdapter().also { adapter = createConcatAdapter(it) }
+        }
     }
 
     override fun onDestroyView() {
@@ -65,17 +64,12 @@ class ThumbnailInfoFragment :
 
     override fun onRenderState(state: ThumbnailInfoViewModel.State) {
         state.statusBreedList.signForStatus(this)
-            ?.let { breedAdapter!!.submitList(ArrayList(it)) }
+            ?.let { breedAdapter?.submitList(ArrayList(it)) }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(KEY_THUMBNAIL_VO, viewModel.thumbnailVO)
         super.onSaveInstanceState(outState)
-    }
-
-    private fun configureRecyclerView(breedAdapter: BreedAdapter, recyclerView: RecyclerView) {
-        recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = createConcatAdapter(breedAdapter)
     }
 
     private fun createBannerAdapter() =
@@ -84,15 +78,13 @@ class ThumbnailInfoFragment :
                 BannerViewHolder(parent)
 
             override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-                bindImageThumbnail(holder, viewModel.thumbnailVO!!)
+                viewModel.thumbnailVO?.let { item ->
+                    Glide.with(holder.imageBanner).load(item.thumbnailUrl)
+                        .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(holder.imageBanner)
+                }
             }
 
             override fun getItemCount(): Int = 1
-
-            private fun bindImageThumbnail(holder: BannerViewHolder, item: ThumbnailVO) {
-                Glide.with(holder.imageBanner).load(item.thumbnailUrl)
-                    .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(holder.imageBanner)
-            }
         }
 
     private fun createBreedAdapter() = BreedAdapter()

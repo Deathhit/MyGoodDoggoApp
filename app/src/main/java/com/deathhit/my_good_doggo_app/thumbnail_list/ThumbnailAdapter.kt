@@ -27,10 +27,10 @@ abstract class ThumbnailAdapter :
     }
 
     override fun onBindViewHolder(holder: ThumbnailViewHolder, position: Int) {
-        holder.item = getItem(position)
-        holder.item?.let { item ->
-            bindImageThumbnail(holder, item)
-            bindTextId(holder, item)
+        holder.item = getItem(position)?.also { item ->
+            Glide.with(holder.imageThumbnail).load(item.thumbnailUrl)
+                .centerCrop().format(DecodeFormat.PREFER_RGB_565).into(holder.imageThumbnail)
+            holder.textId.text = item.thumbnailId
         }
     }
 
@@ -40,15 +40,6 @@ abstract class ThumbnailAdapter :
             Glide.with(holder.imageThumbnail).clear(holder.imageThumbnail)
         } catch (ignored: Exception) {
         }
-    }
-
-    private fun bindImageThumbnail(holder: ThumbnailViewHolder, item: ThumbnailVO) {
-        Glide.with(holder.imageThumbnail).load(item.thumbnailUrl)
-            .centerCrop().format(DecodeFormat.PREFER_RGB_565).into(holder.imageThumbnail)
-    }
-
-    private fun bindTextId(holder: ThumbnailViewHolder, item: ThumbnailVO) {
-        holder.textId.text = item.thumbnailId
     }
 
     abstract fun onClickItem(thumbnailVO: ThumbnailVO)
