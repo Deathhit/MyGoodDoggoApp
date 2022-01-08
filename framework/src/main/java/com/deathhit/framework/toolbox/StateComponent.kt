@@ -17,7 +17,7 @@ interface StateComponent<State, ViewModel : StateViewModel<State>> : LifecycleOw
         return viewModel
     }
 
-    fun <State, ViewModel : StateViewModel<State>> observeState(
+    fun <State, ViewModel : StateViewModel<State>> observeChildState(
         stateComponent: StateComponent<State, ViewModel>,
         observer: Observer<State>
     ) {

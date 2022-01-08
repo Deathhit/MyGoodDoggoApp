@@ -31,7 +31,7 @@ class MainActivity : StateActivity<MainActivityViewModel.State, MainActivityView
     override fun onFragmentAttach(fragment: Fragment) {
         super.onFragmentAttach(fragment)
         if (fragment is ThumbnailListFragment)
-            observeState(fragment) { state ->
+            observeChildState(fragment) { state ->
                 state.eventGoToThumbnailInfoActivity.signForEvent(this)
                     ?.let { viewModel.goToThumbnailInfoActivity(it) }
             }
