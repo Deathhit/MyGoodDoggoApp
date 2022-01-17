@@ -15,29 +15,41 @@ class ThumbnailInfoViewModel(application: Application, savedStateHandle: SavedSt
     StateViewModel<ThumbnailInfoViewModel.State>(
         application, savedStateHandle
     ) {
+    companion object {
+        private const val TAG = "ThumbnailInfoViewModel"
+        const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
+    }
+
     class State(
-        val statusBreedList: Status<List<BreedVO>>
+        val statusBreedVOList: Status<List<BreedVO>>,
+        val statusThumbnailVO: Status<ThumbnailVO>
     )
 
     private val breedRepository = RepositoryProvider.getBreedRepository(application)
 
-    private val statusBreedList = StatePackage<List<BreedVO>>()
+    private val statusBreedVOList = StatePackage<List<BreedVO>>()
+    private val statusThumbnailVO = StatePackage<ThumbnailVO>()
 
-    var thumbnailVO: ThumbnailVO? = null
+    private var thumbnailVO: ThumbnailVO? = savedStateHandle[KEY_THUMBNAIL_VO]
 
-    override fun createState(): State = State(statusBreedList)
-
-    override fun onLoadData() {
-        super.onLoadData()
-        loadBreedList()
+    init {
+        loadBreedVOList()
+        loadThumbnailVO()
     }
 
-    private fun loadBreedList() {
+    override fun createState(): State = State(statusBreedVOList, statusThumbnailVO)
+
+    private fun loadBreedVOList() {
         viewModelScope.launch {
-            statusBreedList.content =
+            statusBreedVOList.content =
                 breedRepository.getBreedListByThumbnailId(requireNotNull(thumbnailVO).thumbnailId)
                     .map { BreedVO.valueOf(it) }
             postState()
         }
+    }
+
+    private fun loadThumbnailVO() {
+        statusThumbnailVO.content = thumbnailVO
+        postState()
     }
 }

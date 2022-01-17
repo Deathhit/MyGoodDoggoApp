@@ -24,6 +24,8 @@ class ThumbnailListFragment :
         }
     }
 
+    override val viewModel: ThumbnailListViewModel by viewModels()
+
     private var recyclerView: RecyclerView? = null
 
     private var thumbnailAdapter: ThumbnailAdapter? = null
@@ -47,11 +49,6 @@ class ThumbnailListFragment :
         recyclerView = null
 
         thumbnailAdapter = null
-    }
-
-    override fun createViewModel(savedInstanceState: Bundle?): ThumbnailListViewModel {
-        val viewModel: ThumbnailListViewModel by viewModels()
-        return viewModel
     }
 
     override fun onRenderState(state: ThumbnailListViewModel.State) {

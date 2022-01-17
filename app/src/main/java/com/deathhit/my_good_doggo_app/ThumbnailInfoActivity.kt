@@ -12,17 +12,18 @@ class ThumbnailInfoActivity :
     StateActivity<ThumbnailInfoActivityViewModel.State, ThumbnailInfoActivityViewModel>() {
     companion object {
         private const val TAG = "ThumbnailInfoActivity"
-        private const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
         private const val TAG_THUMBNAIL_INFO = "$TAG.TAG_THUMBNAIL_INFO"
         private const val ID_CONTAINER_THUMBNAIL_INFO = R.id.activity_frameLayout_thumbnail_info
         private const val LAYOUT = R.layout.activity_thumbnail_info
 
         fun createIntent(context: Context, thumbnailVO: ThumbnailVO): Intent {
             val intent = Intent(context, ThumbnailInfoActivity::class.java)
-            intent.putExtra(KEY_THUMBNAIL_VO, thumbnailVO)
+            intent.putExtra(ThumbnailInfoActivityViewModel.KEY_THUMBNAIL_VO, thumbnailVO)
             return intent
         }
     }
+
+    override val viewModel: ThumbnailInfoActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,21 +32,9 @@ class ThumbnailInfoActivity :
         savedInstanceState ?: viewModel.addThumbnailInfoFragment()
     }
 
-    override fun createViewModel(savedInstanceState: Bundle?): ThumbnailInfoActivityViewModel {
-        val args = savedInstanceState ?: intent.extras ?: Bundle()
-        val viewModel: ThumbnailInfoActivityViewModel by viewModels()
-        viewModel.thumbnailVO = args.getParcelable(KEY_THUMBNAIL_VO)
-        return viewModel
-    }
-
     override fun onRenderState(state: ThumbnailInfoActivityViewModel.State) {
         state.eventAddThumbnailInfoFragment.signForEvent(this)
             ?.let { addThumbnailListFragment(it) }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(KEY_THUMBNAIL_VO, viewModel.thumbnailVO)
-        super.onSaveInstanceState(outState)
     }
 
     private fun addThumbnailListFragment(thumbnailVO: ThumbnailVO) {

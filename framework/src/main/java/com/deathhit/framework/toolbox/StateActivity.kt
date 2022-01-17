@@ -7,8 +7,6 @@ import com.deathhit.framework.StateViewModel
 
 abstract class StateActivity<State, ViewModel : StateViewModel<State>> : AppCompatActivity(),
     StateComponent<State, ViewModel> {
-    override val viewModel: ViewModel by lazy { createViewModelInternal(savedInstanceState) }
-
     private val fragmentOnAttachListener: FragmentOnAttachListener =
         FragmentOnAttachListener { _, fragment ->
             onFragmentAttach(
@@ -16,12 +14,9 @@ abstract class StateActivity<State, ViewModel : StateViewModel<State>> : AppComp
             )
         }
 
-    private var savedInstanceState: Bundle? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         observeFragmentAttachment()
         super.onCreate(savedInstanceState)
-        this.savedInstanceState = savedInstanceState
         viewModel.getStateLiveData().observe(this, { onRenderState(it) })
     }
 

@@ -16,19 +16,19 @@ import com.deathhit.framework.toolbox.StateFragment
 class ThumbnailInfoFragment :
     StateFragment<ThumbnailInfoViewModel.State, ThumbnailInfoViewModel>() {
     companion object {
-        private const val TAG = "ThumbnailInfoFragment"
-        private const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
         private const val ID_RECYCLER_VIEW = R.id.recyclerView
         private const val LAYOUT = R.layout.fragment_thumbnail_info
 
         fun create(thumbnailVO: ThumbnailVO): ThumbnailInfoFragment {
             val args = Bundle()
-            args.putParcelable(KEY_THUMBNAIL_VO, thumbnailVO)
+            args.putParcelable(ThumbnailInfoViewModel.KEY_THUMBNAIL_VO, thumbnailVO)
             val fragment = ThumbnailInfoFragment()
             fragment.arguments = args
             return fragment
         }
     }
+
+    override val viewModel: ThumbnailInfoViewModel by viewModels()
 
     private var recyclerView: RecyclerView? = null
 
@@ -55,21 +55,9 @@ class ThumbnailInfoFragment :
         breedAdapter = null
     }
 
-    override fun createViewModel(savedInstanceState: Bundle?): ThumbnailInfoViewModel {
-        val args = savedInstanceState ?: arguments ?: Bundle()
-        val viewModel: ThumbnailInfoViewModel by viewModels()
-        viewModel.thumbnailVO = args.getParcelable(KEY_THUMBNAIL_VO)
-        return viewModel
-    }
-
     override fun onRenderState(state: ThumbnailInfoViewModel.State) {
-        state.statusBreedList.signForStatus(this)
+        state.statusBreedVOList.signForStatus(this)
             ?.let { breedAdapter?.submitList(ArrayList(it)) }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(KEY_THUMBNAIL_VO, viewModel.thumbnailVO)
-        super.onSaveInstanceState(outState)
     }
 
     private fun createBannerAdapter() =
@@ -78,7 +66,7 @@ class ThumbnailInfoFragment :
                 BannerViewHolder(parent)
 
             override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-                viewModel.thumbnailVO?.let { item ->
+                viewModel.state.statusThumbnailVO.content?.let { item ->
                     Glide.with(holder.imageBanner).load(item.thumbnailUrl)
                         .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(holder.imageBanner)
                 }

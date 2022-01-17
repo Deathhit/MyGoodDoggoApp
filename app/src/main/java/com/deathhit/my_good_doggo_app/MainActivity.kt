@@ -16,16 +16,13 @@ class MainActivity : StateActivity<MainActivityViewModel.State, MainActivityView
         private const val LAYOUT = R.layout.activity_main
     }
 
+    override val viewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(LAYOUT)
 
         savedInstanceState ?: viewModel.addThumbnailListFragment()
-    }
-
-    override fun createViewModel(savedInstanceState: Bundle?): MainActivityViewModel {
-        val viewModel: MainActivityViewModel by viewModels()
-        return viewModel
     }
 
     override fun onFragmentAttach(fragment: Fragment) {

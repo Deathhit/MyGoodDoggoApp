@@ -12,7 +12,6 @@ import com.deathhit.framework.StateViewModel
 
 abstract class StateFragment<State, ViewModel : StateViewModel<State>> : Fragment(),
     StateComponent<State, ViewModel> {
-    override val viewModel by lazy { createViewModelInternal(savedInstanceState) }
 
     private val fragmentOnAttachListener: FragmentOnAttachListener =
         FragmentOnAttachListener { _, fragment ->
@@ -20,8 +19,6 @@ abstract class StateFragment<State, ViewModel : StateViewModel<State>> : Fragmen
                 fragment
             )
         }
-
-    private var savedInstanceState: Bundle? = null
 
     private var stateLiveData: MutableLiveData<State>? = null
 
@@ -33,7 +30,6 @@ abstract class StateFragment<State, ViewModel : StateViewModel<State>> : Fragmen
     override fun onCreate(savedInstanceState: Bundle?) {
         observeFragmentAttachment()
         super.onCreate(savedInstanceState)
-        this.savedInstanceState = savedInstanceState
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
