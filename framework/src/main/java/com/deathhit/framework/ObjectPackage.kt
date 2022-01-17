@@ -1,4 +1,4 @@
-package com.deathhit.environment
+package com.deathhit.framework
 
 import kotlin.reflect.KProperty
 

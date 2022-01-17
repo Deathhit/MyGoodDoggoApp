@@ -3,7 +3,6 @@ package com.deathhit.framework
 import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelStoreOwner
-import com.deathhit.environment.ObjectPackage
 
 class StatePackage<Content> : ObjectPackage<Content, Int>(), Event<Content>, Status<Content> {
     override fun signForEvent(viewModelStoreOwner: ViewModelStoreOwner): Content? =
