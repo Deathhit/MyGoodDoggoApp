@@ -1,5 +1,5 @@
 # MyGoodDoggoApp
-A demo application for the package driven MVI implementation.
+A demo application for the single state MVVM template.
 # The Dog Api
 This project requires an api key from [The Dog Api](https://www.thedogapi.com/) to function normally.  
 Replace the value of the metadata with your api key.
