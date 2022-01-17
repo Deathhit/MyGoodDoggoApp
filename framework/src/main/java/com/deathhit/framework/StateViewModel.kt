@@ -13,10 +13,6 @@ abstract class StateViewModel<State>(application: Application, savedStateHandle:
         return stateLiveData
     }
 
-    protected open fun onLoadData() {
-
-    }
-
     protected fun postState() {
         stateLiveData.value = state
     }
