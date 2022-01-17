@@ -1,13 +1,14 @@
 package com.deathhit.my_good_doggo_app
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
 import com.deathhit.framework.Event
 import com.deathhit.framework.StatePackage
 import com.deathhit.framework.StateViewModel
 
-class MainActivityViewModel(application: Application) :
-    StateViewModel<MainActivityViewModel.State>(application) {
+class MainActivityViewModel(application: Application, savedStateHandle: SavedStateHandle) :
+    StateViewModel<MainActivityViewModel.State>(application, savedStateHandle) {
     class State(
         val eventAddThumbnailListFragment: Event<Unit>,
         val eventGoToThumbnailInfoActivity: Event<ThumbnailVO>,

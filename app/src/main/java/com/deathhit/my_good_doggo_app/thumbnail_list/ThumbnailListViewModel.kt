@@ -1,6 +1,7 @@
 package com.deathhit.my_good_doggo_app.thumbnail_list
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -17,8 +18,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class ThumbnailListViewModel(application: Application) :
-    StateViewModel<ThumbnailListViewModel.State>(application) {
+class ThumbnailListViewModel(application: Application, savedStateHandle: SavedStateHandle) :
+    StateViewModel<ThumbnailListViewModel.State>(application, savedStateHandle) {
     class State(
         val eventGoToThumbnailInfoActivity: Event<ThumbnailVO>,
         val statusThumbnailList: Status<PagingData<ThumbnailVO>>
