@@ -8,9 +8,7 @@ import com.deathhit.framework.StatePackage
 import com.deathhit.framework.StateViewModel
 
 class ThumbnailInfoActivityViewModel(application: Application, savedStateHandle: SavedStateHandle) :
-    StateViewModel<ThumbnailInfoActivityViewModel.State>(
-        application, savedStateHandle
-    ) {
+    StateViewModel<ThumbnailInfoActivityViewModel.State>(application) {
     companion object {
         private const val TAG = "ThumbnailInfoActivityViewModel"
         const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"

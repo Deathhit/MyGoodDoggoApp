@@ -3,7 +3,7 @@ package com.deathhit.framework
 import android.app.Application
 import androidx.lifecycle.*
 
-abstract class StateViewModel<State>(application: Application, savedStateHandle: SavedStateHandle) :
+abstract class StateViewModel<State>(application: Application) :
     AndroidViewModel(application) {
     val state: State by lazy { createState() }
 

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class ThumbnailInfoViewModel(application: Application, savedStateHandle: SavedStateHandle) :
     StateViewModel<ThumbnailInfoViewModel.State>(
-        application, savedStateHandle
+        application
     ) {
     companion object {
         private const val TAG = "ThumbnailInfoViewModel"
