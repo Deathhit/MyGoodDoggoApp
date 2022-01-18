@@ -1,8 +1,9 @@
 package com.deathhit.framework
 
+import java.util.*
 import kotlin.reflect.KProperty
 
-open class ObjectPackage<Content, Signature> {
+open class ObjectPackage<Content> {
     private inner class ContentDelegate {
         private var value: Content? = null
 
@@ -16,20 +17,20 @@ open class ObjectPackage<Content, Signature> {
         }
     }
 
-    private val signatureMap: HashMap<Signature, Boolean> = HashMap()
+    private val signatureMap: WeakHashMap<Any, Boolean> = WeakHashMap()
 
     var content: Content? by ContentDelegate()
 
-    fun sign(signature: Signature): Content? {
-        return if (isSigned(signature))
+    fun sign(any: Any?): Content? {
+        return if (isSigned(any))
             null
         else {
-            signatureMap[signature] = true
+            signatureMap[any] = true
             content
         }
     }
 
-    private fun isSigned(signature: Signature): Boolean {
-        signatureMap[signature]?.let { return it } ?: run { return false }
+    private fun isSigned(any: Any?): Boolean {
+        signatureMap[any]?.let { return it } ?: run { return false }
     }
 }
