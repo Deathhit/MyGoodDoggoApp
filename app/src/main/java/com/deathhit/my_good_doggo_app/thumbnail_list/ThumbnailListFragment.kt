@@ -31,6 +31,18 @@ class ThumbnailListFragment : Fragment() {
 
     private var thumbnailAdapter: ThumbnailAdapter? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.stateFlow.collect { state ->
+                state.statusThumbnailList.signForStatus(this@ThumbnailListFragment) {
+                    thumbnailAdapter?.submitData(lifecycle, it)
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,14 +54,6 @@ class ThumbnailListFragment : Fragment() {
         recyclerView = view.findViewById<RecyclerView>(ID_RECYCLER_VIEW).apply {
             setHasFixedSize(true)
             thumbnailAdapter = createThumbnailAdapter().also { adapter = createConcatAdapter(it) }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.stateFlow.collect { state ->
-                state.statusThumbnailList.signForStatus(this@ThumbnailListFragment) {
-                    thumbnailAdapter?.submitData(lifecycle, it)
-                }
-            }
         }
     }
 

@@ -14,7 +14,7 @@ class StatePackage<Content>(override val content: Content?) : Event<Content>, St
         viewModelStoreOwner: ViewModelStoreOwner,
         onSigned: (content: Content) -> Unit
     ) {
-        sign(viewModelStoreOwner)?.let(onSigned)
+        sign(viewModelStoreOwner.viewModelStore)?.let(onSigned)
     }
 
     override fun signForStatus(activity: Activity, onSigned: (content: Content) -> Unit) {
