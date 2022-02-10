@@ -4,17 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
 import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
-import com.deathhit.framework.toolbox.StateFragment
+import kotlinx.coroutines.flow.collect
 
-class ThumbnailInfoFragment :
-    StateFragment<ThumbnailInfoViewModel.State, ThumbnailInfoViewModel>() {
+class ThumbnailInfoFragment : Fragment() {
     companion object {
         private const val ID_RECYCLER_VIEW = R.id.recyclerView
         private const val LAYOUT = R.layout.fragment_thumbnail_info
@@ -28,11 +27,28 @@ class ThumbnailInfoFragment :
         }
     }
 
-    override val viewModel: ThumbnailInfoViewModel by viewModels()
+    private val viewModel: ThumbnailInfoViewModel by viewModels()
 
     private var recyclerView: RecyclerView? = null
 
+    private var bannerAdapter: BannerAdapter? = null
     private var breedAdapter: BreedAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.stateFlow.collect { state ->
+                state.statusBreedVOList.signForStatus(this@ThumbnailInfoFragment) {
+                    breedAdapter?.submitList(ArrayList(it))
+                }
+
+                state.statusThumbnailVO.signForStatus(this@ThumbnailInfoFragment) {
+                    bannerAdapter?.notifyOnItemChanged(it)
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +60,9 @@ class ThumbnailInfoFragment :
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById<RecyclerView>(ID_RECYCLER_VIEW).apply {
             setHasFixedSize(true)
-            breedAdapter = createBreedAdapter().also { adapter = createConcatAdapter(it) }
+            bannerAdapter = createBannerAdapter()
+            breedAdapter = createBreedAdapter()
+            adapter = createConcatAdapter(bannerAdapter!!, breedAdapter!!)
         }
     }
 
@@ -52,31 +70,19 @@ class ThumbnailInfoFragment :
         super.onDestroyView()
         recyclerView = null
 
+        bannerAdapter = null
         breedAdapter = null
     }
 
-    override fun onRenderState(state: ThumbnailInfoViewModel.State) {
-        state.statusBreedVOList.signForStatus(this)
-            ?.let { breedAdapter?.submitList(ArrayList(it)) }
+    override fun onSaveInstanceState(outState: Bundle) {
+        viewModel.saveState()
+        super.onSaveInstanceState(outState)
     }
 
-    private fun createBannerAdapter() =
-        object : RecyclerView.Adapter<BannerViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder =
-                BannerViewHolder(parent)
-
-            override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-                viewModel.state.statusThumbnailVO.content?.let { item ->
-                    Glide.with(holder.imageBanner).load(item.thumbnailUrl)
-                        .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(holder.imageBanner)
-                }
-            }
-
-            override fun getItemCount(): Int = 1
-        }
+    private fun createBannerAdapter() = BannerAdapter()
 
     private fun createBreedAdapter() = BreedAdapter()
 
-    private fun createConcatAdapter(breedAdapter: BreedAdapter): RecyclerView.Adapter<*> =
-        ConcatAdapter(createBannerAdapter(), breedAdapter)
+    private fun createConcatAdapter(bannerAdapter: BannerAdapter, breedAdapter: BreedAdapter): RecyclerView.Adapter<*> =
+        ConcatAdapter(bannerAdapter, breedAdapter)
 }

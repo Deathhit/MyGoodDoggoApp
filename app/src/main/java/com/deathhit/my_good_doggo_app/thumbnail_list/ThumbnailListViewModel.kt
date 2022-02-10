@@ -1,6 +1,7 @@
 package com.deathhit.my_good_doggo_app.thumbnail_list
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -10,35 +11,30 @@ import com.deathhit.domain.RepositoryProvider
 import com.deathhit.domain.repository.ThumbnailRepository
 import com.deathhit.framework.Event
 import com.deathhit.framework.StatePackage
-import com.deathhit.framework.StateViewModel
 import com.deathhit.framework.Status
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class ThumbnailListViewModel(application: Application) :
-    StateViewModel<ThumbnailListViewModel.State>(application) {
-    class State(
+class ThumbnailListViewModel(application: Application) : AndroidViewModel(application) {
+    data class State(
         val eventGoToThumbnailInfoActivity: Event<ThumbnailVO>,
         val statusThumbnailList: Status<PagingData<ThumbnailVO>>
-    )
+    ) {
+        constructor() : this(StatePackage(), StatePackage())
+    }
+
+    private val _stateFlow = MutableStateFlow(State())
+    val stateFlow = _stateFlow.asStateFlow()
 
     private val thumbnailRepository: ThumbnailRepository =
         RepositoryProvider.getThumbnailRepository(getApplication())
-
-    private val eventGoToThumbnailInfoActivity = StatePackage<ThumbnailVO>()
-    private val statusThumbnailList = StatePackage<PagingData<ThumbnailVO>>()
 
     init {
         loadThumbnailList()
     }
 
-    override fun createState(): State = State(eventGoToThumbnailInfoActivity, statusThumbnailList)
-
     fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
-        eventGoToThumbnailInfoActivity.content = thumbnailVO
-        postState()
+        _stateFlow.update { it.copy(eventGoToThumbnailInfoActivity = StatePackage(thumbnailVO)) }
     }
 
     private fun loadThumbnailList() {
@@ -46,10 +42,8 @@ class ThumbnailListViewModel(application: Application) :
             thumbnailRepository.getThumbnailPager().flow
                 .map { pagingData -> pagingData.map { ThumbnailVO.valueOf(it) } }
                 .cachedIn(viewModelScope)
-                .distinctUntilChanged()
-                .collectLatest {
-                    statusThumbnailList.content = it
-                    postState()
+                .collectLatest { pagingData ->
+                    _stateFlow.update { it.copy(statusThumbnailList = StatePackage(pagingData)) }
                 }
         }
     }

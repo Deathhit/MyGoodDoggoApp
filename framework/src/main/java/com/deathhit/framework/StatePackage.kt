@@ -4,32 +4,26 @@ import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelStoreOwner
 import java.util.*
-import kotlin.reflect.KProperty
 
-class StatePackage<Content> : Event<Content>, Status<Content> {
-    private inner class ContentDelegate {
-        private var value: Content? = null
-
-        operator fun getValue(thisRef: Any?, property: KProperty<*>): Content? {
-            return value
-        }
-
-        operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Content?) {
-            signatureMap.clear()
-            this.value = value
-        }
-    }
-
+class StatePackage<Content>(override val content: Content?) : Event<Content>, Status<Content> {
     private val signatureMap: WeakHashMap<Any, Boolean> = WeakHashMap()
 
-    override var content: Content? by ContentDelegate()
+    constructor() : this(null)
 
-    override fun signForEvent(viewModelStoreOwner: ViewModelStoreOwner): Content? =
-        sign(viewModelStoreOwner.viewModelStore)
+    override fun signForEvent(
+        viewModelStoreOwner: ViewModelStoreOwner,
+        onSigned: (content: Content) -> Unit
+    ) {
+        sign(viewModelStoreOwner)?.let(onSigned)
+    }
 
-    override fun signForStatus(activity: Activity): Content? = sign(activity)
+    override fun signForStatus(activity: Activity, onSigned: (content: Content) -> Unit) {
+        sign(activity)?.let(onSigned)
+    }
 
-    override fun signForStatus(fragment: Fragment): Content? = sign(fragment.view)
+    override fun signForStatus(fragment: Fragment, onSigned: (content: Content) -> Unit) {
+        sign(fragment)?.let(onSigned)
+    }
 
     private fun sign(any: Any?): Content? {
         return if (isSigned(any))

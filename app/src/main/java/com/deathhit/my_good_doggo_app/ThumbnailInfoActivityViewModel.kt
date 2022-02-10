@@ -1,29 +1,40 @@
 package com.deathhit.my_good_doggo_app
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
 import com.deathhit.framework.Event
 import com.deathhit.framework.StatePackage
-import com.deathhit.framework.StateViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
-class ThumbnailInfoActivityViewModel(application: Application, savedStateHandle: SavedStateHandle) :
-    StateViewModel<ThumbnailInfoActivityViewModel.State>(application) {
+class ThumbnailInfoActivityViewModel(
+    application: Application,
+    private val savedStateHandle: SavedStateHandle
+) : AndroidViewModel(application) {
     companion object {
         private const val TAG = "ThumbnailInfoActivityViewModel"
         const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
     }
 
-    class State(val eventAddThumbnailInfoFragment: Event<ThumbnailVO>)
+    data class State(val eventAddThumbnailInfoFragment: Event<ThumbnailVO>) {
+        constructor() : this(StatePackage())
+    }
 
-    private val eventAddThumbnailInfoFragment = StatePackage<ThumbnailVO>()
+    private val _stateFlow = MutableStateFlow(State())
+    val stateFlow = _stateFlow.asStateFlow()
 
     private var thumbnailVO: ThumbnailVO? = savedStateHandle[KEY_THUMBNAIL_VO]
 
-    override fun createState(): State = State(eventAddThumbnailInfoFragment)
-
     fun addThumbnailInfoFragment() {
-        eventAddThumbnailInfoFragment.content = thumbnailVO
-        postState()
+        _stateFlow.update {
+            it.copy(eventAddThumbnailInfoFragment = StatePackage(thumbnailVO))
+        }
+    }
+
+    fun saveState() {
+        savedStateHandle[KEY_THUMBNAIL_VO] = thumbnailVO
     }
 }

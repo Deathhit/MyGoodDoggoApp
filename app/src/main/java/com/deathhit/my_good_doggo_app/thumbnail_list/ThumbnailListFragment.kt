@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
-import com.deathhit.framework.toolbox.StateFragment
+import kotlinx.coroutines.flow.*
 
-class ThumbnailListFragment :
-    StateFragment<ThumbnailListViewModel.State, ThumbnailListViewModel>() {
+class ThumbnailListFragment : Fragment() {
     companion object {
         private const val ID_RECYCLER_VIEW = R.id.recyclerView
         private const val LAYOUT = R.layout.fragment_thumbnail_list
@@ -24,7 +25,7 @@ class ThumbnailListFragment :
         }
     }
 
-    override val viewModel: ThumbnailListViewModel by viewModels()
+    private val viewModel: ThumbnailListViewModel by viewModels()
 
     private var recyclerView: RecyclerView? = null
 
@@ -42,6 +43,14 @@ class ThumbnailListFragment :
             setHasFixedSize(true)
             thumbnailAdapter = createThumbnailAdapter().also { adapter = createConcatAdapter(it) }
         }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.stateFlow.collect { state ->
+                state.statusThumbnailList.signForStatus(this@ThumbnailListFragment) {
+                    thumbnailAdapter?.submitData(lifecycle, it)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -51,10 +60,7 @@ class ThumbnailListFragment :
         thumbnailAdapter = null
     }
 
-    override fun onRenderState(state: ThumbnailListViewModel.State) {
-        state.statusThumbnailList.signForStatus(this)
-            ?.let { thumbnailAdapter?.submitData(lifecycle, it) }
-    }
+    fun getStateFlow() = viewModel.stateFlow
 
     private fun createConcatAdapter(thumbnailAdapter: ThumbnailAdapter): RecyclerView.Adapter<*> =
         thumbnailAdapter.withLoadStateFooter(createLoadStateAdapter())
