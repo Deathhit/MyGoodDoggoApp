@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.thumbnail_list
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.R
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 
 class ThumbnailViewHolder(parent: ViewGroup) :
     RecyclerView.ViewHolder(

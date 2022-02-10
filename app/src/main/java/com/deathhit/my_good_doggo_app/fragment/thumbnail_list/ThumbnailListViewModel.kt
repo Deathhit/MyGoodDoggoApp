@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.thumbnail_list
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_list
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.domain.RepositoryProvider
 import com.deathhit.domain.repository.ThumbnailRepository
 import com.deathhit.framework.Event

@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.thumbnail_info
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

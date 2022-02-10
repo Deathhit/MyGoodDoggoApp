@@ -1,11 +1,11 @@
-package com.deathhit.my_good_doggo_app.thumbnail_info
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.deathhit.my_good_doggo_app.base.model.BreedVO
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.model.BreedVO
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.domain.RepositoryProvider
 import com.deathhit.framework.StatePackage
 import com.deathhit.framework.Status
@@ -22,7 +22,7 @@ class ThumbnailInfoViewModel(
         application
     ) {
     companion object {
-        private const val TAG = "com.deathhit.my_good_doggo_app.thumbnail_info.ThumbnailInfoViewModel"
+        private const val TAG = "com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoViewModel"
         const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
     }
 

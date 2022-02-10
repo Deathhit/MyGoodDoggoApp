@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app
+package com.deathhit.my_good_doggo_app.activity.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -6,14 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentOnAttachListener
 import androidx.lifecycle.lifecycleScope
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
-import com.deathhit.my_good_doggo_app.thumbnail_list.ThumbnailListFragment
+import com.deathhit.my_good_doggo_app.R
+import com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        private const val TAG = "com.deathhit.my_good_doggo_app.MainActivity"
+        private const val TAG = "com.deathhit.my_good_doggo_app.activity.main.MainActivity"
         private const val TAG_THUMBNAIL_LIST = "$TAG.TAG_THUMBNAIL_LIST"
 
         private const val ID_THUMBNAIL_LIST_CONTAINER = R.id.activity_thumbnailListContainer

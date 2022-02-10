@@ -1,8 +1,8 @@
-package com.deathhit.my_good_doggo_app
+package com.deathhit.my_good_doggo_app.activity.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.framework.Event
 import com.deathhit.framework.StatePackage
 import kotlinx.coroutines.flow.MutableStateFlow

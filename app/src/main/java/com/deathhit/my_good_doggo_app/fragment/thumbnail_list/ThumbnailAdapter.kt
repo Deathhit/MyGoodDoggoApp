@@ -1,11 +1,11 @@
-package com.deathhit.my_good_doggo_app.thumbnail_list
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_list
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import java.lang.Exception
 
 abstract class ThumbnailAdapter :

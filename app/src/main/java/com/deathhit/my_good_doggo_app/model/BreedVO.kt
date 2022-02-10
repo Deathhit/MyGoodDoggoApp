@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.base.model
+package com.deathhit.my_good_doggo_app.model
 
 import android.os.Parcelable
 import com.deathhit.domain.model.BreedDO

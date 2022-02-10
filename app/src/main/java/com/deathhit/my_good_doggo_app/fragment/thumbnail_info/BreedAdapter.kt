@@ -1,10 +1,10 @@
-package com.deathhit.my_good_doggo_app.thumbnail_info
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.deathhit.my_good_doggo_app.base.model.BreedVO
+import com.deathhit.my_good_doggo_app.model.BreedVO
 
 class BreedAdapter : ListAdapter<BreedVO, BreedViewHolder>(COMPARATOR) {
     companion object {

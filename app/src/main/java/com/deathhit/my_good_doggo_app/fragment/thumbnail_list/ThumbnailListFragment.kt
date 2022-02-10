@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.thumbnail_list
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.R
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import kotlinx.coroutines.flow.*
 
 class ThumbnailListFragment : Fragment() {
@@ -33,7 +33,6 @@ class ThumbnailListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.statusThumbnailList.signForStatus(this@ThumbnailListFragment) {

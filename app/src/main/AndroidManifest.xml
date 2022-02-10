@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyGoodDoggoApp">
         <activity
-            android:name="com.deathhit.my_good_doggo_app.MainActivity"
+            android:name="com.deathhit.my_good_doggo_app.activity.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
         </activity>
 
         <activity
-            android:name="com.deathhit.my_good_doggo_app.ThumbnailInfoActivity"
+            android:name="com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity"
             android:launchMode="singleTop" />
 
         <!--Dog Api Meta-->

@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.thumbnail_list
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_list
 
 import android.view.View
 import android.view.ViewGroup

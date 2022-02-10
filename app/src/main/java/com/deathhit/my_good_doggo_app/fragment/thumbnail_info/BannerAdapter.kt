@@ -1,10 +1,10 @@
-package com.deathhit.my_good_doggo_app.thumbnail_info
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 
 class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
     companion object {

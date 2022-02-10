@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.thumbnail_info
+package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.R
-import com.deathhit.my_good_doggo_app.base.model.ThumbnailVO
+import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import kotlinx.coroutines.flow.collect
 
 class ThumbnailInfoFragment : Fragment() {
@@ -36,7 +36,6 @@ class ThumbnailInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.statusBreedVOList.signForStatus(this@ThumbnailInfoFragment) {
