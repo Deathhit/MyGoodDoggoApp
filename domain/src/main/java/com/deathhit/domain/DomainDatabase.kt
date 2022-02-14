@@ -1,8 +1,6 @@
 package com.deathhit.domain
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.deathhit.domain.dao.BreedDao
 import com.deathhit.domain.dao.BreedThumbnailRefDao
@@ -18,31 +16,8 @@ import com.deathhit.domain.entity.RemoteKeyEntity
     version = 1
 )
 abstract class DomainDatabase : RoomDatabase() {
-    companion object {
-        private const val FILE_NAME = "database_c30c94dbd10244aaa30fd3a7454bbd3c"
-
-        @Volatile
-        private var instance: DomainDatabase? = null
-
-        fun getInstance(context: Context): DomainDatabase =
-            instance ?: synchronized(this) {
-                instance ?: createInstance(context).also { instance = it }
-            }
-
-        private fun createInstance(context: Context) =
-            Room.databaseBuilder(
-                context.applicationContext,
-                DomainDatabase::class.java, FILE_NAME
-            ).build()
-    }
-
-    val breedDao by lazy { breedDao() }
-    val breedThumbnailRefDao by lazy { breedThumbnailRefDao() }
-    val remoteKeyDao by lazy { remoteKeyDao() }
-    val thumbnailDao by lazy { thumbnailDao() }
-
-    protected abstract fun breedDao(): BreedDao
-    protected abstract fun breedThumbnailRefDao(): BreedThumbnailRefDao
-    protected abstract fun remoteKeyDao(): RemoteKeyDao
-    protected abstract fun thumbnailDao(): ThumbnailDao
+    abstract fun breedDao(): BreedDao
+    abstract fun breedThumbnailRefDao(): BreedThumbnailRefDao
+    abstract fun remoteKeyDao(): RemoteKeyDao
+    abstract fun thumbnailDao(): ThumbnailDao
 }

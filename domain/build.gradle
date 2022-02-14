@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'dagger.hilt.android.plugin'
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
@@ -21,15 +22,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kapt {
         arguments {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
+
     kotlinOptions {
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         jvmTarget = '1.8'
@@ -40,8 +44,17 @@ dependencies {
     implementation project(':data_source_dog_api')
     implementation project(':environment')
 
+    //Hilt
+    def hilt_version = '2.38.1'
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+
+    //Paging
+    def paging_version = "3.1.0"
+    api "androidx.paging:paging-runtime-ktx:$paging_version"
+
     //Room
-    def room_version = "2.4.0-rc01"
+    def room_version = "2.4.1"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-paging:$room_version"
@@ -50,4 +63,13 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
+
+hilt {
+    enableAggregatingTask = true
+}
+
+kapt {
+    //Hilt: Allow references to generated code
+    correctErrorTypes = true
 }

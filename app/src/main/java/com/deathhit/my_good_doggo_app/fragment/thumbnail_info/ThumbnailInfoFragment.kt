@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
+@AndroidEntryPoint
 class ThumbnailInfoFragment : Fragment() {
     companion object {
         private const val ID_RECYCLER_VIEW = R.id.recyclerView

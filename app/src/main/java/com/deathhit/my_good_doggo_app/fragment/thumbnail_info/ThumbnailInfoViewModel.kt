@@ -1,28 +1,29 @@
 package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.deathhit.domain.repository.BreedRepository
 import com.deathhit.my_good_doggo_app.model.BreedVO
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
-import com.deathhit.domain.RepositoryProvider
 import com.deathhit.framework.StatePackage
 import com.deathhit.framework.Status
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ThumbnailInfoViewModel(
-    application: Application,
+@HiltViewModel
+class ThumbnailInfoViewModel @Inject constructor(
+    private val breedRepository: BreedRepository,
     private val savedStateHandle: SavedStateHandle
 ) :
-    AndroidViewModel(
-        application
-    ) {
+    ViewModel() {
     companion object {
-        private const val TAG = "com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoViewModel"
+        private const val TAG =
+            "com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoViewModel"
         const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
     }
 
@@ -35,8 +36,6 @@ class ThumbnailInfoViewModel(
 
     private val _stateFlow = MutableStateFlow(State())
     val stateFlow = _stateFlow.asStateFlow()
-
-    private val breedRepository = RepositoryProvider.getBreedRepository(application)
 
     private var thumbnailVO: ThumbnailVO? = savedStateHandle[KEY_THUMBNAIL_VO]
 

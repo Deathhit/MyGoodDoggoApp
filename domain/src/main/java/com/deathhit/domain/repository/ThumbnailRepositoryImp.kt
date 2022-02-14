@@ -1,6 +1,5 @@
 package com.deathhit.domain.repository
 
-import android.content.Context
 import androidx.paging.*
 import androidx.room.withTransaction
 import com.deathhit.data_source_dog_api.ApiService
@@ -12,8 +11,12 @@ import com.deathhit.domain.entity.RemoteKeyEntity
 import com.deathhit.domain.model.ThumbnailDO
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-internal class ThumbnailRepositoryImp(context: Context) : ThumbnailRepository {
+internal class ThumbnailRepositoryImp @Inject constructor(
+    private val apiService: ApiService,
+    private val domainDatabase: DomainDatabase
+) : ThumbnailRepository {
     companion object {
         private const val PAGE_SIZE = 25
         private const val REMOTE_KEY_LABEL = "62c50cde2d404e13bad1f2128c29988f"
@@ -40,7 +43,7 @@ internal class ThumbnailRepositoryImp(context: Context) : ThumbnailRepository {
                     // Query remoteKeyDao for the next RemoteKey.
                     LoadType.APPEND -> {
                         val remoteKey = domainDatabase.withTransaction {
-                            domainDatabase.remoteKeyDao.getByLabel(REMOTE_KEY_LABEL)
+                            domainDatabase.remoteKeyDao().getByLabel(REMOTE_KEY_LABEL)
                         }
 
                         // You must explicitly check if the page key is null when
@@ -72,15 +75,15 @@ internal class ThumbnailRepositoryImp(context: Context) : ThumbnailRepository {
                 // they're always consistent.
                 domainDatabase.withTransaction {
                     if (loadType == LoadType.REFRESH) {
-                        domainDatabase.breedDao.clearAll()
-                        domainDatabase.breedThumbnailRefDao.clearAll()
-                        domainDatabase.thumbnailDao.clearAll()
-                        domainDatabase.remoteKeyDao.clearAll()
+                        domainDatabase.breedDao().clearAll()
+                        domainDatabase.breedThumbnailRefDao().clearAll()
+                        domainDatabase.thumbnailDao().clearAll()
+                        domainDatabase.remoteKeyDao().clearAll()
                     }
 
                     // Update RemoteKey for this query.
                     val nexKey = if (loadKey == null) ApiService.PAGE_DEFAULT + 1 else loadKey + 1
-                    domainDatabase.remoteKeyDao.insertOrReplace(
+                    domainDatabase.remoteKeyDao().insertOrReplace(
                         RemoteKeyEntity(REMOTE_KEY_LABEL, nexKey)
                     )
 
@@ -104,13 +107,13 @@ internal class ThumbnailRepositoryImp(context: Context) : ThumbnailRepository {
                             )
                         })
                     }
-                    domainDatabase.breedThumbnailRefDao.insertOrReplaceAll(breedRefs)
-                    domainDatabase.breedDao.insertOrReplaceAll(breeds)
+                    domainDatabase.breedThumbnailRefDao().insertOrReplaceAll(breedRefs)
+                    domainDatabase.breedDao().insertOrReplaceAll(breeds)
 
                     val thumbnails = response.map {
                         ThumbnailEntity(it.id, it.url)
                     }
-                    domainDatabase.thumbnailDao.insertOrReplaceAll(thumbnails)
+                    domainDatabase.thumbnailDao().insertOrReplaceAll(thumbnails)
                 }
 
                 MediatorResult.Success(response.isEmpty())
@@ -122,15 +125,12 @@ internal class ThumbnailRepositoryImp(context: Context) : ThumbnailRepository {
         }
     }
 
-    private val apiService = ApiService.getInstance(context)
-    private val domainDatabase = DomainDatabase.getInstance(context)
-
     @OptIn(ExperimentalPagingApi::class)
     override fun getThumbnailPager(): Pager<Int, ThumbnailDO> {
         return Pager(
             PagingConfig(PAGE_SIZE),
             null,
             ThumbnailRemoteMediator()
-        ) { domainDatabase.thumbnailDao.getPagingSource() }
+        ) { domainDatabase.thumbnailDao().getPagingSource() }
     }
 }

@@ -1,12 +1,11 @@
 package com.deathhit.domain.repository
 
-import android.content.Context
 import com.deathhit.domain.DomainDatabase
 import com.deathhit.domain.model.BreedDO
+import javax.inject.Inject
 
-internal class BreedRepositoryImp(context: Context) : BreedRepository {
-    private val domainDatabase = DomainDatabase.getInstance(context)
-
+internal class BreedRepositoryImp @Inject constructor(private val domainDatabase: DomainDatabase) :
+    BreedRepository {
     override suspend fun getBreedListByThumbnailId(thumbnailId: String): List<BreedDO> =
-        domainDatabase.breedDao.getListByThumbnailId(thumbnailId)
+        domainDatabase.breedDao().getListByThumbnailId(thumbnailId)
 }

@@ -9,8 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
+@AndroidEntryPoint
 class ThumbnailInfoActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity"

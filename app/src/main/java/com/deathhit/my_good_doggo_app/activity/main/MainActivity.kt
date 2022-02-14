@@ -10,9 +10,11 @@ import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "com.deathhit.my_good_doggo_app.activity.main.MainActivity"

@@ -1,21 +1,23 @@
 package com.deathhit.my_good_doggo_app.fragment.thumbnail_list
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
-import com.deathhit.domain.RepositoryProvider
 import com.deathhit.domain.repository.ThumbnailRepository
 import com.deathhit.framework.Event
 import com.deathhit.framework.StatePackage
 import com.deathhit.framework.Status
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ThumbnailListViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository: ThumbnailRepository) :
+    ViewModel() {
     data class State(
         val eventGoToThumbnailInfoActivity: Event<ThumbnailVO>,
         val statusThumbnailList: Status<PagingData<ThumbnailVO>>
@@ -25,9 +27,6 @@ class ThumbnailListViewModel(application: Application) : AndroidViewModel(applic
 
     private val _stateFlow = MutableStateFlow(State())
     val stateFlow = _stateFlow.asStateFlow()
-
-    private val thumbnailRepository: ThumbnailRepository =
-        RepositoryProvider.getThumbnailRepository(getApplication())
 
     init {
         loadThumbnailList()
