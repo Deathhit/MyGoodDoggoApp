@@ -39,8 +39,16 @@ android {
 
 dependencies {
     implementation project(':domain')
-    implementation project(':environment')
-    implementation project(':framework')
+    implementation project(':lib_state_package')
+
+    //Activity
+    implementation 'androidx.activity:activity-ktx:1.4.0'
+
+    //Appcompat
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+
+    //Fragment
+    implementation  "androidx.fragment:fragment-ktx:1.4.1"
 
     //Glide
     def glide_version = '4.13.0'
@@ -54,6 +62,12 @@ dependencies {
 
     //Leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+/*
+    //Lifecycle
+    def lifecycle_version = "2.4.1"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+ */
 
     //Misc
     implementation 'com.google.android.material:material:1.5.0'

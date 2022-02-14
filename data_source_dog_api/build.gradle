@@ -34,8 +34,6 @@ android {
 }
 
 dependencies {
-    implementation project(':environment')
-
     //Hilt
     def hilt_version = '2.38.1'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
@@ -44,7 +42,7 @@ dependencies {
     //Retrofit
     def retrofit_version = "2.9.0"
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
-    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

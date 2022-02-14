@@ -13,8 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/data_source_dog_api" />
             <option value="$PROJECT_DIR$/domain" />
-            <option value="$PROJECT_DIR$/environment" />
-            <option value="$PROJECT_DIR$/framework" />
+            <option value="$PROJECT_DIR$/lib_state_package" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

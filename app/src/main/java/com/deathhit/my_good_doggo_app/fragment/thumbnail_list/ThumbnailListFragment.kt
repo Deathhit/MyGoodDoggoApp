@@ -33,6 +33,8 @@ class ThumbnailListFragment : Fragment() {
 
     private var thumbnailAdapter: ThumbnailAdapter? = null
 
+    private var onStateListener: ((ThumbnailListViewModel.State) -> Unit)? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launchWhenStarted {
@@ -40,6 +42,8 @@ class ThumbnailListFragment : Fragment() {
                 state.statusThumbnailList.signForStatus(this@ThumbnailListFragment) {
                     thumbnailAdapter?.submitData(lifecycle, it)
                 }
+
+                onStateListener?.invoke(state)
             }
         }
     }
@@ -65,7 +69,9 @@ class ThumbnailListFragment : Fragment() {
         thumbnailAdapter = null
     }
 
-    fun getStateFlow() = viewModel.stateFlow
+    fun setStateListener(onStateListener: ((ThumbnailListViewModel.State) -> Unit)?) {
+        this.onStateListener = onStateListener
+    }
 
     private fun createConcatAdapter(thumbnailAdapter: ThumbnailAdapter): RecyclerView.Adapter<*> =
         thumbnailAdapter.withLoadStateFooter(createLoadStateAdapter())

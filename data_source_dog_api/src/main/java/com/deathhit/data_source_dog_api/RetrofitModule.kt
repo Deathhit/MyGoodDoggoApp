@@ -1,7 +1,8 @@
 package com.deathhit.data_source_dog_api
 
 import android.content.Context
-import com.deathhit.environment.MetadataProvider
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +27,7 @@ object RetrofitModule {
     fun provideApiKeyInterceptor(@ApplicationContext context: Context): Interceptor = Interceptor {
         val request = it.request().newBuilder().addHeader(
             NAME_API_KEY,
-            MetadataProvider.getMetadataString(context, context.getString(stringApiKey))
+            getMetadataString(context, context.getString(stringApiKey))
         ).build()
         it.proceed(request)
     }
@@ -42,8 +43,20 @@ object RetrofitModule {
     ): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(MetadataProvider.getMetadataString(context, context.getString(stringBaseUrl)))
+            .baseUrl(getMetadataString(context, context.getString(stringBaseUrl)))
             .client(okHttpClient)
             .build()
+    }
+
+    private fun getMetadataString(context: Context, key: String): String {
+        var ai: ApplicationInfo? = null
+        try {
+            ai = context.packageManager.getApplicationInfo(
+                context.packageName,
+                PackageManager.GET_META_DATA
+            )
+        } catch (ignored: PackageManager.NameNotFoundException) {
+        }
+        return ai!!.metaData!!.getString(key)!!
     }
 }

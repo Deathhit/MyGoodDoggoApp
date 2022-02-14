@@ -42,7 +42,6 @@ android {
 
 dependencies {
     implementation project(':data_source_dog_api')
-    implementation project(':environment')
 
     //Hilt
     def hilt_version = '2.38.1'

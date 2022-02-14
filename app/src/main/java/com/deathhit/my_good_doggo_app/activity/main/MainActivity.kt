@@ -12,7 +12,6 @@ import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -60,11 +59,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun onFragmentAttach(fragment: Fragment) {
         if (fragment is ThumbnailListFragment)
-            lifecycleScope.launch {
-                fragment.getStateFlow().collect { state ->
-                    state.eventGoToThumbnailInfoActivity.signForEvent(this@MainActivity) {
-                        viewModel.goToThumbnailInfoActivity(it)
-                    }
+            fragment.setStateListener { state ->
+                state.eventGoToThumbnailInfoActivity.signForEvent(this@MainActivity) {
+                    viewModel.goToThumbnailInfoActivity(it)
                 }
             }
     }
