@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object DomainModule {
+internal object DatabaseModule {
     private const val DATABASE_FILE_NAME = "database_c30c94dbd10244aaa30fd3a7454bbd3c"
 
     @Provides

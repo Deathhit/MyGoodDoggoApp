@@ -23,7 +23,11 @@ internal class ThumbnailRepositoryImp @Inject constructor(
     }
 
     @ExperimentalPagingApi
-    private inner class ThumbnailRemoteMediator : RemoteMediator<Int, ThumbnailDO>() {
+    private class ThumbnailRemoteMediator(
+        private val apiService: ApiService,
+        private val domainDatabase: DomainDatabase
+    ) :
+        RemoteMediator<Int, ThumbnailDO>() {
         override suspend fun load(
             loadType: LoadType,
             state: PagingState<Int, ThumbnailDO>
@@ -130,7 +134,11 @@ internal class ThumbnailRepositoryImp @Inject constructor(
         return Pager(
             PagingConfig(PAGE_SIZE),
             null,
-            ThumbnailRemoteMediator()
+            createThumbnailRemoteMediator()
         ) { domainDatabase.thumbnailDao().getPagingSource() }
     }
+
+    @OptIn(ExperimentalPagingApi::class)
+    fun createThumbnailRemoteMediator(): RemoteMediator<Int, ThumbnailDO> =
+        ThumbnailRemoteMediator(apiService, domainDatabase)
 }

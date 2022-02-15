@@ -12,7 +12,7 @@ android {
         minSdk 23
         targetSdk 31
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.deathhit.domain.HiltTestRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -47,6 +47,11 @@ dependencies {
     def hilt_version = '2.38.1'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
+
+    //Hilt Test
+    def hilt_test_version = hilt_version
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_test_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_test_version"
 
     //Paging
     def paging_version = "3.1.0"
