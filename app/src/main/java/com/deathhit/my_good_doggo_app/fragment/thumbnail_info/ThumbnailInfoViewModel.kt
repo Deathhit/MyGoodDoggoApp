@@ -28,24 +28,33 @@ class ThumbnailInfoViewModel @Inject constructor(
     }
 
     data class State(
+        val attrThumbnailVO: ThumbnailVO,
         val statusBreedVOList: Status<List<BreedVO>>,
-        val statusThumbnailVO: Status<ThumbnailVO>
-    ) {
-        constructor() : this(StatePackage(), StatePackage())
-    }
+        val statusThumbnailVOUpdated: Status<Unit>
+    )
 
-    private val _stateFlow = MutableStateFlow(State())
+    private val _stateFlow = MutableStateFlow(
+        State(
+            savedStateHandle[KEY_THUMBNAIL_VO]!!,
+            StatePackage(),
+            StatePackage()
+        )
+    )
     val stateFlow = _stateFlow.asStateFlow()
 
-    private var thumbnailVO: ThumbnailVO? = savedStateHandle[KEY_THUMBNAIL_VO]
-
     init {
+        bindThumbnailVO()
         loadBreedVOList()
-        loadThumbnailVO()
     }
 
     fun saveState() {
-        savedStateHandle[KEY_THUMBNAIL_VO] = thumbnailVO
+        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.attrThumbnailVO
+    }
+
+    private fun bindThumbnailVO() {
+        _stateFlow.update { state ->
+            state.copy(statusThumbnailVOUpdated = StatePackage(Unit))
+        }
     }
 
     private fun loadBreedVOList() {
@@ -53,16 +62,10 @@ class ThumbnailInfoViewModel @Inject constructor(
             _stateFlow.update { state ->
                 state.copy(
                     statusBreedVOList = StatePackage(breedRepository.getBreedListByThumbnailId(
-                        requireNotNull(thumbnailVO).thumbnailId
+                        state.attrThumbnailVO.thumbnailId
                     ).map { BreedVO.valueOf(it) })
                 )
             }
-        }
-    }
-
-    private fun loadThumbnailVO() {
-        _stateFlow.update { state ->
-            state.copy(statusThumbnailVO = StatePackage(thumbnailVO))
         }
     }
 }

@@ -19,22 +19,22 @@ class ThumbnailInfoActivityViewModel @Inject constructor(private val savedStateH
         const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
     }
 
-    data class State(val eventAddThumbnailInfoFragment: Event<ThumbnailVO>) {
-        constructor() : this(StatePackage())
-    }
+    data class State(
+        val attrThumbnailVO: ThumbnailVO,
+        val eventAddThumbnailInfoFragment: Event<Unit>
+    )
 
-    private val _stateFlow = MutableStateFlow(State())
+    private val _stateFlow =
+        MutableStateFlow(State(savedStateHandle[KEY_THUMBNAIL_VO]!!, StatePackage()))
     val stateFlow = _stateFlow.asStateFlow()
-
-    private var thumbnailVO: ThumbnailVO? = savedStateHandle[KEY_THUMBNAIL_VO]
 
     fun addThumbnailInfoFragment() {
         _stateFlow.update {
-            it.copy(eventAddThumbnailInfoFragment = StatePackage(thumbnailVO))
+            it.copy(eventAddThumbnailInfoFragment = StatePackage(Unit))
         }
     }
 
     fun saveState() {
-        savedStateHandle[KEY_THUMBNAIL_VO] = thumbnailVO
+        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.attrThumbnailVO
     }
 }

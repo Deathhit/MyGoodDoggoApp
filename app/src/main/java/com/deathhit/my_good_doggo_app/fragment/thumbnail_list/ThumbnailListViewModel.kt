@@ -21,11 +21,9 @@ class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository
     data class State(
         val eventGoToThumbnailInfoActivity: Event<ThumbnailVO>,
         val statusThumbnailList: Status<PagingData<ThumbnailVO>>
-    ) {
-        constructor() : this(StatePackage(), StatePackage())
-    }
+    )
 
-    private val _stateFlow = MutableStateFlow(State())
+    private val _stateFlow = MutableStateFlow(State(StatePackage(), StatePackage()))
     val stateFlow = _stateFlow.asStateFlow()
 
     init {

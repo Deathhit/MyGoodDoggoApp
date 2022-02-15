@@ -44,8 +44,8 @@ class ThumbnailInfoFragment : Fragment() {
                     breedAdapter?.submitList(ArrayList(it))
                 }
 
-                state.statusThumbnailVO.signForStatus(this@ThumbnailInfoFragment) {
-                    bannerAdapter?.notifyOnItemChanged(it)
+                state.statusThumbnailVOUpdated.signForStatus(this@ThumbnailInfoFragment) {
+                    bannerAdapter?.notifyOnItemChanged(state.attrThumbnailVO)
                 }
             }
         }
@@ -61,8 +61,8 @@ class ThumbnailInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById<RecyclerView>(ID_RECYCLER_VIEW).apply {
             setHasFixedSize(true)
-            bannerAdapter = createBannerAdapter()
-            breedAdapter = createBreedAdapter()
+            bannerAdapter = BannerAdapter()
+            breedAdapter = BreedAdapter()
             adapter = createConcatAdapter(bannerAdapter!!, breedAdapter!!)
         }
     }
@@ -79,10 +79,6 @@ class ThumbnailInfoFragment : Fragment() {
         viewModel.saveState()
         super.onSaveInstanceState(outState)
     }
-
-    private fun createBannerAdapter() = BannerAdapter()
-
-    private fun createBreedAdapter() = BreedAdapter()
 
     private fun createConcatAdapter(bannerAdapter: BannerAdapter, breedAdapter: BreedAdapter): RecyclerView.Adapter<*> =
         ConcatAdapter(bannerAdapter, breedAdapter)
