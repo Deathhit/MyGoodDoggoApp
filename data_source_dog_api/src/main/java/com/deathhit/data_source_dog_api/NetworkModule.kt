@@ -12,10 +12,21 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Qualifier
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RetrofitModule {
+internal object NetworkModule {
+    //Use qualifiers to avoid collision because we don't own the classes.
+    @Qualifier
+    annotation class ApiKeyInterceptor
+
+    @Qualifier
+    annotation class ApiOkHttpClient
+
+    @Qualifier
+    annotation class ApiRetrofit
+
     private const val NAME_API_KEY = "x-api-key"
 
     private val baseClient by lazy { OkHttpClient.Builder().build() }
@@ -23,6 +34,7 @@ object RetrofitModule {
     private val stringApiKey = R.string.data_source_dog_api_api_key
     private val stringBaseUrl = R.string.data_source_dog_api_base_url
 
+    @ApiKeyInterceptor
     @Provides
     fun provideApiKeyInterceptor(@ApplicationContext context: Context): Interceptor = Interceptor {
         val request = it.request().newBuilder().addHeader(
@@ -32,21 +44,21 @@ object RetrofitModule {
         it.proceed(request)
     }
 
+    @ApiOkHttpClient
     @Provides
-    fun provideOkHttpClient(apiKeyInterceptor: Interceptor): OkHttpClient =
-        baseClient.newBuilder().addInterceptor(apiKeyInterceptor).build()
+    fun provideOkHttpClient(@ApiKeyInterceptor interceptor: Interceptor): OkHttpClient =
+        baseClient.newBuilder().addInterceptor(interceptor).build()
 
+    @ApiRetrofit
     @Provides
     fun provideRetrofit(
         @ApplicationContext context: Context,
-        okHttpClient: OkHttpClient
-    ): Retrofit {
-        return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(getMetadataString(context, context.getString(stringBaseUrl)))
-            .client(okHttpClient)
-            .build()
-    }
+        @ApiOkHttpClient okHttpClient: OkHttpClient
+    ): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(getMetadataString(context, context.getString(stringBaseUrl)))
+        .client(okHttpClient)
+        .build()
 
     private fun getMetadataString(context: Context, key: String): String {
         var ai: ApplicationInfo? = null

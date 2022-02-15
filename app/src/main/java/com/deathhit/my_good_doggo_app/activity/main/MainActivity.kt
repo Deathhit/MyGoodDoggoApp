@@ -35,10 +35,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
         super.onCreate(savedInstanceState)
-        setContentView(LAYOUT)
-
-        savedInstanceState ?: viewModel.addThumbnailListFragment()
-
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.eventAddThumbnailListFragment.signForEvent(this@MainActivity) {
@@ -50,6 +46,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        setContentView(LAYOUT)
+
+        savedInstanceState ?: viewModel.addThumbnailListFragment()
     }
 
     override fun onDestroy() {

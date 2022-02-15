@@ -32,10 +32,6 @@ class ThumbnailInfoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(LAYOUT)
-
-        savedInstanceState ?: viewModel.addThumbnailInfoFragment()
-
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.eventAddThumbnailInfoFragment.signForEvent(this@ThumbnailInfoActivity) {
@@ -43,6 +39,10 @@ class ThumbnailInfoActivity : AppCompatActivity() {
                 }
             }
         }
+
+        setContentView(LAYOUT)
+
+        savedInstanceState ?: viewModel.addThumbnailInfoFragment()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
