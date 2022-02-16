@@ -37,24 +37,17 @@ class ThumbnailInfoViewModel @Inject constructor(
         State(
             savedStateHandle[KEY_THUMBNAIL_VO]!!,
             StatePackage(),
-            StatePackage()
+            StatePackage(Unit)
         )
     )
     val stateFlow = _stateFlow.asStateFlow()
 
     init {
-        bindThumbnailVO()
         loadBreedVOList()
     }
 
     fun saveState() {
         savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.attrThumbnailVO
-    }
-
-    private fun bindThumbnailVO() {
-        _stateFlow.update { state ->
-            state.copy(statusThumbnailVOUpdated = StatePackage(Unit))
-        }
     }
 
     private fun loadBreedVOList() {
