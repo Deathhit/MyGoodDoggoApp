@@ -5,11 +5,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
     @Provides
-    fun provideApiService(@NetworkModule.ApiRetrofit retrofit: Retrofit): ApiService =
-        retrofit.create(ApiService::class.java)
+    @Singleton
+    fun provideImageApiService(@NetworkModule.ApiRetrofit apiRetrofit: Retrofit): ImageApiService =
+        apiRetrofit.create(ImageApiService::class.java)
 }

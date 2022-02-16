@@ -2,7 +2,7 @@ package com.deathhit.domain.repository
 
 import androidx.paging.*
 import androidx.room.withTransaction
-import com.deathhit.data_source_dog_api.ApiService
+import com.deathhit.data_source_dog_api.ImageApiService
 import com.deathhit.domain.DomainDatabase
 import com.deathhit.domain.entity.BreedEntity
 import com.deathhit.domain.entity.BreedThumbnailRefEntity
@@ -14,8 +14,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 internal class ThumbnailRepositoryImp @Inject constructor(
-    private val apiService: ApiService,
-    private val domainDatabase: DomainDatabase
+    private val domainDatabase: DomainDatabase,
+    private val imageApiService: ImageApiService
 ) : ThumbnailRepository {
     companion object {
         private const val PAGE_SIZE = 25
@@ -24,8 +24,8 @@ internal class ThumbnailRepositoryImp @Inject constructor(
 
     @ExperimentalPagingApi
     private class ThumbnailRemoteMediator(
-        private val apiService: ApiService,
-        private val domainDatabase: DomainDatabase
+        private val domainDatabase: DomainDatabase,
+        private val imageApiService: ImageApiService
     ) :
         RemoteMediator<Int, ThumbnailDO>() {
         override suspend fun load(
@@ -67,10 +67,10 @@ internal class ThumbnailRepositoryImp @Inject constructor(
                 // since Retrofit's Coroutine CallAdapter dispatches on a
                 // worker thread.
                 val response =
-                    apiService.searchImage(
-                        ApiService.SIZE_THUMB,
+                    imageApiService.searchImage(
+                        ImageApiService.SIZE_THUMB,
                         true,
-                        ApiService.ORDER_DESC,
+                        ImageApiService.ORDER_DESC,
                         loadKey,
                         state.config.pageSize
                     )
@@ -86,7 +86,7 @@ internal class ThumbnailRepositoryImp @Inject constructor(
                     }
 
                     // Update RemoteKey for this query.
-                    val nexKey = if (loadKey == null) ApiService.PAGE_DEFAULT + 1 else loadKey + 1
+                    val nexKey = if (loadKey == null) ImageApiService.PAGE_DEFAULT + 1 else loadKey + 1
                     domainDatabase.remoteKeyDao().insertOrReplace(
                         RemoteKeyEntity(REMOTE_KEY_LABEL, nexKey)
                     )
@@ -140,5 +140,5 @@ internal class ThumbnailRepositoryImp @Inject constructor(
 
     @OptIn(ExperimentalPagingApi::class)
     fun createThumbnailRemoteMediator(): RemoteMediator<Int, ThumbnailDO> =
-        ThumbnailRemoteMediator(apiService, domainDatabase)
+        ThumbnailRemoteMediator(domainDatabase, imageApiService)
 }

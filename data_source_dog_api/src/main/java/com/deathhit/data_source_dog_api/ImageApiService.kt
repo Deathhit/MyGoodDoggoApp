@@ -1,10 +1,10 @@
 package com.deathhit.data_source_dog_api
 
-import com.deathhit.data_source_dog_api.response.SearchImageResponse
+import com.deathhit.data_source_dog_api.response.Image
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ApiService {
+interface ImageApiService {
     companion object {
         const val ORDER_DESC = "DESC"
         const val PAGE_DEFAULT = 0
@@ -18,5 +18,5 @@ interface ApiService {
         @Query("order") order: String?,
         @Query("page") page: Int?,
         @Query("limit") limit: Int?
-    ): List<SearchImageResponse>
+    ): List<Image>
 }

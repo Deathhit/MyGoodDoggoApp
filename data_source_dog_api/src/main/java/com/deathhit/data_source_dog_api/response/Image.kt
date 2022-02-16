@@ -1,6 +1,6 @@
 package com.deathhit.data_source_dog_api.response
 
-data class SearchImageResponse(
+data class Image(
     val breeds: List<Breed>,
     val id: String,
     val url: String,

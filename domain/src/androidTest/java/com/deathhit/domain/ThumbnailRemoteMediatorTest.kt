@@ -1,8 +1,7 @@
 package com.deathhit.domain
 
 import androidx.paging.*
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.deathhit.data_source_dog_api.response.SearchImageResponse
+import com.deathhit.data_source_dog_api.response.Image
 import com.deathhit.domain.model.ThumbnailDO
 import com.deathhit.domain.repository.ThumbnailRepositoryImp
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -11,7 +10,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 
 import org.junit.Test
-import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Before
@@ -25,12 +23,11 @@ import javax.inject.Inject
  */
 @ExperimentalPagingApi
 @HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
 internal class ThumbnailRemoteMediatorTest {
     private val breedList = listOf(
-        SearchImageResponse.Breed(
-            SearchImageResponse.Breed.Weight("", ""),
-            SearchImageResponse.Breed.Height("", ""),
+        Image.Breed(
+            Image.Breed.Weight("", ""),
+            Image.Breed.Height("", ""),
             "0",
             "0",
             "",
@@ -39,9 +36,9 @@ internal class ThumbnailRemoteMediatorTest {
             "",
             ""
         ),
-        SearchImageResponse.Breed(
-            SearchImageResponse.Breed.Weight("", ""),
-            SearchImageResponse.Breed.Height("", ""),
+        Image.Breed(
+            Image.Breed.Weight("", ""),
+            Image.Breed.Height("", ""),
             "1",
             "1",
             "",
@@ -50,9 +47,9 @@ internal class ThumbnailRemoteMediatorTest {
             "",
             ""
         ),
-        SearchImageResponse.Breed(
-            SearchImageResponse.Breed.Weight("", ""),
-            SearchImageResponse.Breed.Height("", ""),
+        Image.Breed(
+            Image.Breed.Weight("", ""),
+            Image.Breed.Height("", ""),
             "2",
             "2",
             "",
@@ -64,16 +61,16 @@ internal class ThumbnailRemoteMediatorTest {
     )
 
     private val recordList = listOf(
-        SearchImageResponse(listOf(breedList[0]), "0", "", 0, 0),
-        SearchImageResponse(listOf(breedList[1]), "1", "", 0, 0),
-        SearchImageResponse(listOf(breedList[2]), "2", "", 0, 0)
+        Image(listOf(breedList[0]), "0", "", 0, 0),
+        Image(listOf(breedList[1]), "1", "", 0, 0),
+        Image(listOf(breedList[2]), "2", "", 0, 0)
     )
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
-    internal lateinit var apiService: TestApiService
+    internal lateinit var apiService: TestImageApiService
 
     @Inject
     internal lateinit var domainDatabase: DomainDatabase

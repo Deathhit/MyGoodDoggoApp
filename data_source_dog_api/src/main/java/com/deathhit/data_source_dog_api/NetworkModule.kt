@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Qualifier
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -34,6 +35,7 @@ internal object NetworkModule {
 
     @ApiKeyInterceptor
     @Provides
+    @Singleton
     fun provideApiKeyInterceptor(@ApplicationContext context: Context): Interceptor = Interceptor {
         val request = it.request().newBuilder().addHeader(
             NAME_API_KEY,
@@ -44,18 +46,20 @@ internal object NetworkModule {
 
     @ApiOkHttpClient
     @Provides
-    fun provideOkHttpClient(@ApiKeyInterceptor interceptor: Interceptor): OkHttpClient =
-        baseClient.newBuilder().addInterceptor(interceptor).build()
+    @Singleton
+    fun provideApiOkHttpClient(@ApiKeyInterceptor apiKeyInterceptor: Interceptor): OkHttpClient =
+        baseClient.newBuilder().addInterceptor(apiKeyInterceptor).build()
 
     @ApiRetrofit
     @Provides
-    fun provideRetrofit(
+    @Singleton
+    fun provideApiRetrofit(
         @ApplicationContext context: Context,
-        @ApiOkHttpClient okHttpClient: OkHttpClient
+        @ApiOkHttpClient apiOkHttpClient: OkHttpClient
     ): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(getMetadataString(context, context.getString(stringBaseUrl)))
-        .client(okHttpClient)
+        .client(apiOkHttpClient)
         .build()
 
     private fun getMetadataString(context: Context, key: String): String {

@@ -13,5 +13,5 @@ import dagger.hilt.testing.TestInstallIn
 )
 internal object TestServiceModule {
     @Provides
-    fun provideApiService(): TestApiService = TestApiService()
+    fun provideApiService(): TestImageApiService = TestImageApiService()
 }
