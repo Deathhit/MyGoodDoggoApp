@@ -1,4 +1,4 @@
-package com.deathhit.domain.repository
+package com.deathhit.domain.repository.breed
 
 import com.deathhit.domain.model.BreedDO
 

@@ -1,29 +1,39 @@
 package com.deathhit.domain
 
 import androidx.paging.*
+import com.deathhit.data_source_dog_api.ImageApiService
 import com.deathhit.data_source_dog_api.response.Image
 import com.deathhit.domain.model.ThumbnailDO
-import com.deathhit.domain.repository.ThumbnailRepositoryImp
+import com.deathhit.domain.repository.thumbnail.ThumbnailRemoteMediator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-
 import org.junit.Test
-
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import javax.inject.Inject
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @ExperimentalPagingApi
 @HiltAndroidTest
 internal class ThumbnailRemoteMediatorTest {
+    companion object {
+        private const val PAGE_SIZE = 25
+    }
+
+    private class TestImageApiService : ImageApiService {
+        val mutableImageList = mutableListOf<Image>()
+
+        override suspend fun searchImage(
+            size: String?,
+            hasBreeds: Boolean?,
+            order: String?,
+            page: Int?,
+            limit: Int?
+        ): List<Image> = mutableImageList
+    }
+
     private val breedList = listOf(
         Image.Breed(
             Image.Breed.Weight("", ""),
@@ -60,44 +70,41 @@ internal class ThumbnailRemoteMediatorTest {
         )
     )
 
-    private val recordList = listOf(
+    private val imageList = listOf(
         Image(listOf(breedList[0]), "0", "", 0, 0),
         Image(listOf(breedList[1]), "1", "", 0, 0),
         Image(listOf(breedList[2]), "2", "", 0, 0)
     )
 
+    private val testImageApiService = TestImageApiService()
+
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
-    internal lateinit var apiService: TestImageApiService
-
-    @Inject
     internal lateinit var domainDatabase: DomainDatabase
 
-    private lateinit var remoteMediator: RemoteMediator<Int, ThumbnailDO>
+    private lateinit var remoteMediator: ThumbnailRemoteMediator
 
     @Before
     fun before() {
         hiltRule.inject()
-        apiService.list.addAll(recordList)
 
-        remoteMediator =
-            ThumbnailRepositoryImp(apiService, domainDatabase).createThumbnailRemoteMediator()
+        remoteMediator = ThumbnailRemoteMediator(domainDatabase, testImageApiService)
     }
 
     @After
     fun after() {
-        apiService.list.clear()
         domainDatabase.clearAllTables()
     }
 
     @Test
     fun testLoadFirstPage() = runBlocking {
+        testImageApiService.mutableImageList.addAll(imageList)
         val pagingState = PagingState<Int, ThumbnailDO>(
             listOf(),
             null,
-            PagingConfig(3),
+            PagingConfig(PAGE_SIZE),
             0
         )
         val result = remoteMediator.load(LoadType.REFRESH, pagingState)
@@ -107,11 +114,11 @@ internal class ThumbnailRemoteMediatorTest {
 
     @Test
     fun testLoadEmptyPage() = runBlocking {
-        apiService.list.clear()
+        testImageApiService.mutableImageList.clear()
         val pagingState = PagingState<Int, ThumbnailDO>(
             listOf(),
             null,
-            PagingConfig(3),
+            PagingConfig(PAGE_SIZE),
             0
         )
         val result = remoteMediator.load(LoadType.REFRESH, pagingState)

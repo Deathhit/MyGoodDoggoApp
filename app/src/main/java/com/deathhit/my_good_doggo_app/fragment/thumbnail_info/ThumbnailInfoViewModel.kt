@@ -3,7 +3,7 @@ package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.deathhit.domain.repository.BreedRepository
+import com.deathhit.domain.repository.breed.BreedRepository
 import com.deathhit.my_good_doggo_app.model.BreedVO
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.framework.StatePackage

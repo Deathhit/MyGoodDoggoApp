@@ -1,10 +1,10 @@
 package com.deathhit.domain
 
 import com.deathhit.data_source_dog_api.ImageApiService
-import com.deathhit.domain.repository.BreedRepository
-import com.deathhit.domain.repository.BreedRepositoryImp
-import com.deathhit.domain.repository.ThumbnailRepository
-import com.deathhit.domain.repository.ThumbnailRepositoryImp
+import com.deathhit.domain.repository.breed.BreedRepository
+import com.deathhit.domain.repository.breed.BreedRepositoryImp
+import com.deathhit.domain.repository.thumbnail.ThumbnailRepository
+import com.deathhit.domain.repository.thumbnail.ThumbnailRepositoryImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

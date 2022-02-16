@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
-import com.deathhit.domain.repository.ThumbnailRepository
+import com.deathhit.domain.repository.thumbnail.ThumbnailRepository
 import com.deathhit.framework.Event
 import com.deathhit.framework.StatePackage
 import com.deathhit.framework.Status
