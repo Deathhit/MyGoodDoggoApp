@@ -1,6 +1,9 @@
 package com.deathhit.my_good_doggo_app.fragment.thumbnail_list
 
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
@@ -22,22 +25,38 @@ abstract class ThumbnailAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThumbnailViewHolder {
         val holder = ThumbnailViewHolder(parent)
-        holder.itemView.setOnClickListener { holder.item?.let { onClickItem(it) } }
+        configureItemView(holder, holder.itemView)
         return holder
     }
 
     override fun onBindViewHolder(holder: ThumbnailViewHolder, position: Int) {
         holder.item = getItem(position)?.also { item ->
-            Glide.with(holder.imageThumbnail).load(item.thumbnailUrl)
-                .centerCrop().format(DecodeFormat.PREFER_RGB_565).into(holder.imageThumbnail)
-            holder.textId.text = item.thumbnailId
+            bindImageThumbnail(item, holder.binding.imageViewThumbnail)
+            bindTextId(item, holder.binding.textViewId)
         }
     }
 
     override fun onViewRecycled(holder: ThumbnailViewHolder) {
         super.onViewRecycled(holder)
+        recycleImageThumbnail(holder.binding.imageViewThumbnail)
+    }
+
+    private fun bindImageThumbnail(item: ThumbnailVO, imageThumbnail: ImageView) {
+        Glide.with(imageThumbnail).load(item.thumbnailUrl)
+            .centerCrop().format(DecodeFormat.PREFER_RGB_565).into(imageThumbnail)
+    }
+
+    private fun bindTextId(item: ThumbnailVO, textId: TextView) {
+        textId.text = item.thumbnailId
+    }
+
+    private fun configureItemView(holder: ThumbnailViewHolder, itemView: View) {
+        itemView.setOnClickListener { holder.item?.let { onClickItem(it) } }
+    }
+
+    private fun recycleImageThumbnail(imageThumbnail: ImageView) {
         try {
-            Glide.with(holder.imageThumbnail).clear(holder.imageThumbnail)
+            Glide.with(imageThumbnail).clear(imageThumbnail)
         } catch (ignored: Exception) {
         }
     }

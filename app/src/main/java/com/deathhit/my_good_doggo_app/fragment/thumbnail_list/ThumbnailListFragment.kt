@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.deathhit.my_good_doggo_app.R
+import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailListBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
@@ -16,9 +16,6 @@ import kotlinx.coroutines.flow.*
 @AndroidEntryPoint
 class ThumbnailListFragment : Fragment() {
     companion object {
-        private const val ID_RECYCLER_VIEW = R.id.recyclerView
-        private const val LAYOUT = R.layout.fragment_thumbnail_list
-
         fun create(): ThumbnailListFragment {
             val args = Bundle()
             val fragment = ThumbnailListFragment()
@@ -27,9 +24,11 @@ class ThumbnailListFragment : Fragment() {
         }
     }
 
+    private val binding: FragmentThumbnailListBinding get() = _binding!!
+
     private val viewModel: ThumbnailListViewModel by viewModels()
 
-    private var recyclerView: RecyclerView? = null
+    private var _binding: FragmentThumbnailListBinding? = null
 
     private var thumbnailAdapter: ThumbnailAdapter? = null
 
@@ -52,11 +51,14 @@ class ThumbnailListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(LAYOUT, container, false)
+    ): View {
+        _binding = FragmentThumbnailListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById<RecyclerView>(ID_RECYCLER_VIEW).apply {
+        binding.recyclerView.apply {
             setHasFixedSize(true)
             thumbnailAdapter = createThumbnailAdapter().also { adapter = createConcatAdapter(it) }
         }
@@ -64,7 +66,7 @@ class ThumbnailListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        recyclerView = null
+        _binding = null
 
         thumbnailAdapter = null
     }

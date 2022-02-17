@@ -1,6 +1,7 @@
 package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
@@ -18,7 +19,9 @@ class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
         BannerViewHolder(parent)
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-        loadBanner(holder)
+        item?.let { item ->
+            bindImageBanner(item, holder.binding.imageViewBanner)
+        }
     }
 
     override fun getItemCount(): Int = ITEM_COUNT
@@ -28,10 +31,8 @@ class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
         notifyItemChanged(ITEM_POS)
     }
 
-    private fun loadBanner(holder: BannerViewHolder) {
-        item?.let { item ->
-            Glide.with(holder.imageBanner).load(item.thumbnailUrl)
-                .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(holder.imageBanner)
-        }
+    private fun bindImageBanner(item: ThumbnailVO, imageBanner: ImageView) {
+        Glide.with(imageBanner).load(item.thumbnailUrl)
+            .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(imageBanner)
     }
 }

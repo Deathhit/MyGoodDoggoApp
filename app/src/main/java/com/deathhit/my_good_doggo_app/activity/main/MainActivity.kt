@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentOnAttachListener
 import androidx.lifecycle.lifecycleScope
 import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity
+import com.deathhit.my_good_doggo_app.databinding.ActivityMainBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         private const val TAG_THUMBNAIL_LIST = "$TAG.TAG_THUMBNAIL_LIST"
 
         private const val ID_THUMBNAIL_LIST_CONTAINER = R.id.activity_thumbnailListContainer
-        private const val LAYOUT = R.layout.activity_main
     }
 
     private val fragmentOnAttachListener: FragmentOnAttachListener =
@@ -32,9 +32,16 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainActivityViewModel by viewModels()
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        savedInstanceState ?: viewModel.addThumbnailListFragment()
+
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.eventAddThumbnailListFragment.signForEvent(this@MainActivity) {
@@ -46,10 +53,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        setContentView(LAYOUT)
-
-        savedInstanceState ?: viewModel.addThumbnailListFragment()
     }
 
     override fun onDestroy() {

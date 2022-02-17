@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.deathhit.my_good_doggo_app.R
+import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailInfoBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -17,9 +17,6 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class ThumbnailInfoFragment : Fragment() {
     companion object {
-        private const val ID_RECYCLER_VIEW = R.id.recyclerView
-        private const val LAYOUT = R.layout.fragment_thumbnail_info
-
         fun create(thumbnailVO: ThumbnailVO): ThumbnailInfoFragment {
             val args = Bundle()
             args.putParcelable(ThumbnailInfoViewModel.KEY_THUMBNAIL_VO, thumbnailVO)
@@ -29,9 +26,11 @@ class ThumbnailInfoFragment : Fragment() {
         }
     }
 
+    private val binding: FragmentThumbnailInfoBinding get() = _binding!!
+
     private val viewModel: ThumbnailInfoViewModel by viewModels()
 
-    private var recyclerView: RecyclerView? = null
+    private var _binding: FragmentThumbnailInfoBinding? = null
 
     private var bannerAdapter: BannerAdapter? = null
     private var breedAdapter: BreedAdapter? = null
@@ -55,11 +54,14 @@ class ThumbnailInfoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(LAYOUT, container, false)
+    ): View {
+        _binding = FragmentThumbnailInfoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById<RecyclerView>(ID_RECYCLER_VIEW).apply {
+        binding.recyclerView.apply {
             setHasFixedSize(true)
             bannerAdapter = BannerAdapter()
             breedAdapter = BreedAdapter()
@@ -69,7 +71,7 @@ class ThumbnailInfoFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        recyclerView = null
+        _binding = null
 
         bannerAdapter = null
         breedAdapter = null

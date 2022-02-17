@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.deathhit.my_good_doggo_app.R
+import com.deathhit.my_good_doggo_app.databinding.ActivityThumbnailInfoBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,6 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         private const val TAG_THUMBNAIL_INFO = "$TAG.TAG_THUMBNAIL_INFO"
 
         private const val ID_CONTAINER_THUMBNAIL_INFO = R.id.activity_frameLayout_thumbnail_info
-        private const val LAYOUT = R.layout.activity_thumbnail_info
 
         fun createIntent(context: Context, thumbnailVO: ThumbnailVO): Intent {
             val intent = Intent(context, ThumbnailInfoActivity::class.java)
@@ -30,8 +30,15 @@ class ThumbnailInfoActivity : AppCompatActivity() {
 
     private val viewModel: ThumbnailInfoActivityViewModel by viewModels()
 
+    private lateinit var binding: ActivityThumbnailInfoBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityThumbnailInfoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        savedInstanceState ?: viewModel.addThumbnailInfoFragment()
+
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.eventAddThumbnailInfoFragment.signForEvent(this@ThumbnailInfoActivity) {
@@ -39,10 +46,6 @@ class ThumbnailInfoActivity : AppCompatActivity() {
                 }
             }
         }
-
-        setContentView(LAYOUT)
-
-        savedInstanceState ?: viewModel.addThumbnailInfoFragment()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
