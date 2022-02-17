@@ -35,7 +35,7 @@ android {
 
 dependencies {
     //Hilt
-    def hilt_version = '2.38.1'
+    def hilt_version = '2.40.5'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
 
