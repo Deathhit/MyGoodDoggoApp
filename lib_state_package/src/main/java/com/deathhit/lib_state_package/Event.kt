@@ -1,4 +1,4 @@
-package com.deathhit.framework
+package com.deathhit.lib_state_package
 
 import androidx.lifecycle.ViewModelStoreOwner
 

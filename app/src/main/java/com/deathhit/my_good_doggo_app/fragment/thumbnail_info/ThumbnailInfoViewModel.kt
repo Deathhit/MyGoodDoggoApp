@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.deathhit.domain.repository.breed.BreedRepository
 import com.deathhit.my_good_doggo_app.model.BreedVO
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
-import com.deathhit.framework.StatePackage
-import com.deathhit.framework.Status
+import com.deathhit.lib_state_package.StatePackage
+import com.deathhit.lib_state_package.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

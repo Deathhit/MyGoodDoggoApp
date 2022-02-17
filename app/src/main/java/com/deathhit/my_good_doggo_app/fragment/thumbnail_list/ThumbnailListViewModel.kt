@@ -7,9 +7,9 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.domain.repository.thumbnail.ThumbnailRepository
-import com.deathhit.framework.Event
-import com.deathhit.framework.StatePackage
-import com.deathhit.framework.Status
+import com.deathhit.lib_state_package.Event
+import com.deathhit.lib_state_package.StatePackage
+import com.deathhit.lib_state_package.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.deathhit.framework
+package com.deathhit.lib_state_package
 
 import android.app.Activity
 import androidx.fragment.app.Fragment
