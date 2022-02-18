@@ -23,10 +23,9 @@ class ImageViewerFragment : Fragment() {
     }
 
     private val binding get() = _binding!!
+    private var _binding: FragmentImageViewerBinding? = null
 
     private val viewModel: ImageViewerViewModel by viewModels()
-
-    private var _binding: FragmentImageViewerBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

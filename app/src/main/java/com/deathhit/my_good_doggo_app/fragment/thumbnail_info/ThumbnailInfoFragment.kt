@@ -27,10 +27,9 @@ class ThumbnailInfoFragment : Fragment() {
     }
 
     private val binding: FragmentThumbnailInfoBinding get() = _binding!!
+    private var _binding: FragmentThumbnailInfoBinding? = null
 
     private val viewModel: ThumbnailInfoViewModel by viewModels()
-
-    private var _binding: FragmentThumbnailInfoBinding? = null
 
     private var bannerAdapter: BannerAdapter? = null
     private var breedAdapter: BreedAdapter? = null

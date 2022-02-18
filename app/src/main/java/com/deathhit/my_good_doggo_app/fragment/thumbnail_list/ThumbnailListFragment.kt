@@ -25,10 +25,9 @@ class ThumbnailListFragment : Fragment() {
     }
 
     private val binding: FragmentThumbnailListBinding get() = _binding!!
+    private var _binding: FragmentThumbnailListBinding? = null
 
     private val viewModel: ThumbnailListViewModel by viewModels()
-
-    private var _binding: FragmentThumbnailListBinding? = null
 
     private var thumbnailAdapter: ThumbnailAdapter? = null
 
