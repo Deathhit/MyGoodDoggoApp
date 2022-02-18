@@ -27,8 +27,17 @@ class ImageViewerFragment : Fragment() {
 
     private val viewModel: ImageViewerViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentImageViewerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.statusImageUrl.signForViewStatus(this@ImageViewerFragment) {
@@ -37,15 +46,6 @@ class ImageViewerFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentImageViewerBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onDestroyView() {
