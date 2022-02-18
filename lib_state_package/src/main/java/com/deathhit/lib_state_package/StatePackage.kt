@@ -1,6 +1,5 @@
 package com.deathhit.lib_state_package
 
-import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelStoreOwner
 import java.util.*
@@ -17,12 +16,12 @@ class StatePackage<Content>(override val content: Content?) : Event<Content>, St
         sign(viewModelStoreOwner.viewModelStore)?.let(onSigned)
     }
 
-    override fun signForStatus(activity: Activity, onSigned: (content: Content) -> Unit) {
-        sign(activity)?.let(onSigned)
+    override fun signForStatus(any: Any, onSigned: (content: Content) -> Unit) {
+        sign(any)?.let(onSigned)
     }
 
-    override fun signForStatus(fragment: Fragment, onSigned: (content: Content) -> Unit) {
-        sign(fragment)?.let(onSigned)
+    override fun signForViewStatus(fragment: Fragment, onSigned: (content: Content) -> Unit) {
+        sign(fragment.view)?.let(onSigned)
     }
 
     private fun sign(any: Any?): Content? {

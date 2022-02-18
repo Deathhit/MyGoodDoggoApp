@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailListBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
@@ -38,7 +39,7 @@ class ThumbnailListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
-                state.statusThumbnailList.signForStatus(this@ThumbnailListFragment) {
+                state.statusThumbnailList.signForViewStatus(this@ThumbnailListFragment) {
                     thumbnailAdapter?.submitData(lifecycle, it)
                 }
 
