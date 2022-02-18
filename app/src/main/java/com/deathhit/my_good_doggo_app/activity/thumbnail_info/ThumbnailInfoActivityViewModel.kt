@@ -21,7 +21,7 @@ class ThumbnailInfoActivityViewModel @Inject constructor(private val savedStateH
 
     data class State(
         val attrThumbnailVO: ThumbnailVO,
-        val eventAddThumbnailInfoFragment: Event<Unit>
+        val eventAddThumbnailInfoFragment: Event<ThumbnailVO>
     )
 
     private val _stateFlow =
@@ -30,7 +30,7 @@ class ThumbnailInfoActivityViewModel @Inject constructor(private val savedStateH
 
     fun addThumbnailInfoFragment() {
         _stateFlow.update {
-            it.copy(eventAddThumbnailInfoFragment = StatePackage(Unit))
+            it.copy(eventAddThumbnailInfoFragment = StatePackage(it.attrThumbnailVO))
         }
     }
 

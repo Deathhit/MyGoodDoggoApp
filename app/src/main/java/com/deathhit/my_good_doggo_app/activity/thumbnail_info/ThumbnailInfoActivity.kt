@@ -42,7 +42,7 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.eventAddThumbnailInfoFragment.signForEvent(this@ThumbnailInfoActivity) {
-                    addThumbnailListFragment(state.attrThumbnailVO)
+                    addThumbnailListFragment(it)
                 }
             }
         }

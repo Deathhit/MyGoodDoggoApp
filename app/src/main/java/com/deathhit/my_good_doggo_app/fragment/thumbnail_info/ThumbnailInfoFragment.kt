@@ -43,8 +43,8 @@ class ThumbnailInfoFragment : Fragment() {
                     breedAdapter?.submitList(ArrayList(it))
                 }
 
-                state.statusThumbnailVOUpdated.signForViewStatus(this@ThumbnailInfoFragment) {
-                    bannerAdapter?.notifyOnItemChanged(state.attrThumbnailVO)
+                state.statusThumbnailVO.signForViewStatus(this@ThumbnailInfoFragment) {
+                    bannerAdapter?.notifyOnItemChanged(it)
                 }
             }
         }
