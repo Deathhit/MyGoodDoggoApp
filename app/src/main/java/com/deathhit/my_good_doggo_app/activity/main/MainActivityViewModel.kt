@@ -21,10 +21,16 @@ class MainActivityViewModel @Inject constructor() : ViewModel() {
     val stateFlow = _stateFlow.asStateFlow()
 
     fun addThumbnailListFragment() {
-        _stateFlow.update { it.copy(eventAddThumbnailListFragment = StatePackage(Unit)) }
+        _stateFlow.update { state -> state.copy(eventAddThumbnailListFragment = StatePackage(Unit)) }
     }
 
     fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
-        _stateFlow.update { it.copy(eventGoToThumbnailInfoActivity = StatePackage(thumbnailVO)) }
+        _stateFlow.update { state ->
+            state.copy(
+                eventGoToThumbnailInfoActivity = StatePackage(
+                    thumbnailVO
+                )
+            )
+        }
     }
 }

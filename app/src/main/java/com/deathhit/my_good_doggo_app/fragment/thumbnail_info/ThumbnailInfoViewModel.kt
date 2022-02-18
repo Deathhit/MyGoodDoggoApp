@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deathhit.domain.repository.breed.BreedRepository
+import com.deathhit.lib_state_package.Event
 import com.deathhit.my_good_doggo_app.model.BreedVO
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.lib_state_package.StatePackage
@@ -29,6 +30,7 @@ class ThumbnailInfoViewModel @Inject constructor(
 
     data class State(
         val attrThumbnailVO: ThumbnailVO,
+        val eventShowImageViewerFragment: Event<String>,
         val statusBreedVOList: Status<List<BreedVO>>,
         val statusThumbnailVO: Status<ThumbnailVO>
     )
@@ -36,6 +38,7 @@ class ThumbnailInfoViewModel @Inject constructor(
     private val _stateFlow = MutableStateFlow(
         State(
             savedStateHandle[KEY_THUMBNAIL_VO]!!,
+            StatePackage(),
             StatePackage(),
             StatePackage()
         )
@@ -49,6 +52,12 @@ class ThumbnailInfoViewModel @Inject constructor(
 
     fun saveState() {
         savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.attrThumbnailVO
+    }
+
+    fun viewImage(thumbnailVO: ThumbnailVO?) {
+        _stateFlow.update { state ->
+            state.copy(eventShowImageViewerFragment = StatePackage(thumbnailVO?.thumbnailUrl))
+        }
     }
 
     private fun bindAttrStatus() {

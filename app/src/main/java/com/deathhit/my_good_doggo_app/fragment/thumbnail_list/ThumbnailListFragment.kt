@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailListBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
@@ -35,19 +34,6 @@ class ThumbnailListFragment : Fragment() {
 
     private var onStateListener: ((ThumbnailListViewModel.State) -> Unit)? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        lifecycleScope.launchWhenStarted {
-            viewModel.stateFlow.collect { state ->
-                state.statusThumbnailList.signForViewStatus(this@ThumbnailListFragment) {
-                    thumbnailAdapter?.submitData(lifecycle, it)
-                }
-
-                onStateListener?.invoke(state)
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,6 +48,16 @@ class ThumbnailListFragment : Fragment() {
         binding.recyclerView.apply {
             setHasFixedSize(true)
             thumbnailAdapter = createThumbnailAdapter().also { adapter = createConcatAdapter(it) }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.stateFlow.collect { state ->
+                state.statusThumbnailList.signForViewStatus(this@ThumbnailListFragment) {
+                    thumbnailAdapter?.submitData(lifecycle, it)
+                }
+
+                onStateListener?.invoke(state)
+            }
         }
     }
 

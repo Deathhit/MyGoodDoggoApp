@@ -20,6 +20,10 @@
         <entry key="..\:/workspace/DevelopmentKitDemoApp/framework/src/main/res/layout/activity_test.xml" value="0.17097264437689969" />
         <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
         <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/activity_thumbnail_info.xml" value="0.33559782608695654" />
+        <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/fragment_full_image.xml" value="0.22010869565217392" />
+        <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/fragment_image_viewer.xml" value="0.1875" />
+        <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/fragment_thumbnail_list.xml" value="0.22010869565217392" />
+        <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/item_thumbnail_info_banner.xml" value="0.1875" />
         <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/item_thumbnail_info_breed.xml" value="0.18802083333333333" />
         <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/item_thumbnail_list_load_state.xml" value="0.18802083333333333" />
         <entry key="..\:/workspace/MyGoodDoggoApp/app/src/main/res/layout/item_thumbnail_list_thumbnail.xml" value="0.18802083333333333" />

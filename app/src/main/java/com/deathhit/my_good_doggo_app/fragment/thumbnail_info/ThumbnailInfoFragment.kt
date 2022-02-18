@@ -35,20 +35,7 @@ class ThumbnailInfoFragment : Fragment() {
     private var bannerAdapter: BannerAdapter? = null
     private var breedAdapter: BreedAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        lifecycleScope.launchWhenStarted {
-            viewModel.stateFlow.collect { state ->
-                state.statusBreedVOList.signForViewStatus(this@ThumbnailInfoFragment) {
-                    breedAdapter?.submitList(ArrayList(it))
-                }
-
-                state.statusThumbnailVO.signForViewStatus(this@ThumbnailInfoFragment) {
-                    bannerAdapter?.notifyOnItemChanged(it)
-                }
-            }
-        }
-    }
+    private var onStateListener: ((ThumbnailInfoViewModel.State) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,9 +50,27 @@ class ThumbnailInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.apply {
             setHasFixedSize(true)
-            bannerAdapter = BannerAdapter()
+            bannerAdapter = object : BannerAdapter() {
+                override fun onBannerClick(item: ThumbnailVO?) {
+                    viewModel.viewImage(item)
+                }
+            }
             breedAdapter = BreedAdapter()
             adapter = createConcatAdapter(bannerAdapter!!, breedAdapter!!)
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.stateFlow.collect { state ->
+                state.statusBreedVOList.signForViewStatus(this@ThumbnailInfoFragment) {
+                    breedAdapter?.submitList(ArrayList(it))
+                }
+
+                state.statusThumbnailVO.signForViewStatus(this@ThumbnailInfoFragment) {
+                    bannerAdapter?.notifyOnItemChanged(it)
+                }
+
+                onStateListener?.invoke(state)
+            }
         }
     }
 
@@ -80,6 +85,10 @@ class ThumbnailInfoFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         viewModel.saveState()
         super.onSaveInstanceState(outState)
+    }
+
+    fun setStateListener(onStateListener: ((ThumbnailInfoViewModel.State) -> Unit)?) {
+        this.onStateListener = onStateListener
     }
 
     private fun createConcatAdapter(bannerAdapter: BannerAdapter, breedAdapter: BreedAdapter): RecyclerView.Adapter<*> =

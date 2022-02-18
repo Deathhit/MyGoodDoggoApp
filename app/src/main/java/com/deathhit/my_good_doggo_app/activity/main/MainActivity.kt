@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "com.deathhit.my_good_doggo_app.activity.main.MainActivity"
         private const val TAG_THUMBNAIL_LIST = "$TAG.TAG_THUMBNAIL_LIST"
 
-        private const val ID_THUMBNAIL_LIST_CONTAINER = R.id.activity_thumbnailListContainer
+        private const val ID_CONTAINER = R.id.activity_frameLayout_container
     }
 
     private val fragmentOnAttachListener: FragmentOnAttachListener =
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     private fun onFragmentAttach(fragment: Fragment) {
         if (fragment is ThumbnailListFragment)
             fragment.setStateListener { state ->
-                state.eventGoToThumbnailInfoActivity.signForEvent(this@MainActivity) {
+                state.eventGoToThumbnailInfoActivity.signForEvent(this) {
                     viewModel.goToThumbnailInfoActivity(it)
                 }
             }
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun addThumbnailListFragment() {
         supportFragmentManager.beginTransaction().add(
-            ID_THUMBNAIL_LIST_CONTAINER,
+            ID_CONTAINER,
             ThumbnailListFragment.create(),
             TAG_THUMBNAIL_LIST
         ).commit()

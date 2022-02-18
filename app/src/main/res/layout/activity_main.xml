@@ -19,7 +19,7 @@
         app:title="@string/app_name" />
 
     <FrameLayout
-        android:id="@+id/activity_thumbnailListContainer"
+        android:id="@+id/activity_frameLayout_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

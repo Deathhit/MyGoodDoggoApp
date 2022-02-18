@@ -31,7 +31,13 @@ class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository
     }
 
     fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
-        _stateFlow.update { it.copy(eventGoToThumbnailInfoActivity = StatePackage(thumbnailVO)) }
+        _stateFlow.update { state ->
+            state.copy(
+                eventGoToThumbnailInfoActivity = StatePackage(
+                    thumbnailVO
+                )
+            )
+        }
     }
 
     private fun loadThumbnailList() {
@@ -40,7 +46,13 @@ class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository
                 .map { pagingData -> pagingData.map { ThumbnailVO.valueOf(it) } }
                 .cachedIn(viewModelScope)
                 .collectLatest { pagingData ->
-                    _stateFlow.update { it.copy(statusThumbnailList = StatePackage(pagingData)) }
+                    _stateFlow.update { state ->
+                        state.copy(
+                            statusThumbnailList = StatePackage(
+                                pagingData
+                            )
+                        )
+                    }
                 }
         }
     }
