@@ -1,7 +1,7 @@
 # MyGoodDoggoApp
 Template Android application of UDF structure implemented using StatePackage wrapper class.
 # The Dog Api
-This project requires an api key from [The Dog Api](https://www.thedogapi.com/) to function normally.  
+This project requires an api key from [The Dog Api](https://www.thedogapi.com/) to make paging work.  
 Replace the value of the metadata with your api key.
 ```
         <!--Dog Api Meta-->
