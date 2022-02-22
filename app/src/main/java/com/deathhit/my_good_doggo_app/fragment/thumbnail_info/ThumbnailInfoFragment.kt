@@ -61,7 +61,7 @@ class ThumbnailInfoFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.stateFlow.collect { state ->
                 state.statusBreedVOList.signForViewStatus(this@ThumbnailInfoFragment) {
-                    breedAdapter?.submitList(ArrayList(it))
+                    breedAdapter?.submitList(it)
                 }
 
                 state.statusThumbnailVO.signForViewStatus(this@ThumbnailInfoFragment) {
