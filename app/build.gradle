@@ -48,6 +48,9 @@ dependencies {
     //Activity
     implementation 'androidx.activity:activity-ktx:1.4.0'
 
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+
     //Fragment
     implementation  "androidx.fragment:fragment-ktx:1.4.1"
 
@@ -57,7 +60,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
     //Hilt
-    def hilt_version = '2.40.5'
+    def hilt_version = '2.41'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
 
