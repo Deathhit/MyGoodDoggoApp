@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.deathhit.my_good_doggo_app.databinding.FragmentImageViewerBinding
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class ImageViewerFragment : Fragment() {
     companion object {
@@ -38,11 +41,13 @@ class ImageViewerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launchWhenStarted {
-            viewModel.stateFlow.collect { state ->
-                state.statusImageUrl.signForViewStatus(this@ImageViewerFragment) {
-                    val imageView = binding.imageView
-                    Glide.with(imageView).load(it).into(imageView)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFlow.collect { state ->
+                    state.statusImageUrl.signForViewStatus(this@ImageViewerFragment) {
+                        val imageView = binding.imageView
+                        Glide.with(imageView).load(it).into(imageView)
+                    }
                 }
             }
         }

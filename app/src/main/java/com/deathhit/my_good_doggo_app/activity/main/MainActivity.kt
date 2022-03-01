@@ -5,7 +5,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentOnAttachListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity
 import com.deathhit.my_good_doggo_app.databinding.ActivityMainBinding
@@ -13,6 +15,7 @@ import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -42,14 +45,16 @@ class MainActivity : AppCompatActivity() {
 
         savedInstanceState ?: viewModel.addThumbnailListFragment()
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.stateFlow.collect { state ->
-                state.eventAddThumbnailListFragment.signForEvent(this@MainActivity) {
-                    addThumbnailListFragment()
-                }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFlow.collect { state ->
+                    state.eventAddThumbnailListFragment.signForEvent(this@MainActivity) {
+                        addThumbnailListFragment()
+                    }
 
-                state.eventGoToThumbnailInfoActivity.signForEvent(this@MainActivity) {
-                    goToThumbnailInfoActivity(it)
+                    state.eventGoToThumbnailInfoActivity.signForEvent(this@MainActivity) {
+                        goToThumbnailInfoActivity(it)
+                    }
                 }
             }
         }

@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailListBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
@@ -49,13 +51,15 @@ class ThumbnailListFragment : Fragment() {
             thumbnailAdapter = createThumbnailAdapter().also { adapter = createConcatAdapter(it) }
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.stateFlow.collect { state ->
-                state.statusThumbnailList.signForViewStatus(this@ThumbnailListFragment) {
-                    thumbnailAdapter?.submitData(lifecycle, it)
-                }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFlow.collect { state ->
+                    state.statusThumbnailList.signForViewStatus(this@ThumbnailListFragment) {
+                        thumbnailAdapter?.submitData(lifecycle, it)
+                    }
 
-                onStateListener?.invoke(state)
+                    onStateListener?.invoke(state)
+                }
             }
         }
     }

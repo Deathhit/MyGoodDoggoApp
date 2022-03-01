@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailInfoBinding
@@ -58,17 +60,19 @@ class ThumbnailInfoFragment : Fragment() {
             adapter = createConcatAdapter(bannerAdapter!!, breedAdapter!!)
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.stateFlow.collect { state ->
-                state.statusBreedVOList.signForViewStatus(this@ThumbnailInfoFragment) {
-                    breedAdapter?.submitList(it)
-                }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFlow.collect { state ->
+                    state.statusBreedVOList.signForViewStatus(this@ThumbnailInfoFragment) {
+                        breedAdapter?.submitList(it)
+                    }
 
-                state.statusThumbnailVO.signForViewStatus(this@ThumbnailInfoFragment) {
-                    bannerAdapter?.notifyOnItemChanged(it)
-                }
+                    state.statusThumbnailVO.signForViewStatus(this@ThumbnailInfoFragment) {
+                        bannerAdapter?.notifyOnItemChanged(it)
+                    }
 
-                onStateListener?.invoke(state)
+                    onStateListener?.invoke(state)
+                }
             }
         }
     }
@@ -90,6 +94,9 @@ class ThumbnailInfoFragment : Fragment() {
         this.onStateListener = onStateListener
     }
 
-    private fun createConcatAdapter(bannerAdapter: BannerAdapter, breedAdapter: BreedAdapter): RecyclerView.Adapter<*> =
+    private fun createConcatAdapter(
+        bannerAdapter: BannerAdapter,
+        breedAdapter: BreedAdapter
+    ): RecyclerView.Adapter<*> =
         ConcatAdapter(bannerAdapter, breedAdapter)
 }
