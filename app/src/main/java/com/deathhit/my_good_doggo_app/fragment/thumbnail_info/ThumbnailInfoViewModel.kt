@@ -29,20 +29,13 @@ class ThumbnailInfoViewModel @Inject constructor(
     }
 
     data class State(
-        val attrThumbnailVO: ThumbnailVO,
-        val eventShowImageViewerFragment: Event<String>,
-        val statusBreedVOList: Status<List<BreedVO>>,
-        val statusThumbnailVO: Status<ThumbnailVO>
+        val argThumbnailVO: ThumbnailVO,
+        val eventShowImageViewerFragment: Event<String> = StatePackage(),
+        val statusBreedVOList: Status<List<BreedVO>> = StatePackage(),
+        val statusThumbnailVO: Status<ThumbnailVO> = StatePackage()
     )
 
-    private val _stateFlow = MutableStateFlow(
-        State(
-            savedStateHandle[KEY_THUMBNAIL_VO]!!,
-            StatePackage(),
-            StatePackage(),
-            StatePackage()
-        )
-    )
+    private val _stateFlow = MutableStateFlow(State(savedStateHandle[KEY_THUMBNAIL_VO]!!))
     val stateFlow = _stateFlow.asStateFlow()
 
     init {
@@ -51,7 +44,7 @@ class ThumbnailInfoViewModel @Inject constructor(
     }
 
     fun saveState() {
-        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.attrThumbnailVO
+        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.argThumbnailVO
     }
 
     fun viewImage(thumbnailVO: ThumbnailVO?) {
@@ -62,7 +55,7 @@ class ThumbnailInfoViewModel @Inject constructor(
 
     private fun bindAttrStatus() {
         _stateFlow.update { state ->
-            state.copy(statusThumbnailVO = StatePackage(state.attrThumbnailVO))
+            state.copy(statusThumbnailVO = StatePackage(state.argThumbnailVO))
         }
     }
 
@@ -71,7 +64,7 @@ class ThumbnailInfoViewModel @Inject constructor(
             _stateFlow.update { state ->
                 state.copy(
                     statusBreedVOList = StatePackage(breedRepository.getBreedListByThumbnailId(
-                        state.attrThumbnailVO.thumbnailId
+                        state.argThumbnailVO.thumbnailId
                     ).map { BreedVO.valueOf(it) })
                 )
             }

@@ -15,34 +15,28 @@ import javax.inject.Inject
 class ThumbnailInfoActivityViewModel @Inject constructor(private val savedStateHandle: SavedStateHandle) :
     ViewModel() {
     companion object {
-        private const val TAG = "ThumbnailInfoActivityViewModel"
+        private const val TAG =
+            "com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivityViewModel"
         const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
     }
 
     data class State(
-        val attrThumbnailVO: ThumbnailVO,
-        val eventAddThumbnailInfoFragment: Event<ThumbnailVO>,
-        val eventShowImageViewerFragment: Event<String>
+        val argThumbnailVO: ThumbnailVO,
+        val eventAddThumbnailInfoFragment: Event<ThumbnailVO> = StatePackage(),
+        val eventShowImageViewerFragment: Event<String> = StatePackage()
     )
 
-    private val _stateFlow =
-        MutableStateFlow(
-            State(
-                savedStateHandle[KEY_THUMBNAIL_VO]!!,
-                StatePackage(),
-                StatePackage()
-            )
-        )
+    private val _stateFlow = MutableStateFlow(State(savedStateHandle[KEY_THUMBNAIL_VO]!!))
     val stateFlow = _stateFlow.asStateFlow()
 
     fun addThumbnailInfoFragment() {
         _stateFlow.update { state ->
-            state.copy(eventAddThumbnailInfoFragment = StatePackage(state.attrThumbnailVO))
+            state.copy(eventAddThumbnailInfoFragment = StatePackage(state.argThumbnailVO))
         }
     }
 
     fun saveState() {
-        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.attrThumbnailVO
+        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.argThumbnailVO
     }
 
     fun showImageViewerFragment(imageUrl: String) {

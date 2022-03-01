@@ -19,11 +19,11 @@ import javax.inject.Inject
 class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository: ThumbnailRepository) :
     ViewModel() {
     data class State(
-        val eventGoToThumbnailInfoActivity: Event<ThumbnailVO>,
-        val statusThumbnailList: Status<PagingData<ThumbnailVO>>
+        val eventGoToThumbnailInfoActivity: Event<ThumbnailVO> = StatePackage(),
+        val statusThumbnailList: Status<PagingData<ThumbnailVO>> = StatePackage()
     )
 
-    private val _stateFlow = MutableStateFlow(State(StatePackage(), StatePackage()))
+    private val _stateFlow = MutableStateFlow(State())
     val stateFlow = _stateFlow.asStateFlow()
 
     init {

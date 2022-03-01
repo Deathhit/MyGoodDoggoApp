@@ -17,14 +17,9 @@ class ImageViewerViewModel @Inject constructor(private val savedStateHandle: Sav
         const val KEY_IMAGE_URL = "$TAG.KEY_IMAGE_URL"
     }
 
-    data class State(val attrImageUrl: String, val statusImageUrl: Status<String>)
+    data class State(val argImageUrl: String, val statusImageUrl: Status<String> = StatePackage())
 
-    private val _stateFlow = MutableStateFlow(
-        State(
-            savedStateHandle[KEY_IMAGE_URL]!!,
-            StatePackage()
-        )
-    )
+    private val _stateFlow = MutableStateFlow(State(savedStateHandle[KEY_IMAGE_URL]!!))
     val stateFlow = _stateFlow.asStateFlow()
 
     init {
@@ -32,10 +27,10 @@ class ImageViewerViewModel @Inject constructor(private val savedStateHandle: Sav
     }
 
     fun saveState() {
-        savedStateHandle[KEY_IMAGE_URL] = stateFlow.value.attrImageUrl
+        savedStateHandle[KEY_IMAGE_URL] = stateFlow.value.argImageUrl
     }
 
     private fun bindStatusImageUrl() {
-        _stateFlow.update { state -> state.copy(statusImageUrl = StatePackage(state.attrImageUrl)) }
+        _stateFlow.update { state -> state.copy(statusImageUrl = StatePackage(state.argImageUrl)) }
     }
 }
