@@ -4,10 +4,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelStoreOwner
 import java.util.*
 
-class StatePackage<Content>(override val content: Content?) : Event<Content>, Status<Content> {
+class StatePackage<Content>(override val content: Content? = null) : Event<Content>,
+    Status<Content> {
     private val signatureMap: WeakHashMap<Any, Boolean> by lazy { WeakHashMap() }
-
-    constructor() : this(null)
 
     override fun signForEvent(
         viewModelStoreOwner: ViewModelStoreOwner,
