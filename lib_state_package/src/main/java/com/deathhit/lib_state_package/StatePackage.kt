@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import java.util.*
 
 class StatePackage<Content>(override val content: Content?) : Event<Content>, Status<Content> {
-    private val signatureMap: WeakHashMap<Any, Boolean> = WeakHashMap()
+    private val signatureMap: WeakHashMap<Any, Boolean> by lazy { WeakHashMap() }
 
     constructor() : this(null)
 
@@ -25,15 +25,11 @@ class StatePackage<Content>(override val content: Content?) : Event<Content>, St
     }
 
     private fun sign(any: Any?): Content? {
-        return if (isSigned(any))
+        return if (content == null || signatureMap[any] == true)
             null
         else {
             signatureMap[any] = true
             content
         }
-    }
-
-    private fun isSigned(any: Any?): Boolean {
-        signatureMap[any]?.let { return it } ?: run { return false }
     }
 }
