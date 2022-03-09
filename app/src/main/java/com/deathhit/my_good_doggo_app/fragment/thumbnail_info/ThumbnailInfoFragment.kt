@@ -63,11 +63,11 @@ class ThumbnailInfoFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.statusBreedVOList.signForViewStatus(this@ThumbnailInfoFragment) {
+                    state.statusBreedVOList.sign(binding) {
                         breedAdapter?.submitList(it)
                     }
 
-                    state.statusThumbnailVO.signForViewStatus(this@ThumbnailInfoFragment) {
+                    state.statusThumbnailVO.sign(binding) {
                         bannerAdapter?.notifyOnItemChanged(it)
                     }
 

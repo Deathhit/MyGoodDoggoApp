@@ -58,11 +58,11 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.eventAddThumbnailInfoFragment.signForEvent(this@ThumbnailInfoActivity) {
+                    state.eventAddThumbnailInfoFragment.sign(viewModel) {
                         addThumbnailListFragment(it)
                     }
 
-                    state.eventShowImageViewerFragment.signForEvent(this@ThumbnailInfoActivity) {
+                    state.eventShowImageViewerFragment.sign(viewModel) {
                         showImageViewerFragment(it)
                     }
                 }
@@ -83,7 +83,7 @@ class ThumbnailInfoActivity : AppCompatActivity() {
     private fun onFragmentAttach(fragment: Fragment) {
         if (fragment is ThumbnailInfoFragment)
             fragment.setStateListener { state ->
-                state.eventShowImageViewerFragment.signForEvent(this) {
+                state.eventShowImageViewerFragment.sign(viewModel) {
                     viewModel.showImageViewerFragment(it)
                 }
             }

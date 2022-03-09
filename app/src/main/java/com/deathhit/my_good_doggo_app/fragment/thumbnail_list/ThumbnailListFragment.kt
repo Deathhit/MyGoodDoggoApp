@@ -54,7 +54,7 @@ class ThumbnailListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.statusThumbnailList.signForViewStatus(this@ThumbnailListFragment) {
+                    state.statusThumbnailList.sign(binding) {
                         thumbnailAdapter?.submitData(lifecycle, it)
                     }
 

@@ -48,11 +48,11 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.eventAddThumbnailListFragment.signForEvent(this@MainActivity) {
+                    state.eventAddThumbnailListFragment.sign(viewModel) {
                         addThumbnailListFragment()
                     }
 
-                    state.eventGoToThumbnailInfoActivity.signForEvent(this@MainActivity) {
+                    state.eventGoToThumbnailInfoActivity.sign(viewModel) {
                         goToThumbnailInfoActivity(it)
                     }
                 }
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
     private fun onFragmentAttach(fragment: Fragment) {
         if (fragment is ThumbnailListFragment)
             fragment.setStateListener { state ->
-                state.eventGoToThumbnailInfoActivity.signForEvent(this) {
+                state.eventGoToThumbnailInfoActivity.sign(viewModel) {
                     viewModel.goToThumbnailInfoActivity(it)
                 }
             }
