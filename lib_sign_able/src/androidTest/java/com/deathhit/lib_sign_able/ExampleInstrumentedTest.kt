@@ -1,4 +1,4 @@
-package com.deathhit.lib_state_package
+package com.deathhit.lib_sign_able
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

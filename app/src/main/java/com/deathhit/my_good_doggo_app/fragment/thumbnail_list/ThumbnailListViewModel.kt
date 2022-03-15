@@ -7,9 +7,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.domain.repository.thumbnail.ThumbnailRepository
-import com.deathhit.lib_state_package.Event
-import com.deathhit.lib_state_package.StatePackage
-import com.deathhit.lib_state_package.Status
+import com.deathhit.lib_sign_able.SignAble
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,8 +17,8 @@ import javax.inject.Inject
 class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository: ThumbnailRepository) :
     ViewModel() {
     data class State(
-        val eventGoToThumbnailInfoActivity: Event<ThumbnailVO> = StatePackage(),
-        val statusThumbnailList: Status<PagingData<ThumbnailVO>> = StatePackage()
+        val eventGoToThumbnailInfoActivity: SignAble<ThumbnailVO> = SignAble(),
+        val statusThumbnailList: SignAble<PagingData<ThumbnailVO>> = SignAble()
     )
 
     private val _stateFlow = MutableStateFlow(State())
@@ -32,11 +30,7 @@ class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository
 
     fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
         _stateFlow.update { state ->
-            state.copy(
-                eventGoToThumbnailInfoActivity = StatePackage(
-                    thumbnailVO
-                )
-            )
+            state.copy(eventGoToThumbnailInfoActivity = SignAble(thumbnailVO))
         }
     }
 
@@ -47,11 +41,7 @@ class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository
                 .cachedIn(viewModelScope)
                 .collectLatest { pagingData ->
                     _stateFlow.update { state ->
-                        state.copy(
-                            statusThumbnailList = StatePackage(
-                                pagingData
-                            )
-                        )
+                        state.copy(statusThumbnailList = SignAble(pagingData))
                     }
                 }
         }

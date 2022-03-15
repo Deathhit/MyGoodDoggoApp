@@ -4,11 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deathhit.domain.repository.breed.BreedRepository
-import com.deathhit.lib_state_package.Event
+import com.deathhit.lib_sign_able.SignAble
 import com.deathhit.my_good_doggo_app.model.BreedVO
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
-import com.deathhit.lib_state_package.StatePackage
-import com.deathhit.lib_state_package.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,9 +28,9 @@ class ThumbnailInfoViewModel @Inject constructor(
 
     data class State(
         val argThumbnailVO: ThumbnailVO,
-        val eventShowImageViewerFragment: Event<String> = StatePackage(),
-        val statusBreedVOList: Status<List<BreedVO>> = StatePackage(),
-        val statusThumbnailVO: Status<ThumbnailVO> = StatePackage()
+        val eventShowImageViewerFragment: SignAble<String> = SignAble(),
+        val statusBreedVOList: SignAble<List<BreedVO>> = SignAble(),
+        val statusThumbnailVO: SignAble<ThumbnailVO> = SignAble()
     )
 
     private val _stateFlow = MutableStateFlow(State(savedStateHandle[KEY_THUMBNAIL_VO]!!))
@@ -49,13 +47,13 @@ class ThumbnailInfoViewModel @Inject constructor(
 
     fun viewImage(thumbnailVO: ThumbnailVO?) {
         _stateFlow.update { state ->
-            state.copy(eventShowImageViewerFragment = StatePackage(thumbnailVO?.thumbnailUrl))
+            state.copy(eventShowImageViewerFragment = SignAble(thumbnailVO?.thumbnailUrl))
         }
     }
 
     private fun bindAttrStatus() {
         _stateFlow.update { state ->
-            state.copy(statusThumbnailVO = StatePackage(state.argThumbnailVO))
+            state.copy(statusThumbnailVO = SignAble(state.argThumbnailVO))
         }
     }
 
@@ -63,9 +61,11 @@ class ThumbnailInfoViewModel @Inject constructor(
         viewModelScope.launch {
             _stateFlow.update { state ->
                 state.copy(
-                    statusBreedVOList = StatePackage(breedRepository.getBreedListByThumbnailId(
-                        state.argThumbnailVO.thumbnailId
-                    ).map { BreedVO.valueOf(it) })
+                    statusBreedVOList = SignAble(
+                        breedRepository.getBreedListByThumbnailId(
+                            state.argThumbnailVO.thumbnailId
+                        ).map { BreedVO.valueOf(it) }
+                    )
                 )
             }
         }

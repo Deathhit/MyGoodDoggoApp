@@ -2,8 +2,7 @@ package com.deathhit.my_good_doggo_app.fragment.image_viewer
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.deathhit.lib_state_package.StatePackage
-import com.deathhit.lib_state_package.Status
+import com.deathhit.lib_sign_able.SignAble
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,7 +16,10 @@ class ImageViewerViewModel @Inject constructor(private val savedStateHandle: Sav
         const val KEY_IMAGE_URL = "$TAG.KEY_IMAGE_URL"
     }
 
-    data class State(val argImageUrl: String, val statusImageUrl: Status<String> = StatePackage())
+    data class State(
+        val argImageUrl: String,
+        val statusImageUrl: SignAble<String> = SignAble()
+    )
 
     private val _stateFlow = MutableStateFlow(State(savedStateHandle[KEY_IMAGE_URL]!!))
     val stateFlow = _stateFlow.asStateFlow()
@@ -31,6 +33,6 @@ class ImageViewerViewModel @Inject constructor(private val savedStateHandle: Sav
     }
 
     private fun bindStatusImageUrl() {
-        _stateFlow.update { state -> state.copy(statusImageUrl = StatePackage(state.argImageUrl)) }
+        _stateFlow.update { state -> state.copy(statusImageUrl = SignAble(state.argImageUrl)) }
     }
 }
