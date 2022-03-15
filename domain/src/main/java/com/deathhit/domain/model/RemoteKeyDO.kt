@@ -1,4 +1,4 @@
-package com.deathhit.domain.entity
+package com.deathhit.domain.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.deathhit.domain.Column
 
 @Entity
-data class RemoteKeyEntity(
+data class RemoteKeyDO(
     @PrimaryKey @ColumnInfo(name = Column.LABEL) val label: String,
     @ColumnInfo(name = Column.NEXT_KEY) val nextKey: Int?,
 )

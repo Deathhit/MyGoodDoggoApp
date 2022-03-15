@@ -7,10 +7,9 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.deathhit.data_source_dog_api.ImageApiService
 import com.deathhit.domain.DomainDatabase
-import com.deathhit.domain.entity.BreedEntity
-import com.deathhit.domain.entity.BreedThumbnailRefEntity
-import com.deathhit.domain.entity.RemoteKeyEntity
-import com.deathhit.domain.entity.ThumbnailEntity
+import com.deathhit.domain.model.BreedDO
+import com.deathhit.domain.model.BreedThumbnailRefDO
+import com.deathhit.domain.model.RemoteKeyDO
 import com.deathhit.domain.model.ThumbnailDO
 import retrofit2.HttpException
 import java.io.IOException
@@ -85,20 +84,20 @@ internal class ThumbnailRemoteMediator(
                 // Update RemoteKey for this query.
                 val nexKey = if (loadKey == null) ImageApiService.PAGE_DEFAULT + 1 else loadKey + 1
                 domainDatabase.remoteKeyDao().insertOrReplace(
-                    RemoteKeyEntity(REMOTE_KEY_LABEL, nexKey)
+                    RemoteKeyDO(REMOTE_KEY_LABEL, nexKey)
                 )
 
                 // Insert the new data into database, which invalidates the
                 // current PagingData, allowing Paging to present the updates
                 // in the DB.
-                val breedRefs = ArrayList<BreedThumbnailRefEntity>(response.size)
-                val breeds = ArrayList<BreedEntity>(response.size)
+                val breedRefs = ArrayList<BreedThumbnailRefDO>(response.size)
+                val breeds = ArrayList<BreedDO>(response.size)
                 for (record in response) {
                     breedRefs.addAll(record.breeds.map {
-                        BreedThumbnailRefEntity(it.id, record.id)
+                        BreedThumbnailRefDO(it.id, record.id)
                     })
                     breeds.addAll(record.breeds.map {
-                        BreedEntity(
+                        BreedDO(
                             it.id,
                             it.bred_for,
                             it.breed_group,
@@ -112,7 +111,7 @@ internal class ThumbnailRemoteMediator(
                 domainDatabase.breedDao().insertOrReplaceAll(breeds)
 
                 val thumbnails = response.map {
-                    ThumbnailEntity(it.id, it.url)
+                    ThumbnailDO(it.id, it.url)
                 }
                 domainDatabase.thumbnailDao().insertOrReplaceAll(thumbnails)
             }

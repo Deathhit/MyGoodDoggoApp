@@ -4,13 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.deathhit.domain.entity.BreedThumbnailRefEntity
+import com.deathhit.domain.model.BreedThumbnailRefDO
 
 @Dao
 interface BreedThumbnailRefDao {
-    @Query("DELETE FROM BreedThumbnailRefEntity")
+    @Query("DELETE FROM BreedThumbnailRefDO")
     suspend fun clearAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplaceAll(entityList: List<BreedThumbnailRefEntity>)
+    suspend fun insertOrReplaceAll(DOList: List<BreedThumbnailRefDO>)
 }

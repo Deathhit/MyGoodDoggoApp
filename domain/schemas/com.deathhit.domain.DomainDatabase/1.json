@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b887b1a7f208a2a68025c5465c433b61",
+    "identityHash": "1a454687f6387e47bdbd7686fbcdc77f",
     "entities": [
       {
-        "tableName": "BreedEntity",
+        "tableName": "BreedDO",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`breedId` TEXT NOT NULL, `bredFor` TEXT, `breedGroup` TEXT, `breedName` TEXT, `lifespan` TEXT, `temperament` TEXT, PRIMARY KEY(`breedId`))",
         "fields": [
           {
@@ -55,7 +55,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "BreedThumbnailRefEntity",
+        "tableName": "BreedThumbnailRefDO",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`breedId` TEXT NOT NULL, `thumbnailId` TEXT NOT NULL, PRIMARY KEY(`breedId`, `thumbnailId`))",
         "fields": [
           {
@@ -82,7 +82,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "ThumbnailEntity",
+        "tableName": "ThumbnailDO",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`thumbnailId` TEXT NOT NULL, `thumbnailUrl` TEXT NOT NULL, PRIMARY KEY(`thumbnailId`))",
         "fields": [
           {
@@ -108,7 +108,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "RemoteKeyEntity",
+        "tableName": "RemoteKeyDO",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`label` TEXT NOT NULL, `nextKey` INTEGER, PRIMARY KEY(`label`))",
         "fields": [
           {
@@ -137,7 +137,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b887b1a7f208a2a68025c5465c433b61')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1a454687f6387e47bdbd7686fbcdc77f')"
     ]
   }
 }

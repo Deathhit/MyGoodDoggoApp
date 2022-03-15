@@ -6,13 +6,13 @@ import com.deathhit.domain.dao.BreedDao
 import com.deathhit.domain.dao.BreedThumbnailRefDao
 import com.deathhit.domain.dao.ThumbnailDao
 import com.deathhit.domain.dao.RemoteKeyDao
-import com.deathhit.domain.entity.BreedEntity
-import com.deathhit.domain.entity.BreedThumbnailRefEntity
-import com.deathhit.domain.entity.ThumbnailEntity
-import com.deathhit.domain.entity.RemoteKeyEntity
+import com.deathhit.domain.model.BreedDO
+import com.deathhit.domain.model.BreedThumbnailRefDO
+import com.deathhit.domain.model.ThumbnailDO
+import com.deathhit.domain.model.RemoteKeyDO
 
 @Database(
-    entities = [BreedEntity::class, BreedThumbnailRefEntity::class, ThumbnailEntity::class, RemoteKeyEntity::class],
+    entities = [BreedDO::class, BreedThumbnailRefDO::class, ThumbnailDO::class, RemoteKeyDO::class],
     version = 1
 )
 abstract class DomainDatabase : RoomDatabase() {

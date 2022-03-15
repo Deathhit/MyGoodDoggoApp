@@ -1,9 +1,11 @@
 package com.deathhit.domain.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.deathhit.domain.Column
 
+@Entity
 data class BreedDO(
     @PrimaryKey @ColumnInfo(name = Column.BREED_ID) val breedId: String,
     @ColumnInfo(name = Column.BRED_FOR) val bredFor: String?,
