@@ -14,6 +14,7 @@ import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailListBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ThumbnailListFragment : Fragment() {
@@ -51,7 +52,7 @@ class ThumbnailListFragment : Fragment() {
             thumbnailAdapter = createThumbnailAdapter().also { adapter = createConcatAdapter(it) }
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
                     state.statusThumbnailList.sign(binding) {
