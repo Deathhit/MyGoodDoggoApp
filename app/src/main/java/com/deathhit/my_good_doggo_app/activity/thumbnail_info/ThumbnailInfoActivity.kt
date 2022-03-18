@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentOnAttachListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.databinding.ActivityThumbnailInfoBinding
 import com.deathhit.my_good_doggo_app.fragment.image_viewer.ImageViewerFragment
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
@@ -26,8 +25,6 @@ class ThumbnailInfoActivity : AppCompatActivity() {
             "com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity"
         private const val TAG_IMAGE_VIEWER = "$TAG.TAG_IMAGE_VIEWER"
         private const val TAG_THUMBNAIL_INFO = "$TAG.TAG_THUMBNAIL_INFO"
-
-        private const val ID_CONTAINER = R.id.activity_frameLayout_container
 
         fun createIntent(context: Context, thumbnailVO: ThumbnailVO): Intent {
             val intent = Intent(context, ThumbnailInfoActivity::class.java)
@@ -91,7 +88,7 @@ class ThumbnailInfoActivity : AppCompatActivity() {
 
     private fun addThumbnailListFragment(thumbnailVO: ThumbnailVO) {
         supportFragmentManager.beginTransaction().add(
-            ID_CONTAINER,
+            binding.activityFrameLayoutContainer.id,
             ThumbnailInfoFragment.create(thumbnailVO),
             TAG_THUMBNAIL_INFO
         ).commit()
@@ -99,7 +96,10 @@ class ThumbnailInfoActivity : AppCompatActivity() {
 
     private fun showImageViewerFragment(imageUrl: String) {
         supportFragmentManager.beginTransaction()
-            .replace(ID_CONTAINER, ImageViewerFragment.create(imageUrl), TAG_IMAGE_VIEWER)
-            .addToBackStack(null).commit()
+            .replace(
+                binding.activityFrameLayoutContainer.id,
+                ImageViewerFragment.create(imageUrl),
+                TAG_IMAGE_VIEWER
+            ).addToBackStack(null).commit()
     }
 }
