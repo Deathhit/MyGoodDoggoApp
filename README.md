@@ -1,7 +1,7 @@
 # MyGoodDoggoApp
 Template Android application of UDF structure implemented using SignAble wrapper class.
 # Goal
-Follow the UI layer structure in [Google's guidelines](https://developer.android.com/jetpack/guide/ui-layer), handle single-use events and avoid duplicate view state bindings.
+Follow the UI layer structure in [Google's guidelines](https://developer.android.com/jetpack/guide/ui-layer), handle single-use events and avoid duplicate view state setting.
 # The Dog Api
 This project requires an api key from [The Dog Api](https://www.thedogapi.com/) to make paging work.  
 Replace the value of the metadata with your api key.
