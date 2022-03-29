@@ -23,16 +23,22 @@ class MainActivity : AppCompatActivity() {
         private const val TAG_THUMBNAIL_LIST = "$TAG.TAG_THUMBNAIL_LIST"
     }
 
-    private val fragmentOnAttachListener: FragmentOnAttachListener =
-        FragmentOnAttachListener { _, fragment ->
-            onFragmentAttach(
-                fragment
-            )
-        }
+    private lateinit var binding: ActivityMainBinding
 
     private val viewModel: MainActivityViewModel by viewModels()
 
-    private lateinit var binding: ActivityMainBinding
+    private val fragmentOnAttachListener: FragmentOnAttachListener =
+        FragmentOnAttachListener { _, fragment ->
+            when (fragment) {
+                is ThumbnailListFragment -> {
+                    fragment.onStateListener = { state ->
+                        state.eventGoToThumbnailInfoActivity.sign(viewModel) {
+                            viewModel.goToThumbnailInfoActivity(it)
+                        }
+                    }
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
@@ -45,12 +51,20 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.eventAddThumbnailListFragment.sign(viewModel) {
-                        addThumbnailListFragment()
-                    }
+                    state.run {
+                        eventAddThumbnailListFragment.sign(viewModel) {
+                            binding.run {
+                                supportFragmentManager.beginTransaction().add(
+                                    activityFrameLayoutContainer.id,
+                                    ThumbnailListFragment.create(),
+                                    TAG_THUMBNAIL_LIST
+                                ).commit()
+                            }
+                        }
 
-                    state.eventGoToThumbnailInfoActivity.sign(viewModel) {
-                        goToThumbnailInfoActivity(it)
+                        eventGoToThumbnailInfoActivity.sign(viewModel) {
+                            startActivity(ThumbnailInfoActivity.createIntent(this@MainActivity, it))
+                        }
                     }
                 }
             }
@@ -60,27 +74,5 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.removeFragmentOnAttachListener(fragmentOnAttachListener)
-    }
-
-    private fun onFragmentAttach(fragment: Fragment) {
-        if (fragment is ThumbnailListFragment)
-            fragment.setStateListener { state ->
-                state.eventGoToThumbnailInfoActivity.sign(viewModel) {
-                    viewModel.goToThumbnailInfoActivity(it)
-                }
-            }
-    }
-
-    private fun addThumbnailListFragment() {
-        supportFragmentManager.beginTransaction().add(
-            binding.activityFrameLayoutContainer.id,
-            ThumbnailListFragment.create(),
-            TAG_THUMBNAIL_LIST
-        ).commit()
-    }
-
-    private fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
-        val intent = ThumbnailInfoActivity.createIntent(this, thumbnailVO)
-        startActivity(intent)
     }
 }

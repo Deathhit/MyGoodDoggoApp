@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentOnAttachListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,8 +20,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ThumbnailInfoActivity : AppCompatActivity() {
     companion object {
-        private const val TAG =
-            "com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity"
+        private const val TAG = "ThumbnailInfoActivity"
         private const val TAG_IMAGE_VIEWER = "$TAG.TAG_IMAGE_VIEWER"
         private const val TAG_THUMBNAIL_INFO = "$TAG.TAG_THUMBNAIL_INFO"
 
@@ -33,16 +31,22 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         }
     }
 
-    private val fragmentOnAttachListener: FragmentOnAttachListener =
-        FragmentOnAttachListener { _, fragment ->
-            onFragmentAttach(
-                fragment
-            )
-        }
+    private lateinit var binding: ActivityThumbnailInfoBinding
 
     private val viewModel: ThumbnailInfoActivityViewModel by viewModels()
 
-    private lateinit var binding: ActivityThumbnailInfoBinding
+    private val fragmentOnAttachListener: FragmentOnAttachListener =
+        FragmentOnAttachListener { _, fragment ->
+            when (fragment) {
+                is ThumbnailInfoFragment -> fragment.onStateListener = { state ->
+                    state.run {
+                        eventShowImageViewerFragment.sign(viewModel) {
+                            viewModel.showImageViewerFragment(it)
+                        }
+                    }
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
@@ -55,12 +59,27 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.eventAddThumbnailInfoFragment.sign(viewModel) {
-                        addThumbnailListFragment(it)
-                    }
+                    state.run {
+                        eventAddThumbnailInfoFragment.sign(viewModel) {
+                            binding.run {
+                                supportFragmentManager.beginTransaction().add(
+                                    activityFrameLayoutContainer.id,
+                                    ThumbnailInfoFragment.create(it),
+                                    TAG_THUMBNAIL_INFO
+                                ).commit()
+                            }
+                        }
 
-                    state.eventShowImageViewerFragment.sign(viewModel) {
-                        showImageViewerFragment(it)
+                        eventShowImageViewerFragment.sign(viewModel) {
+                            binding.run {
+                                supportFragmentManager.beginTransaction()
+                                    .replace(
+                                        activityFrameLayoutContainer.id,
+                                        ImageViewerFragment.create(it),
+                                        TAG_IMAGE_VIEWER
+                                    ).addToBackStack(null).commit()
+                            }
+                        }
                     }
                 }
             }
@@ -75,31 +94,5 @@ class ThumbnailInfoActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         viewModel.saveState()
         super.onSaveInstanceState(outState)
-    }
-
-    private fun onFragmentAttach(fragment: Fragment) {
-        if (fragment is ThumbnailInfoFragment)
-            fragment.setStateListener { state ->
-                state.eventShowImageViewerFragment.sign(viewModel) {
-                    viewModel.showImageViewerFragment(it)
-                }
-            }
-    }
-
-    private fun addThumbnailListFragment(thumbnailVO: ThumbnailVO) {
-        supportFragmentManager.beginTransaction().add(
-            binding.activityFrameLayoutContainer.id,
-            ThumbnailInfoFragment.create(thumbnailVO),
-            TAG_THUMBNAIL_INFO
-        ).commit()
-    }
-
-    private fun showImageViewerFragment(imageUrl: String) {
-        supportFragmentManager.beginTransaction()
-            .replace(
-                binding.activityFrameLayoutContainer.id,
-                ImageViewerFragment.create(imageUrl),
-                TAG_IMAGE_VIEWER
-            ).addToBackStack(null).commit()
     }
 }

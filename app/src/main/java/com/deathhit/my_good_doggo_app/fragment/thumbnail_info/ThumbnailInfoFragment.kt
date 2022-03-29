@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailInfoBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +28,8 @@ class ThumbnailInfoFragment : Fragment() {
         }
     }
 
+    var onStateListener: ((ThumbnailInfoViewModel.State) -> Unit)? = null
+
     private val binding: FragmentThumbnailInfoBinding get() = _binding!!
     private var _binding: FragmentThumbnailInfoBinding? = null
 
@@ -36,8 +37,6 @@ class ThumbnailInfoFragment : Fragment() {
 
     private var bannerAdapter: BannerAdapter? = null
     private var breedAdapter: BreedAdapter? = null
-
-    private var onStateListener: ((ThumbnailInfoViewModel.State) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,29 +49,36 @@ class ThumbnailInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.apply {
-            setHasFixedSize(true)
-            bannerAdapter = object : BannerAdapter() {
-                override fun onBannerClick(item: ThumbnailVO?) {
-                    viewModel.viewImage(item)
+        binding.run {
+            recyclerView.run {
+                setHasFixedSize(true)
+
+                bannerAdapter = object : BannerAdapter() {
+                    override fun onBannerClick(item: ThumbnailVO?) {
+                        viewModel.viewImage(item)
+                    }
                 }
+
+                breedAdapter = BreedAdapter()
+
+                adapter = ConcatAdapter(bannerAdapter, breedAdapter)
             }
-            breedAdapter = BreedAdapter()
-            adapter = createConcatAdapter(bannerAdapter!!, breedAdapter!!)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.statusBreedVOList.sign(binding) {
-                        breedAdapter?.submitList(it)
-                    }
+                    state.run {
+                        statusBreedVOList.sign(binding) {
+                            breedAdapter?.submitList(it)
+                        }
 
-                    state.statusThumbnailVO.sign(binding) {
-                        bannerAdapter?.notifyOnItemChanged(it)
-                    }
+                        statusThumbnailVO.sign(binding) {
+                            bannerAdapter?.notifyOnItemChanged(it)
+                        }
 
-                    onStateListener?.invoke(state)
+                        onStateListener?.invoke(this)
+                    }
                 }
             }
         }
@@ -90,14 +96,4 @@ class ThumbnailInfoFragment : Fragment() {
         viewModel.saveState()
         super.onSaveInstanceState(outState)
     }
-
-    fun setStateListener(onStateListener: ((ThumbnailInfoViewModel.State) -> Unit)?) {
-        this.onStateListener = onStateListener
-    }
-
-    private fun createConcatAdapter(
-        bannerAdapter: BannerAdapter,
-        breedAdapter: BreedAdapter
-    ): RecyclerView.Adapter<*> =
-        ConcatAdapter(bannerAdapter, breedAdapter)
 }

@@ -1,7 +1,6 @@
 package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
@@ -15,15 +14,21 @@ abstract class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
 
     private var item: ThumbnailVO? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
-        val holder = BannerViewHolder(parent)
-        configureImageBanner(holder.binding.imageViewBanner)
-        return holder
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder =
+        BannerViewHolder(parent).apply {
+            binding.run {
+                imageViewBanner.setOnClickListener { onBannerClick(item) }
+            }
+        }
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
         item?.let { item ->
-            bindImageBanner(item, holder.binding.imageViewBanner)
+            holder.binding.run {
+                imageViewBanner.run {
+                    Glide.with(this).load(item.thumbnailUrl)
+                        .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(this)
+                }
+            }
         }
     }
 
@@ -32,15 +37,6 @@ abstract class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
     fun notifyOnItemChanged(item: ThumbnailVO?) {
         this.item = item
         notifyItemChanged(ITEM_POS)
-    }
-
-    private fun bindImageBanner(item: ThumbnailVO, imageBanner: ImageView) {
-        Glide.with(imageBanner).load(item.thumbnailUrl)
-            .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(imageBanner)
-    }
-
-    private fun configureImageBanner(imageBanner: ImageView) {
-        imageBanner.setOnClickListener { onBannerClick(item) }
     }
 
     abstract fun onBannerClick(item: ThumbnailVO?)

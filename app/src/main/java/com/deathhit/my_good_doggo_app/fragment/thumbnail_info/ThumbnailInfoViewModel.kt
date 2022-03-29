@@ -21,8 +21,7 @@ class ThumbnailInfoViewModel @Inject constructor(
 ) :
     ViewModel() {
     companion object {
-        private const val TAG =
-            "com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoViewModel"
+        private const val TAG = "ThumbnailInfoViewModel"
         const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
     }
 
@@ -37,23 +36,22 @@ class ThumbnailInfoViewModel @Inject constructor(
     val stateFlow = _stateFlow.asStateFlow()
 
     init {
-        bindAttrStatus()
+        _stateFlow.update { state ->
+            state.copy(statusThumbnailVO = SignAble(state.argThumbnailVO))
+        }
+
         loadBreedVOList()
     }
 
     fun saveState() {
-        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.argThumbnailVO
+        stateFlow.value.run {
+            savedStateHandle[KEY_THUMBNAIL_VO] = argThumbnailVO
+        }
     }
 
     fun viewImage(thumbnailVO: ThumbnailVO?) {
         _stateFlow.update { state ->
             state.copy(eventShowImageViewerFragment = SignAble(thumbnailVO?.thumbnailUrl))
-        }
-    }
-
-    private fun bindAttrStatus() {
-        _stateFlow.update { state ->
-            state.copy(statusThumbnailVO = SignAble(state.argThumbnailVO))
         }
     }
 

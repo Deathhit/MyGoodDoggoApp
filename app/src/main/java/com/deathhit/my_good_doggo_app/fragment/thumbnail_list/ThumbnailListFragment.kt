@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailListBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,14 +26,14 @@ class ThumbnailListFragment : Fragment() {
         }
     }
 
+    var onStateListener: ((ThumbnailListViewModel.State) -> Unit)? = null
+
     private val binding: FragmentThumbnailListBinding get() = _binding!!
     private var _binding: FragmentThumbnailListBinding? = null
 
     private val viewModel: ThumbnailListViewModel by viewModels()
 
     private var thumbnailAdapter: ThumbnailAdapter? = null
-
-    private var onStateListener: ((ThumbnailListViewModel.State) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,19 +46,36 @@ class ThumbnailListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.apply {
-            setHasFixedSize(true)
-            thumbnailAdapter = createThumbnailAdapter().also { adapter = createConcatAdapter(it) }
+        binding.run {
+            recyclerView.run {
+                setHasFixedSize(true)
+
+                val loadStateAdapter = object : LoadStateAdapter() {
+                    override fun onRetryLoading() {
+                        thumbnailAdapter?.retry()
+                    }
+                }
+
+                thumbnailAdapter = object : ThumbnailAdapter() {
+                    override fun onClickItem(thumbnailVO: ThumbnailVO) {
+                        viewModel.goToThumbnailInfoActivity(thumbnailVO)
+                    }
+                }
+
+                adapter = thumbnailAdapter!!.withLoadStateFooter(loadStateAdapter)
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.statusThumbnailList.sign(binding) {
-                        thumbnailAdapter?.submitData(lifecycle, it)
-                    }
+                    state.run {
+                        statusThumbnailList.sign(binding) {
+                            thumbnailAdapter?.submitData(lifecycle, it)
+                        }
 
-                    onStateListener?.invoke(state)
+                        onStateListener?.invoke(this)
+                    }
                 }
             }
         }
@@ -70,24 +86,5 @@ class ThumbnailListFragment : Fragment() {
         _binding = null
 
         thumbnailAdapter = null
-    }
-
-    fun setStateListener(onStateListener: ((ThumbnailListViewModel.State) -> Unit)?) {
-        this.onStateListener = onStateListener
-    }
-
-    private fun createConcatAdapter(thumbnailAdapter: ThumbnailAdapter): RecyclerView.Adapter<*> =
-        thumbnailAdapter.withLoadStateFooter(createLoadStateAdapter())
-
-    private fun createLoadStateAdapter(): LoadStateAdapter = object : LoadStateAdapter() {
-        override fun onRetryLoading() {
-            thumbnailAdapter?.retry()
-        }
-    }
-
-    private fun createThumbnailAdapter(): ThumbnailAdapter = object : ThumbnailAdapter() {
-        override fun onClickItem(thumbnailVO: ThumbnailVO) {
-            viewModel.goToThumbnailInfoActivity(thumbnailVO)
-        }
     }
 }

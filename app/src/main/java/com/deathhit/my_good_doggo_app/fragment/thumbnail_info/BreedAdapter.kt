@@ -2,7 +2,6 @@ package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.deathhit.my_good_doggo_app.model.BreedVO
@@ -23,46 +22,42 @@ class BreedAdapter : ListAdapter<BreedVO, BreedViewHolder>(COMPARATOR) {
 
     override fun onBindViewHolder(holder: BreedViewHolder, position: Int) {
         getItem(position)?.let { item ->
-            bindTextBredFor(item, holder.binding.textViewBredFor)
-            bindTextBreedGroup(item, holder.binding.textViewBreedGroup)
-            bindTextBreedName(item, holder.binding.textViewBreedName)
-            bindTextLifespan(item, holder.binding.textViewLifespan)
-            bindTextTemperament(item, holder.binding.textViewTemperament)
+            holder.binding.run {
+                textViewBredFor.run {
+                    item.bredFor?.let {
+                        visibility = View.VISIBLE
+                        text = it
+                    } ?: kotlin.run { visibility = View.GONE }
+                }
+
+                textViewBreedGroup.run {
+                    item.breedGroup?.let {
+                        visibility = View.VISIBLE
+                        text = it
+                    } ?: kotlin.run { visibility = View.GONE }
+                }
+
+                textViewBreedName.run {
+                    item.breedName?.let {
+                        visibility = View.VISIBLE
+                        text = it
+                    } ?: kotlin.run { visibility = View.GONE }
+                }
+
+                textViewLifespan.run {
+                    item.lifespan?.let {
+                        visibility = View.VISIBLE
+                        text = it
+                    } ?: kotlin.run { visibility = View.GONE }
+                }
+
+                textViewTemperament.run {
+                    item.temperament?.let {
+                        visibility = View.VISIBLE
+                        text = it
+                    } ?: kotlin.run { visibility = View.GONE }
+                }
+            }
         }
-    }
-
-    private fun bindTextBredFor(item: BreedVO, textBredFor: TextView) {
-        item.bredFor?.let {
-            textBredFor.visibility = View.VISIBLE
-            textBredFor.text = it
-        } ?: kotlin.run { textBredFor.visibility = View.GONE }
-    }
-
-    private fun bindTextBreedGroup(item: BreedVO, textBreedGroup: TextView) {
-        item.breedGroup?.let {
-            textBreedGroup.visibility = View.VISIBLE
-            textBreedGroup.text = it
-        } ?: kotlin.run { textBreedGroup.visibility = View.GONE }
-    }
-
-    private fun bindTextBreedName(item: BreedVO, textBreedName: TextView) {
-        item.breedName?.let {
-            textBreedName.visibility = View.VISIBLE
-            textBreedName.text = it
-        } ?: kotlin.run { textBreedName.visibility = View.GONE }
-    }
-
-    private fun bindTextLifespan(item: BreedVO, textLifespan: TextView) {
-        item.lifespan?.let {
-            textLifespan.visibility = View.VISIBLE
-            textLifespan.text = it
-        } ?: kotlin.run { textLifespan.visibility = View.GONE }
-    }
-
-    private fun bindTextTemperament(item: BreedVO, textTemperament: TextView) {
-        item.temperament?.let {
-            textTemperament.visibility = View.VISIBLE
-            textTemperament.text = it
-        } ?: kotlin.run { textTemperament.visibility = View.GONE }
     }
 }

@@ -11,8 +11,7 @@ import javax.inject.Inject
 class ImageViewerViewModel @Inject constructor(private val savedStateHandle: SavedStateHandle) :
     ViewModel() {
     companion object {
-        private const val TAG =
-            "com.deathhit.my_good_doggo_app.fragment.image_viewer.ImageViewerViewModel"
+        private const val TAG = "ImageViewerViewModel"
         const val KEY_IMAGE_URL = "$TAG.KEY_IMAGE_URL"
     }
 
@@ -25,14 +24,12 @@ class ImageViewerViewModel @Inject constructor(private val savedStateHandle: Sav
     val stateFlow = _stateFlow.asStateFlow()
 
     init {
-        bindStatusImageUrl()
+        _stateFlow.update { state -> state.copy(statusImageUrl = SignAble(state.argImageUrl)) }
     }
 
     fun saveState() {
-        savedStateHandle[KEY_IMAGE_URL] = stateFlow.value.argImageUrl
-    }
-
-    private fun bindStatusImageUrl() {
-        _stateFlow.update { state -> state.copy(statusImageUrl = SignAble(state.argImageUrl)) }
+        stateFlow.value.run {
+            savedStateHandle[KEY_IMAGE_URL] = argImageUrl
+        }
     }
 }

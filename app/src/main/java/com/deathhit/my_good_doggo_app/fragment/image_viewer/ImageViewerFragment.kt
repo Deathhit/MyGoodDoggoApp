@@ -44,9 +44,12 @@ class ImageViewerFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.statusImageUrl.sign(binding) {
-                        val imageView = binding.imageView
-                        Glide.with(imageView).load(it).into(imageView)
+                    state.run {
+                        statusImageUrl.sign(binding) {
+                            binding.run {
+                                Glide.with(imageView).load(it).into(imageView)
+                            }
+                        }
                     }
                 }
             }

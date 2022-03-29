@@ -14,8 +14,7 @@ import javax.inject.Inject
 class ThumbnailInfoActivityViewModel @Inject constructor(private val savedStateHandle: SavedStateHandle) :
     ViewModel() {
     companion object {
-        private const val TAG =
-            "com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivityViewModel"
+        private const val TAG = "ThumbnailInfoActivityViewModel"
         const val KEY_THUMBNAIL_VO = "$TAG.KEY_THUMBNAIL_VO"
     }
 
@@ -35,7 +34,9 @@ class ThumbnailInfoActivityViewModel @Inject constructor(private val savedStateH
     }
 
     fun saveState() {
-        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.argThumbnailVO
+        stateFlow.value.run {
+            savedStateHandle[KEY_THUMBNAIL_VO] = argThumbnailVO
+        }
     }
 
     fun showImageViewerFragment(imageUrl: String) {
