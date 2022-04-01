@@ -54,7 +54,7 @@ dependencies {
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_test_version"
 
     //Paging
-    def paging_version = "3.1.0"
+    def paging_version = "3.1.1"
     api "androidx.paging:paging-runtime-ktx:$paging_version"
 
     //Room
