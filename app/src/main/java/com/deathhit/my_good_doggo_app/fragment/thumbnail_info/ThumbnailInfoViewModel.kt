@@ -44,9 +44,7 @@ class ThumbnailInfoViewModel @Inject constructor(
     }
 
     fun saveState() {
-        stateFlow.value.run {
-            savedStateHandle[KEY_THUMBNAIL_VO] = argThumbnailVO
-        }
+        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.argThumbnailVO
     }
 
     fun viewImage(thumbnailVO: ThumbnailVO?) {

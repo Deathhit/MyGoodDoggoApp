@@ -49,26 +49,24 @@ class ThumbnailInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.run {
-            recyclerView.run {
-                setHasFixedSize(true)
+        with(binding.recyclerView) {
+            setHasFixedSize(true)
 
-                bannerAdapter = object : BannerAdapter() {
-                    override fun onBannerClick(item: ThumbnailVO?) {
-                        viewModel.viewImage(item)
-                    }
+            bannerAdapter = object : BannerAdapter() {
+                override fun onBannerClick(item: ThumbnailVO?) {
+                    viewModel.viewImage(item)
                 }
-
-                breedAdapter = BreedAdapter()
-
-                adapter = ConcatAdapter(bannerAdapter, breedAdapter)
             }
+
+            breedAdapter = BreedAdapter()
+
+            adapter = ConcatAdapter(bannerAdapter, breedAdapter)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.run {
+                    with(state) {
                         statusBreedVOList.sign(binding) {
                             breedAdapter?.submitList(it)
                         }

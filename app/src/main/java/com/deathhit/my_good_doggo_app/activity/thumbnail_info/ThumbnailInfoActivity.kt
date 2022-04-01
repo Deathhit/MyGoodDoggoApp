@@ -59,26 +59,22 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.run {
+                    with(state) {
                         eventAddThumbnailInfoFragment.sign(viewModel) {
-                            binding.run {
-                                supportFragmentManager.beginTransaction().add(
-                                    activityFrameLayoutContainer.id,
-                                    ThumbnailInfoFragment.create(it),
-                                    TAG_THUMBNAIL_INFO
-                                ).commit()
-                            }
+                            supportFragmentManager.beginTransaction().add(
+                                binding.activityFrameLayoutContainer.id,
+                                ThumbnailInfoFragment.create(it),
+                                TAG_THUMBNAIL_INFO
+                            ).commit()
                         }
 
                         eventShowImageViewerFragment.sign(viewModel) {
-                            binding.run {
-                                supportFragmentManager.beginTransaction()
-                                    .replace(
-                                        activityFrameLayoutContainer.id,
-                                        ImageViewerFragment.create(it),
-                                        TAG_IMAGE_VIEWER
-                                    ).addToBackStack(null).commit()
-                            }
+                            supportFragmentManager.beginTransaction()
+                                .replace(
+                                    binding.activityFrameLayoutContainer.id,
+                                    ImageViewerFragment.create(it),
+                                    TAG_IMAGE_VIEWER
+                                ).addToBackStack(null).commit()
                         }
                     }
                 }

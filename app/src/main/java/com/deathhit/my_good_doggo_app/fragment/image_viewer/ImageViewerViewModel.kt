@@ -28,8 +28,6 @@ class ImageViewerViewModel @Inject constructor(private val savedStateHandle: Sav
     }
 
     fun saveState() {
-        stateFlow.value.run {
-            savedStateHandle[KEY_IMAGE_URL] = argImageUrl
-        }
+        savedStateHandle[KEY_IMAGE_URL] = stateFlow.value.argImageUrl
     }
 }

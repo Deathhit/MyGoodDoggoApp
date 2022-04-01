@@ -21,8 +21,10 @@ internal object NetworkModule {
     //Use qualifiers to avoid collision because we don't own the classes.
     @Qualifier
     annotation class ApiKeyInterceptor
+
     @Qualifier
     annotation class ApiOkHttpClient
+
     @Qualifier
     annotation class ApiRetrofit
 

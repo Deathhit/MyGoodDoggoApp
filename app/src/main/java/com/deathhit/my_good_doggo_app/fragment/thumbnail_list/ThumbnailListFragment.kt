@@ -46,30 +46,28 @@ class ThumbnailListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.run {
-            recyclerView.run {
-                setHasFixedSize(true)
+        with(binding.recyclerView) {
+            setHasFixedSize(true)
 
-                val loadStateAdapter = object : LoadStateAdapter() {
-                    override fun onRetryLoading() {
-                        thumbnailAdapter?.retry()
-                    }
+            val loadStateAdapter = object : LoadStateAdapter() {
+                override fun onRetryLoading() {
+                    thumbnailAdapter?.retry()
                 }
-
-                thumbnailAdapter = object : ThumbnailAdapter() {
-                    override fun onClickItem(thumbnailVO: ThumbnailVO) {
-                        viewModel.goToThumbnailInfoActivity(thumbnailVO)
-                    }
-                }
-
-                adapter = thumbnailAdapter!!.withLoadStateFooter(loadStateAdapter)
             }
+
+            thumbnailAdapter = object : ThumbnailAdapter() {
+                override fun onClickItem(thumbnailVO: ThumbnailVO) {
+                    viewModel.goToThumbnailInfoActivity(thumbnailVO)
+                }
+            }
+
+            adapter = thumbnailAdapter!!.withLoadStateFooter(loadStateAdapter)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.run {
+                    with(state) {
                         statusThumbnailList.sign(binding) {
                             thumbnailAdapter?.submitData(lifecycle, it)
                         }

@@ -34,9 +34,7 @@ class ThumbnailInfoActivityViewModel @Inject constructor(private val savedStateH
     }
 
     fun saveState() {
-        stateFlow.value.run {
-            savedStateHandle[KEY_THUMBNAIL_VO] = argThumbnailVO
-        }
+        savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.argThumbnailVO
     }
 
     fun showImageViewerFragment(imageUrl: String) {

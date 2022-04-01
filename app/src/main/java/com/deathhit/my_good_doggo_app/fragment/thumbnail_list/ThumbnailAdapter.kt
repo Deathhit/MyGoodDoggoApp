@@ -27,27 +27,23 @@ abstract class ThumbnailAdapter :
 
     override fun onBindViewHolder(holder: ThumbnailViewHolder, position: Int) {
         holder.item = getItem(position)?.also { item ->
-            holder.binding.run {
-                imageViewThumbnail.run {
-                    Glide.with(this).load(item.thumbnailUrl)
-                        .centerCrop().format(DecodeFormat.PREFER_RGB_565).into(this)
-                }
+            with(holder.binding.imageViewThumbnail) {
+                Glide.with(this).load(item.thumbnailUrl)
+                    .centerCrop().format(DecodeFormat.PREFER_RGB_565).into(this)
+            }
 
-                textViewId.run {
-                    text = item.thumbnailId
-                }
+            with(holder.binding.textViewId) {
+                text = item.thumbnailId
             }
         }
     }
 
     override fun onViewRecycled(holder: ThumbnailViewHolder) {
         super.onViewRecycled(holder)
-        holder.binding.run {
-            imageViewThumbnail.run {
-                try {
-                    Glide.with(this).clear(this)
-                } catch (ignored: Exception) {
-                }
+        with(holder.binding.imageViewThumbnail) {
+            try {
+                Glide.with(this).clear(this)
+            } catch (ignored: Exception) {
             }
         }
     }

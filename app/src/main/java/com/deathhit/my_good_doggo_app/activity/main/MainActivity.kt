@@ -3,14 +3,12 @@ package com.deathhit.my_good_doggo_app.activity.main
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentOnAttachListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity
 import com.deathhit.my_good_doggo_app.databinding.ActivityMainBinding
-import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -51,15 +49,13 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
-                    state.run {
+                    with(state) {
                         eventAddThumbnailListFragment.sign(viewModel) {
-                            binding.run {
-                                supportFragmentManager.beginTransaction().add(
-                                    activityFrameLayoutContainer.id,
-                                    ThumbnailListFragment.create(),
-                                    TAG_THUMBNAIL_LIST
-                                ).commit()
-                            }
+                            supportFragmentManager.beginTransaction().add(
+                                binding.activityFrameLayoutContainer.id,
+                                ThumbnailListFragment.create(),
+                                TAG_THUMBNAIL_LIST
+                            ).commit()
                         }
 
                         eventGoToThumbnailInfoActivity.sign(viewModel) {

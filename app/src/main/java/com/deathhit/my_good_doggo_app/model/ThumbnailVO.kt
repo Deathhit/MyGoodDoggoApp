@@ -7,8 +7,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ThumbnailVO(val thumbnailId: String, val thumbnailUrl: String) : Parcelable {
     companion object {
-        fun valueOf(thumbnailDO: ThumbnailDO): ThumbnailVO {
-            return ThumbnailVO(thumbnailDO.thumbnailId, thumbnailDO.thumbnailUrl)
-        }
+        fun valueOf(thumbnailDO: ThumbnailDO) = ThumbnailVO(thumbnailDO.thumbnailId, thumbnailDO.thumbnailUrl)
     }
 }

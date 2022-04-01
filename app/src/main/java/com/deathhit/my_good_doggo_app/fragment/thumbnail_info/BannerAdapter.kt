@@ -16,18 +16,14 @@ abstract class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder =
         BannerViewHolder(parent).apply {
-            binding.run {
-                imageViewBanner.setOnClickListener { onBannerClick(item) }
-            }
+            binding.imageViewBanner.setOnClickListener { onBannerClick(item) }
         }
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
         item?.let { item ->
-            holder.binding.run {
-                imageViewBanner.run {
-                    Glide.with(this).load(item.thumbnailUrl)
-                        .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(this)
-                }
+            with(holder.binding.imageViewBanner) {
+                Glide.with(this).load(item.thumbnailUrl)
+                    .fitCenter().format(DecodeFormat.PREFER_RGB_565).into(this)
             }
         }
     }

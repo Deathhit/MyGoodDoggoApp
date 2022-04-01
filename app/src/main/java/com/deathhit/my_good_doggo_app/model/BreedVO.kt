@@ -14,15 +14,13 @@ data class BreedVO(
     val temperament: String?
 ) : Parcelable {
     companion object {
-        fun valueOf(breedDO: BreedDO): BreedVO {
-            return BreedVO(
-                breedDO.breedId,
-                breedDO.bredFor,
-                breedDO.breedGroup,
-                breedDO.breedName,
-                breedDO.lifespan,
-                breedDO.temperament
-            )
-        }
+        fun valueOf(breedDO: BreedDO) = BreedVO(
+            breedDO.breedId,
+            breedDO.bredFor,
+            breedDO.breedGroup,
+            breedDO.breedName,
+            breedDO.lifespan,
+            breedDO.temperament
+        )
     }
 }

@@ -22,41 +22,39 @@ class BreedAdapter : ListAdapter<BreedVO, BreedViewHolder>(COMPARATOR) {
 
     override fun onBindViewHolder(holder: BreedViewHolder, position: Int) {
         getItem(position)?.let { item ->
-            holder.binding.run {
-                textViewBredFor.run {
-                    item.bredFor?.let {
-                        visibility = View.VISIBLE
-                        text = it
-                    } ?: kotlin.run { visibility = View.GONE }
-                }
+            with(holder.binding.textViewBredFor) {
+                item.bredFor?.let {
+                    visibility = View.VISIBLE
+                    text = it
+                } ?: { visibility = View.GONE }
+            }
 
-                textViewBreedGroup.run {
-                    item.breedGroup?.let {
-                        visibility = View.VISIBLE
-                        text = it
-                    } ?: kotlin.run { visibility = View.GONE }
-                }
+            with(holder.binding.textViewBreedGroup) {
+                item.breedGroup?.let {
+                    visibility = View.VISIBLE
+                    text = it
+                } ?: { visibility = View.GONE }
+            }
 
-                textViewBreedName.run {
-                    item.breedName?.let {
-                        visibility = View.VISIBLE
-                        text = it
-                    } ?: kotlin.run { visibility = View.GONE }
-                }
+            with(holder.binding.textViewBreedName) {
+                item.breedName?.let {
+                    visibility = View.VISIBLE
+                    text = it
+                } ?: { visibility = View.GONE }
+            }
 
-                textViewLifespan.run {
-                    item.lifespan?.let {
-                        visibility = View.VISIBLE
-                        text = it
-                    } ?: kotlin.run { visibility = View.GONE }
-                }
+            with(holder.binding.textViewLifespan) {
+                item.lifespan?.let {
+                    visibility = View.VISIBLE
+                    text = it
+                } ?: { visibility = View.GONE }
+            }
 
-                textViewTemperament.run {
-                    item.temperament?.let {
-                        visibility = View.VISIBLE
-                        text = it
-                    } ?: kotlin.run { visibility = View.GONE }
-                }
+            with(holder.binding.textViewTemperament) {
+                item.temperament?.let {
+                    visibility = View.VISIBLE
+                    text = it
+                } ?: { visibility = View.GONE }
             }
         }
     }

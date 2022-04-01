@@ -15,20 +15,18 @@ abstract class LoadStateAdapter :
         }
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
-        holder.binding.run {
-            buttonRetry.run {
-                visibility = toVisibility(loadState !is LoadState.Loading)
-            }
+        with(holder.binding.buttonRetry) {
+            visibility = toVisibility(loadState !is LoadState.Loading)
+        }
 
-            progressBar.run {
-                visibility = toVisibility(loadState is LoadState.Loading)
-            }
+        with(holder.binding.progressBar) {
+            visibility = toVisibility(loadState is LoadState.Loading)
+        }
 
-            textViewErrorMsg.run {
-                if (loadState is LoadState.Error)
-                    text = loadState.error.localizedMessage
-                visibility = toVisibility(loadState !is LoadState.Loading)
-            }
+        with(holder.binding.textViewErrorMsg) {
+            if (loadState is LoadState.Error)
+                text = loadState.error.localizedMessage
+            visibility = toVisibility(loadState !is LoadState.Loading)
         }
     }
 
