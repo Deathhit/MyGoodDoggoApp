@@ -30,7 +30,7 @@ class ThumbnailInfoFragment : Fragment() {
 
     var onStateListener: ((ThumbnailInfoViewModel.State) -> Unit)? = null
 
-    private val binding: FragmentThumbnailInfoBinding get() = _binding!!
+    private val binding get() = _binding!!
     private var _binding: FragmentThumbnailInfoBinding? = null
 
     private val viewModel: ThumbnailInfoViewModel by viewModels()

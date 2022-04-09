@@ -28,7 +28,7 @@ class ThumbnailListFragment : Fragment() {
 
     var onStateListener: ((ThumbnailListViewModel.State) -> Unit)? = null
 
-    private val binding: FragmentThumbnailListBinding get() = _binding!!
+    private val binding get() = _binding!!
     private var _binding: FragmentThumbnailListBinding? = null
 
     private val viewModel: ThumbnailListViewModel by viewModels()
