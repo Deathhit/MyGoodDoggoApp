@@ -11,17 +11,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor() : ViewModel() {
-    data class State(
-        val eventAddThumbnailListFragment: SignAble<Unit> = SignAble(),
-        val eventGoToThumbnailInfoActivity: SignAble<ThumbnailVO> = SignAble(),
-    )
+    data class State(val eventGoToThumbnailInfoActivity: SignAble<ThumbnailVO> = SignAble())
 
     private val _stateFlow = MutableStateFlow(State())
     val stateFlow = _stateFlow.asStateFlow()
-
-    fun addThumbnailListFragment() {
-        _stateFlow.update { state -> state.copy(eventAddThumbnailListFragment = SignAble(Unit)) }
-    }
 
     fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
         _stateFlow.update { state ->

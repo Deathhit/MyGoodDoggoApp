@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     companion object {
-        private const val TAG = "com.deathhit.my_good_doggo_app.activity.main.MainActivity"
+        private const val TAG = "MainActivity"
         private const val TAG_THUMBNAIL_LIST = "$TAG.TAG_THUMBNAIL_LIST"
     }
 
@@ -44,20 +44,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        savedInstanceState ?: viewModel.addThumbnailListFragment()
+        savedInstanceState ?: supportFragmentManager.beginTransaction().add(
+            binding.activityFrameLayoutContainer.id,
+            ThumbnailListFragment.create(),
+            TAG_THUMBNAIL_LIST
+        ).commit()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
                     with(state) {
-                        eventAddThumbnailListFragment.sign(viewModel) {
-                            supportFragmentManager.beginTransaction().add(
-                                binding.activityFrameLayoutContainer.id,
-                                ThumbnailListFragment.create(),
-                                TAG_THUMBNAIL_LIST
-                            ).commit()
-                        }
-
                         eventGoToThumbnailInfoActivity.sign(viewModel) {
                             startActivity(ThumbnailInfoActivity.createIntent(this@MainActivity, it))
                         }

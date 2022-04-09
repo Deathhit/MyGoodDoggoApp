@@ -20,18 +20,11 @@ class ThumbnailInfoActivityViewModel @Inject constructor(private val savedStateH
 
     data class State(
         val argThumbnailVO: ThumbnailVO,
-        val eventAddThumbnailInfoFragment: SignAble<ThumbnailVO> = SignAble(),
         val eventShowImageViewerFragment: SignAble<String> = SignAble()
     )
 
     private val _stateFlow = MutableStateFlow(State(savedStateHandle[KEY_THUMBNAIL_VO]!!))
     val stateFlow = _stateFlow.asStateFlow()
-
-    fun addThumbnailInfoFragment() {
-        _stateFlow.update { state ->
-            state.copy(eventAddThumbnailInfoFragment = SignAble(state.argThumbnailVO))
-        }
-    }
 
     fun saveState() {
         savedStateHandle[KEY_THUMBNAIL_VO] = stateFlow.value.argThumbnailVO

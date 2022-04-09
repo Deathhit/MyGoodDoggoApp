@@ -54,20 +54,18 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         binding = ActivityThumbnailInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        savedInstanceState ?: viewModel.addThumbnailInfoFragment()
+        savedInstanceState ?: with(viewModel.stateFlow.value) {
+            supportFragmentManager.beginTransaction().add(
+                binding.activityFrameLayoutContainer.id,
+                ThumbnailInfoFragment.create(argThumbnailVO),
+                TAG_THUMBNAIL_INFO
+            ).commit()
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect { state ->
                     with(state) {
-                        eventAddThumbnailInfoFragment.sign(viewModel) {
-                            supportFragmentManager.beginTransaction().add(
-                                binding.activityFrameLayoutContainer.id,
-                                ThumbnailInfoFragment.create(it),
-                                TAG_THUMBNAIL_INFO
-                            ).commit()
-                        }
-
                         eventShowImageViewerFragment.sign(viewModel) {
                             supportFragmentManager.beginTransaction()
                                 .replace(
