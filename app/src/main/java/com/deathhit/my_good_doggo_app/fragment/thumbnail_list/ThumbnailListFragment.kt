@@ -33,7 +33,8 @@ class ThumbnailListFragment : Fragment() {
 
     private val viewModel: ThumbnailListViewModel by viewModels()
 
-    private var thumbnailAdapter: ThumbnailAdapter? = null
+    private val thumbnailAdapter: ThumbnailAdapter get() = _thumbnailAdapter!!
+    private var _thumbnailAdapter: ThumbnailAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,17 +52,17 @@ class ThumbnailListFragment : Fragment() {
 
             val loadStateAdapter = object : LoadStateAdapter() {
                 override fun onRetryLoading() {
-                    thumbnailAdapter?.retry()
+                    thumbnailAdapter.retry()
                 }
             }
 
-            thumbnailAdapter = object : ThumbnailAdapter() {
+            _thumbnailAdapter = object : ThumbnailAdapter() {
                 override fun onClickItem(thumbnailVO: ThumbnailVO) {
                     viewModel.goToThumbnailInfoActivity(thumbnailVO)
                 }
             }
 
-            adapter = thumbnailAdapter!!.withLoadStateFooter(loadStateAdapter)
+            adapter = thumbnailAdapter.withLoadStateFooter(loadStateAdapter)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -69,7 +70,7 @@ class ThumbnailListFragment : Fragment() {
                 viewModel.stateFlow.collect { state ->
                     with(state) {
                         statusThumbnailList.sign(binding) {
-                            thumbnailAdapter?.submitData(lifecycle, it)
+                            thumbnailAdapter.submitData(lifecycle, it)
                         }
 
                         onStateListener?.invoke(this)
@@ -83,6 +84,6 @@ class ThumbnailListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
 
-        thumbnailAdapter = null
+        _thumbnailAdapter = null
     }
 }

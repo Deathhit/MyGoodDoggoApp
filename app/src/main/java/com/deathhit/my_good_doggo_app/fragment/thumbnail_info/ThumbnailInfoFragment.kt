@@ -35,8 +35,11 @@ class ThumbnailInfoFragment : Fragment() {
 
     private val viewModel: ThumbnailInfoViewModel by viewModels()
 
-    private var bannerAdapter: BannerAdapter? = null
-    private var breedAdapter: BreedAdapter? = null
+    private val bannerAdapter: BannerAdapter get() = _bannerAdapter!!
+    private var _bannerAdapter: BannerAdapter? = null
+
+    private val breedAdapter: BreedAdapter get() = _breedAdapter!!
+    private var _breedAdapter: BreedAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,15 +55,19 @@ class ThumbnailInfoFragment : Fragment() {
         with(binding.recyclerView) {
             setHasFixedSize(true)
 
-            bannerAdapter = object : BannerAdapter() {
+            _bannerAdapter = object : BannerAdapter() {
                 override fun onBannerClick(item: ThumbnailVO?) {
                     viewModel.viewImage(item)
                 }
             }
 
-            breedAdapter = BreedAdapter()
+            _breedAdapter = BreedAdapter()
 
             adapter = ConcatAdapter(bannerAdapter, breedAdapter)
+        }
+
+        with(viewModel.stateFlow.value) {
+            bannerAdapter.notifyOnItemChanged(argThumbnailVO)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -68,11 +75,7 @@ class ThumbnailInfoFragment : Fragment() {
                 viewModel.stateFlow.collect { state ->
                     with(state) {
                         statusBreedVOList.sign(binding) {
-                            breedAdapter?.submitList(it)
-                        }
-
-                        statusThumbnailVO.sign(binding) {
-                            bannerAdapter?.notifyOnItemChanged(it)
+                            breedAdapter.submitList(it)
                         }
 
                         onStateListener?.invoke(this)
@@ -86,8 +89,8 @@ class ThumbnailInfoFragment : Fragment() {
         super.onDestroyView()
         _binding = null
 
-        bannerAdapter = null
-        breedAdapter = null
+        _bannerAdapter = null
+        _breedAdapter = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
