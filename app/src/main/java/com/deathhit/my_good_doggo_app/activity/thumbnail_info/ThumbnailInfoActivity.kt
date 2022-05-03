@@ -51,8 +51,7 @@ class ThumbnailInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
         super.onCreate(savedInstanceState)
-        binding = ActivityThumbnailInfoBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityThumbnailInfoBinding.inflate(layoutInflater).apply { setContentView(root) }
 
         savedInstanceState ?: with(viewModel.stateFlow.value) {
             supportFragmentManager.beginTransaction().add(

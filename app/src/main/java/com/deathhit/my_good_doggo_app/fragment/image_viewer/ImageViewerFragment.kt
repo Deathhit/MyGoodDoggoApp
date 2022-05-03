@@ -11,12 +11,10 @@ import com.deathhit.my_good_doggo_app.databinding.FragmentImageViewerBinding
 
 class ImageViewerFragment : Fragment() {
     companion object {
-        fun create(imageUrl: String): ImageViewerFragment {
+        fun create(imageUrl: String) = ImageViewerFragment().apply {
             val args = Bundle()
             args.putString(ImageViewerViewModel.KEY_IMAGE_URL, imageUrl)
-            val fragment = ImageViewerFragment()
-            fragment.arguments = args
-            return fragment
+            arguments = args
         }
     }
 
@@ -29,9 +27,9 @@ class ImageViewerFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentImageViewerBinding.inflate(inflater, container, false)
-        return binding.root
+    ) = FragmentImageViewerBinding.inflate(inflater, container, false).run {
+        _binding = this
+        root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

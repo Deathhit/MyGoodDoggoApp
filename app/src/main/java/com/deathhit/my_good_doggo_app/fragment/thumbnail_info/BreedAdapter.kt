@@ -1,9 +1,11 @@
 package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.deathhit.my_good_doggo_app.databinding.ItemThumbnailInfoBreedBinding
 import com.deathhit.my_good_doggo_app.model.BreedVO
 
 class BreedAdapter : ListAdapter<BreedVO, BreedViewHolder>(COMPARATOR) {
@@ -18,7 +20,13 @@ class BreedAdapter : ListAdapter<BreedVO, BreedViewHolder>(COMPARATOR) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreedViewHolder =
-        BreedViewHolder(parent)
+        BreedViewHolder(
+            ItemThumbnailInfoBreedBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: BreedViewHolder, position: Int) {
         getItem(position)?.let { item ->

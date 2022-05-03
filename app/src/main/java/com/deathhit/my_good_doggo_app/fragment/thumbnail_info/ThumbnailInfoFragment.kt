@@ -19,12 +19,10 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ThumbnailInfoFragment : Fragment() {
     companion object {
-        fun create(thumbnailVO: ThumbnailVO): ThumbnailInfoFragment {
+        fun create(thumbnailVO: ThumbnailVO) = ThumbnailInfoFragment().apply {
             val args = Bundle()
             args.putParcelable(ThumbnailInfoViewModel.KEY_THUMBNAIL_VO, thumbnailVO)
-            val fragment = ThumbnailInfoFragment()
-            fragment.arguments = args
-            return fragment
+            arguments = args
         }
     }
 
@@ -45,9 +43,9 @@ class ThumbnailInfoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentThumbnailInfoBinding.inflate(inflater, container, false)
-        return binding.root
+    ) = FragmentThumbnailInfoBinding.inflate(inflater, container, false).run {
+        _binding = this
+        root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

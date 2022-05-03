@@ -1,9 +1,11 @@
 package com.deathhit.my_good_doggo_app.fragment.thumbnail_info
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
+import com.deathhit.my_good_doggo_app.databinding.ItemThumbnailInfoBannerBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 
 abstract class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
@@ -15,7 +17,13 @@ abstract class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
     private var item: ThumbnailVO? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder =
-        BannerViewHolder(parent).apply {
+        BannerViewHolder(
+            ItemThumbnailInfoBannerBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        ).apply {
             binding.imageViewBanner.setOnClickListener { onBannerClick(item) }
         }
 

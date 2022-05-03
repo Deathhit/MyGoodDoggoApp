@@ -18,12 +18,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ThumbnailListFragment : Fragment() {
     companion object {
-        fun create(): ThumbnailListFragment {
-            val args = Bundle()
-            val fragment = ThumbnailListFragment()
-            fragment.arguments = args
-            return fragment
-        }
+        fun create() = ThumbnailListFragment()
     }
 
     var onStateListener: ((ThumbnailListViewModel.State) -> Unit)? = null
@@ -40,9 +35,9 @@ class ThumbnailListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentThumbnailListBinding.inflate(inflater, container, false)
-        return binding.root
+    ) = FragmentThumbnailListBinding.inflate(inflater, container, false).run {
+        _binding = this
+        root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
