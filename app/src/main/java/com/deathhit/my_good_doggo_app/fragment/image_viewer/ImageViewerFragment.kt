@@ -1,16 +1,27 @@
 package com.deathhit.my_good_doggo_app.fragment.image_viewer
 
+import android.annotation.SuppressLint
+import android.graphics.Matrix
+import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.graphics.values
+import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.deathhit.my_good_doggo_app.databinding.FragmentImageViewerBinding
 
 class ImageViewerFragment : Fragment() {
     companion object {
+        private const val SCALE_MIN = 0.5f
+        private const val SCALE_MAX = 4f
+
         fun create(imageUrl: String) = ImageViewerFragment().apply {
             val args = Bundle()
             args.putString(ImageViewerViewModel.KEY_IMAGE_URL, imageUrl)
@@ -23,6 +34,13 @@ class ImageViewerFragment : Fragment() {
 
     private val viewModel: ImageViewerViewModel by viewModels()
 
+    private val previewMatrix = Matrix()
+    private val transformationMatrix = Matrix()
+
+    private val tempValueArray = previewMatrix.values()
+
+    private var baseImageScale = 1f
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,10 +50,101 @@ class ImageViewerFragment : Fragment() {
         root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        with(binding.imageView) {
+            val scaleGestureDetector = ScaleGestureDetector(requireContext(), object :
+                ScaleGestureDetector.SimpleOnScaleGestureListener() {
+                override fun onScale(detector: ScaleGestureDetector): Boolean {
+                    with(detector) {
+                        val scaleFactor = this.scaleFactor  //Avoid duplicate function calls.
+
+                        previewMatrix.set(transformationMatrix)
+                        previewMatrix.postScale(
+                            scaleFactor,
+                            scaleFactor,
+                            focusX,
+                            focusY
+                        )
+
+                        previewMatrix.getValues(tempValueArray)
+                        val newScale = tempValueArray[Matrix.MSCALE_X]
+                        val originalScale = newScale / scaleFactor
+                        val scaleMax = SCALE_MAX * baseImageScale
+                        val scaleMin = SCALE_MIN * baseImageScale
+
+                        var newScaleFactor = scaleFactor
+                        when {
+                            newScale > scaleMax -> newScaleFactor = scaleMax / originalScale
+                            newScale < scaleMin -> newScaleFactor = scaleMin / originalScale
+                        }
+
+                        transformationMatrix.set(transformationMatrix)  //Reset matrix.
+                        transformationMatrix.postScale(
+                            newScaleFactor,
+                            newScaleFactor,
+                            focusX,
+                            focusY
+                        )
+
+                        imageMatrix = transformationMatrix
+                        return true
+                    }
+                }
+            })
+
+            val gestureDetector = GestureDetectorCompat(requireContext(),
+                object : GestureDetector.SimpleOnGestureListener() {
+                    override fun onDoubleTap(e: MotionEvent?): Boolean {
+                        resetTransformationMatrix(drawable)
+                        return true
+                    }
+
+                    override fun onScroll(
+                        e1: MotionEvent?,
+                        e2: MotionEvent?,
+                        distanceX: Float,
+                        distanceY: Float
+                    ): Boolean {
+                        transformationMatrix.set(transformationMatrix)  //Reset matrix.
+                        transformationMatrix.postTranslate(
+                            -distanceX,
+                            -distanceY
+                        )
+
+                        imageMatrix = transformationMatrix
+                        return true
+                    }
+                })
+
+            setOnTouchListener { _, motionEvent ->
+                scaleGestureDetector.onTouchEvent(motionEvent)
+                    .or(gestureDetector.onTouchEvent(motionEvent)).or(onTouchEvent(motionEvent))
+            }
+        }
+
         with(viewModel.stateFlow.value) {
-            Glide.with(binding.imageView).load(argImageUrl).into(binding.imageView)
+            Glide.with(binding.imageView).load(argImageUrl).listener(object :
+                RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean = false
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    resource?.let { resetTransformationMatrix(resource) }
+                    return false
+                }
+            }).into(binding.imageView)
         }
     }
 
@@ -47,5 +156,23 @@ class ImageViewerFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         viewModel.saveState()
         super.onSaveInstanceState(outState)
+    }
+
+    private fun resetTransformationMatrix(drawable: Drawable) {
+        with(binding.imageView) {
+            val imageRectF = RectF(
+                0f,
+                0f,
+                drawable.intrinsicWidth.toFloat(),
+                drawable.intrinsicHeight.toFloat()
+            )
+            val viewRectF = RectF(0f, 0f, width.toFloat(), height.toFloat())
+            transformationMatrix.setRectToRect(imageRectF, viewRectF, Matrix.ScaleToFit.CENTER)
+
+            transformationMatrix.getValues(tempValueArray)
+            baseImageScale = tempValueArray[Matrix.MSCALE_X]
+
+            imageMatrix = transformationMatrix
+        }
     }
 }

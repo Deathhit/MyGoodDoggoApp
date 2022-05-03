@@ -11,7 +11,6 @@ import com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActiv
 import com.deathhit.my_good_doggo_app.databinding.ActivityMainBinding
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

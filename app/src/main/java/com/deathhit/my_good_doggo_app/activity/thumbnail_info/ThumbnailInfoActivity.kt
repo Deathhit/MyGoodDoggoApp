@@ -14,7 +14,6 @@ import com.deathhit.my_good_doggo_app.fragment.image_viewer.ImageViewerFragment
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
