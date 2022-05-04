@@ -54,7 +54,7 @@ class ThumbnailInfoActivity : AppCompatActivity() {
 
         savedInstanceState ?: with(viewModel.stateFlow.value) {
             supportFragmentManager.beginTransaction().add(
-                binding.activityFrameLayoutContainer.id,
+                binding.activityContainer.id,
                 ThumbnailInfoFragment.create(argThumbnailVO),
                 TAG_THUMBNAIL_INFO
             ).commit()
@@ -67,7 +67,7 @@ class ThumbnailInfoActivity : AppCompatActivity() {
                         eventShowImageViewerFragment.sign(viewModel) {
                             supportFragmentManager.beginTransaction()
                                 .replace(
-                                    binding.activityFrameLayoutContainer.id,
+                                    binding.activityContainer.id,
                                     ImageViewerFragment.create(it),
                                     TAG_IMAGE_VIEWER
                                 ).addToBackStack(null).commit()

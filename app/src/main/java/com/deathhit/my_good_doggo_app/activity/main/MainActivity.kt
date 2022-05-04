@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater).apply { setContentView(root) }
 
         savedInstanceState ?: supportFragmentManager.beginTransaction().add(
-            binding.activityFrameLayoutContainer.id,
+            binding.activityContainer.id,
             ThumbnailListFragment.create(),
             TAG_THUMBNAIL_LIST
         ).commit()
