@@ -8,16 +8,17 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.graphics.values
 import androidx.core.view.GestureDetectorCompat
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.databinding.FragmentImageViewerBinding
 
-class ImageViewerFragment : Fragment() {
+class ImageViewerFragment : DialogFragment() {
     companion object {
         private const val SCALE_MIN = 0.5f
         private const val SCALE_MAX = 4f
@@ -152,6 +153,8 @@ class ImageViewerFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun getTheme(): Int = R.style.Theme_MyGoodDoggoApp_FullScreenDialog
 
     override fun onSaveInstanceState(outState: Bundle) {
         viewModel.saveState()

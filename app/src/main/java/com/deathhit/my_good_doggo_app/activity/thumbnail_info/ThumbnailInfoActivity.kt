@@ -50,7 +50,8 @@ class ThumbnailInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
         super.onCreate(savedInstanceState)
-        binding = ActivityThumbnailInfoBinding.inflate(layoutInflater).apply { setContentView(root) }
+        binding =
+            ActivityThumbnailInfoBinding.inflate(layoutInflater).apply { setContentView(root) }
 
         savedInstanceState ?: with(viewModel.stateFlow.value) {
             supportFragmentManager.beginTransaction().add(
@@ -65,12 +66,8 @@ class ThumbnailInfoActivity : AppCompatActivity() {
                 viewModel.stateFlow.collect { state ->
                     with(state) {
                         eventShowImageViewerFragment.sign(viewModel) {
-                            supportFragmentManager.beginTransaction()
-                                .replace(
-                                    binding.activityContainer.id,
-                                    ImageViewerFragment.create(it),
-                                    TAG_IMAGE_VIEWER
-                                ).addToBackStack(null).commit()
+                            ImageViewerFragment.create(it)
+                                .show(supportFragmentManager, TAG_IMAGE_VIEWER)
                         }
                     }
                 }

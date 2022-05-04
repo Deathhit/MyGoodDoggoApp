@@ -13,4 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Full screen dialog theme. -->
+    <style name="Theme.MyGoodDoggoApp.FullScreenDialog" parent="Theme.MyGoodDoggoApp">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
 </resources>
