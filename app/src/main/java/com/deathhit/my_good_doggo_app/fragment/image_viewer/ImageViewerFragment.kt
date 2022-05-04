@@ -10,6 +10,9 @@ import androidx.core.graphics.values
 import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -17,6 +20,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.databinding.FragmentImageViewerBinding
+import kotlinx.coroutines.launch
 
 class ImageViewerFragment : DialogFragment() {
     companion object {
@@ -39,6 +43,10 @@ class ImageViewerFragment : DialogFragment() {
     private val transformationMatrix = Matrix()
 
     private val tempValueArray = previewMatrix.values()
+
+    private val onCloseListener = View.OnClickListener {
+        viewModel.closeViewer()
+    }
 
     private var baseImageScale = 1f
 
@@ -146,6 +154,32 @@ class ImageViewerFragment : DialogFragment() {
                     return false
                 }
             }).into(binding.imageView)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stateFlow.collect { state ->
+                    with(state) {
+                        eventCloseViewer.sign(viewModel) {
+                            dismiss()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        with(binding) {
+            buttonClose.setOnClickListener(onCloseListener)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        with(binding) {
+            buttonClose.setOnClickListener(null)
         }
     }
 

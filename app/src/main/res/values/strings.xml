@@ -4,6 +4,10 @@
     <!--Sample-->
     <string name="sample_text">Sample Text</string>
 
+    <!--Image Viewer-->
+    <string name="image_viewer_close">Close</string>
+
     <!--Thumbnail List-->
+    <string name="thumbnail_list_dog_thumbnail">Dog Thumbnail</string>
     <string name="thumbnail_list_retry">Retry</string>
 </resources>
