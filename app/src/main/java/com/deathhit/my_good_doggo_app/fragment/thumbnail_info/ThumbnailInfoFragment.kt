@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailInfoBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -75,10 +74,14 @@ class ThumbnailInfoFragment : Fragment() {
                         statusBreedVOList.sign(binding) {
                             breedAdapter.submitList(it)
                         }
-
-                        onStateListener?.invoke(this)
                     }
                 }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.stateFlow.collect {
+                onStateListener?.invoke(it)
             }
         }
     }
