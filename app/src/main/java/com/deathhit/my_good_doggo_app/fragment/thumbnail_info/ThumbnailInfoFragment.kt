@@ -74,14 +74,10 @@ class ThumbnailInfoFragment : Fragment() {
                         statusBreedVOList.sign(binding) {
                             breedAdapter.submitList(it)
                         }
+
+                        onStateListener?.invoke(this)
                     }
                 }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.stateFlow.collect {
-                onStateListener?.invoke(it)
             }
         }
     }
