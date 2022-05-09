@@ -39,6 +39,8 @@ class ImageViewerFragment : DialogFragment() {
 
     private val viewModel: ImageViewerViewModel by viewModels()
 
+    private var baseImageScale = 1f
+
     private val previewMatrix = Matrix()
     private val transformationMatrix = Matrix()
 
@@ -47,8 +49,6 @@ class ImageViewerFragment : DialogFragment() {
     private val onCloseListener = View.OnClickListener {
         viewModel.closeViewer()
     }
-
-    private var baseImageScale = 1f
 
     override fun onCreateView(
         inflater: LayoutInflater,

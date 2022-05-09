@@ -23,11 +23,10 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         private const val TAG_IMAGE_VIEWER = "$TAG.TAG_IMAGE_VIEWER"
         private const val TAG_THUMBNAIL_INFO = "$TAG.TAG_THUMBNAIL_INFO"
 
-        fun createIntent(context: Context, thumbnailVO: ThumbnailVO): Intent {
-            val intent = Intent(context, ThumbnailInfoActivity::class.java)
-            intent.putExtra(ThumbnailInfoActivityViewModel.KEY_THUMBNAIL_VO, thumbnailVO)
-            return intent
-        }
+        fun createIntent(context: Context, thumbnailVO: ThumbnailVO) =
+            Intent(context, ThumbnailInfoActivity::class.java).apply {
+                putExtra(ThumbnailInfoActivityViewModel.KEY_THUMBNAIL_VO, thumbnailVO)
+            }
     }
 
     private lateinit var binding: ActivityThumbnailInfoBinding

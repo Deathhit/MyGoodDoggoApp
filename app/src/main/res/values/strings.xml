@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">My Good Doggo App</string>
 
-    <!--Sample-->
-    <string name="sample_text">Sample Text</string>
-
     <!--Image Viewer-->
     <string name="image_viewer_close">Close</string>
+
+    <!--Sample-->
+    <string name="sample_text">Sample Text</string>
 
     <!--Thumbnail List-->
     <string name="thumbnail_list_dog_thumbnail">Dog Thumbnail</string>
