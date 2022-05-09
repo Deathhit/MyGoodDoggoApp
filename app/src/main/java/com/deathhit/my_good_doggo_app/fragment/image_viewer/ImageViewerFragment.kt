@@ -24,8 +24,8 @@ import kotlinx.coroutines.launch
 
 class ImageViewerFragment : DialogFragment() {
     companion object {
-        private const val SCALE_MIN = 0.5f
         private const val SCALE_MAX = 4f
+        private const val SCALE_MIN = 0.5f
 
         fun create(imageUrl: String) = ImageViewerFragment().apply {
             val args = Bundle()
