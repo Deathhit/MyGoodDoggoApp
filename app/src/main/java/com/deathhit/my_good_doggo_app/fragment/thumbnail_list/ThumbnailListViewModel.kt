@@ -8,6 +8,7 @@ import androidx.paging.map
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.domain.repository.thumbnail.ThumbnailRepository
 import com.deathhit.lib_sign_able.SignAble
+import com.deathhit.my_good_doggo_app.extensions.toVO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -25,25 +26,21 @@ class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository
     val stateFlow = _stateFlow.asStateFlow()
 
     init {
-        loadThumbnailList()
-    }
-
-    fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
-        _stateFlow.update { state ->
-            state.copy(eventGoToThumbnailInfoActivity = SignAble(thumbnailVO))
-        }
-    }
-
-    private fun loadThumbnailList() {
         viewModelScope.launch {
             thumbnailRepository.getThumbnailPager().flow
-                .map { pagingData -> pagingData.map { ThumbnailVO.valueOf(it) } }
+                .map { pagingData -> pagingData.map { it.toVO() } }
                 .cachedIn(viewModelScope)
                 .collectLatest { pagingData ->
                     _stateFlow.update { state ->
                         state.copy(statusThumbnailList = SignAble(pagingData))
                     }
                 }
+        }
+    }
+
+    fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
+        _stateFlow.update { state ->
+            state.copy(eventGoToThumbnailInfoActivity = SignAble(thumbnailVO))
         }
     }
 }
