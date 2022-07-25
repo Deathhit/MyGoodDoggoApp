@@ -1,32 +1,41 @@
 package com.deathhit.my_good_doggo_app.fragment.image_viewer
 
+import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.deathhit.lib_sign_able.SignAble
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ImageViewerViewModel @Inject constructor(private val savedStateHandle: SavedStateHandle) :
-    ViewModel() {
+class ImageViewerViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
     companion object {
         private const val TAG = "ImageViewerViewModel"
-        const val KEY_IMAGE_URL = "$TAG.KEY_IMAGE_URL"
+        private const val KEY_IMAGE_URL = "$TAG.KEY_IMAGE_URL"
+
+        fun createArgs(imageUrl: String) = Bundle().apply {
+            putString(KEY_IMAGE_URL, imageUrl)
+        }
     }
 
-    data class State(val argImageUrl: String, val eventCloseViewer: SignAble<Unit> = SignAble())
+    sealed class Event {
+        object Close : Event()
+    }
+
+    data class State(val imageUrl: String)
+
+    private val _eventChannel = Channel<Event>()
+    val eventFlow = _eventChannel.receiveAsFlow()
 
     private val _stateFlow = MutableStateFlow(State(savedStateHandle[KEY_IMAGE_URL]!!))
     val stateFlow = _stateFlow.asStateFlow()
 
-    fun closeViewer() {
-        _stateFlow.update { state ->
-            state.copy(eventCloseViewer = SignAble(Unit))
+    fun onClose() {
+        viewModelScope.launch {
+            _eventChannel.send(Event.Close)
         }
-    }
-
-    fun saveState() {
-        savedStateHandle[KEY_IMAGE_URL] = stateFlow.value.argImageUrl
     }
 }

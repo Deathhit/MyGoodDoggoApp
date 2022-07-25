@@ -18,4 +18,3 @@ rootProject.name = "My Good Doggo App"
 include ':app'
 include ':data_source_dog_api'
 include ':domain'
-include ':lib_sign_able'

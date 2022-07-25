@@ -10,6 +10,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity
 import com.deathhit.my_good_doggo_app.databinding.ActivityMainBinding
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
+import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,9 +29,11 @@ class MainActivity : AppCompatActivity() {
         FragmentOnAttachListener { _, fragment ->
             when (fragment) {
                 is ThumbnailListFragment -> {
-                    fragment.onStateListener = { state ->
-                        state.eventGoToThumbnailInfoActivity.sign(viewModel) {
-                            viewModel.goToThumbnailInfoActivity(it)
+                    fragment.onCallbackListener = { callback ->
+                        when (callback) {
+                            is ThumbnailListViewModel.Callback.OnClickItem -> viewModel.onClickThumbnail(
+                                callback.thumbnail
+                            )
                         }
                     }
                 }
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater).apply { setContentView(root) }
+        binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         savedInstanceState ?: supportFragmentManager.beginTransaction().add(
             binding.activityContainer.id,
@@ -50,10 +53,15 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateFlow.collect { state ->
-                    with(state) {
-                        eventGoToThumbnailInfoActivity.sign(viewModel) {
-                            startActivity(ThumbnailInfoActivity.createIntent(this@MainActivity, it))
+                launch {
+                    viewModel.eventFlow.collect { event ->
+                        when (event) {
+                            is MainActivityViewModel.Event.GoToThumbnailInfo -> startActivity(
+                                ThumbnailInfoActivity.createIntent(
+                                    this@MainActivity,
+                                    event.thumbnail
+                                )
+                            )
                         }
                     }
                 }

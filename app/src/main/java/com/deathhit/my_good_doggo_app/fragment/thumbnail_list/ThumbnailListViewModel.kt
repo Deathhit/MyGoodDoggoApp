@@ -2,45 +2,34 @@ package com.deathhit.my_good_doggo_app.fragment.thumbnail_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.domain.repository.thumbnail.ThumbnailRepository
-import com.deathhit.lib_sign_able.SignAble
-import com.deathhit.my_good_doggo_app.extensions.toVO
+import com.deathhit.my_good_doggo_app.model.toVO
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ThumbnailListViewModel @Inject constructor(private val thumbnailRepository: ThumbnailRepository) :
+class ThumbnailListViewModel @Inject constructor(thumbnailRepository: ThumbnailRepository) :
     ViewModel() {
-    data class State(
-        val eventGoToThumbnailInfoActivity: SignAble<ThumbnailVO> = SignAble(),
-        val statusThumbnailList: SignAble<PagingData<ThumbnailVO>> = SignAble()
-    )
-
-    private val _stateFlow = MutableStateFlow(State())
-    val stateFlow = _stateFlow.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            thumbnailRepository.getThumbnailPager().flow
-                .map { pagingData -> pagingData.map { it.toVO() } }
-                .cachedIn(viewModelScope)
-                .collectLatest { pagingData ->
-                    _stateFlow.update { state ->
-                        state.copy(statusThumbnailList = SignAble(pagingData))
-                    }
-                }
-        }
+    sealed class Callback {
+        data class OnClickItem(val thumbnail: ThumbnailVO) : Callback()
     }
 
-    fun goToThumbnailInfoActivity(thumbnailVO: ThumbnailVO) {
-        _stateFlow.update { state ->
-            state.copy(eventGoToThumbnailInfoActivity = SignAble(thumbnailVO))
+    private val _callbackChannel = Channel<Callback>()
+    val callbackFlow = _callbackChannel.receiveAsFlow()
+
+    val thumbnailPagerFlow = thumbnailRepository.getThumbnailPager().flow
+        .map { pagingData -> pagingData.map { it.toVO() } }
+        .cachedIn(viewModelScope)
+
+    fun onClickItem(thumbnail: ThumbnailVO) {
+        viewModelScope.launch {
+            _callbackChannel.send(Callback.OnClickItem(thumbnail))
         }
     }
 }

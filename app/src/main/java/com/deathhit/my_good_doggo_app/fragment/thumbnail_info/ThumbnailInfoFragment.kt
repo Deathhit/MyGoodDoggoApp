@@ -13,19 +13,19 @@ import androidx.recyclerview.widget.ConcatAdapter
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailInfoBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ThumbnailInfoFragment : Fragment() {
     companion object {
-        fun create(thumbnailVO: ThumbnailVO) = ThumbnailInfoFragment().apply {
-            val args = Bundle()
-            args.putParcelable(ThumbnailInfoViewModel.KEY_THUMBNAIL_VO, thumbnailVO)
-            arguments = args
+        fun create(thumbnail: ThumbnailVO) = ThumbnailInfoFragment().apply {
+            arguments = ThumbnailInfoViewModel.createArgs(thumbnail)
         }
     }
 
-    var onStateListener: ((ThumbnailInfoViewModel.State) -> Unit)? = null
+    var onCallbackListener: ((ThumbnailInfoViewModel.Callback) -> Unit)? = null
 
     private val binding get() = _binding!!
     private var _binding: FragmentThumbnailInfoBinding? = null
@@ -53,8 +53,8 @@ class ThumbnailInfoFragment : Fragment() {
             setHasFixedSize(true)
 
             _bannerAdapter = object : BannerAdapter() {
-                override fun onBannerClick(item: ThumbnailVO?) {
-                    viewModel.viewImage(item)
+                override fun onBannerClick(item: ThumbnailVO) {
+                    viewModel.onBannerClick(item)
                 }
             }
 
@@ -63,19 +63,23 @@ class ThumbnailInfoFragment : Fragment() {
             adapter = ConcatAdapter(bannerAdapter, breedAdapter)
         }
 
-        with(viewModel.stateFlow.value) {
-            bannerAdapter.notifyOnItemChanged(argThumbnailVO)
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateFlow.collect { state ->
-                    with(state) {
-                        statusBreedVOList.sign(binding) {
-                            breedAdapter.submitList(it)
-                        }
+                launch {
+                    viewModel.callbackFlow.collect {
+                        onCallbackListener?.invoke(it)
+                    }
+                }
 
-                        onStateListener?.invoke(this)
+                launch {
+                    viewModel.stateFlow.map { it.breedList }.distinctUntilChanged().collect {
+                        breedAdapter.submitList(it)
+                    }
+                }
+
+                launch {
+                    viewModel.stateFlow.map { it.thumbnail }.distinctUntilChanged().collect {
+                        bannerAdapter.notifyOnItemChanged(it)
                     }
                 }
             }
@@ -88,10 +92,5 @@ class ThumbnailInfoFragment : Fragment() {
 
         _bannerAdapter = null
         _breedAdapter = null
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.saveState()
-        super.onSaveInstanceState(outState)
     }
 }

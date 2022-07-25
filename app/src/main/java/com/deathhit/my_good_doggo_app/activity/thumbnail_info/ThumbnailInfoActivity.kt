@@ -13,6 +13,7 @@ import com.deathhit.my_good_doggo_app.databinding.ActivityThumbnailInfoBinding
 import com.deathhit.my_good_doggo_app.fragment.image_viewer.ImageViewerFragment
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoFragment
+import com.deathhit.my_good_doggo_app.fragment.thumbnail_info.ThumbnailInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,7 +26,7 @@ class ThumbnailInfoActivity : AppCompatActivity() {
 
         fun createIntent(context: Context, thumbnailVO: ThumbnailVO) =
             Intent(context, ThumbnailInfoActivity::class.java).apply {
-                putExtra(ThumbnailInfoActivityViewModel.KEY_THUMBNAIL_VO, thumbnailVO)
+                putExtras(ThumbnailInfoActivityViewModel.createArgs(thumbnailVO))
             }
     }
 
@@ -36,11 +37,11 @@ class ThumbnailInfoActivity : AppCompatActivity() {
     private val fragmentOnAttachListener: FragmentOnAttachListener =
         FragmentOnAttachListener { _, fragment ->
             when (fragment) {
-                is ThumbnailInfoFragment -> fragment.onStateListener = { state ->
-                    state.run {
-                        eventShowImageViewerFragment.sign(viewModel) {
-                            viewModel.showImageViewerFragment(it)
-                        }
+                is ThumbnailInfoFragment -> fragment.onCallbackListener = { callback ->
+                    when (callback) {
+                        is ThumbnailInfoViewModel.Callback.OnBannerClick -> viewModel.onThumbnailBannerClick(
+                            callback.thumbnail
+                        )
                     }
                 }
             }
@@ -50,23 +51,24 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
         super.onCreate(savedInstanceState)
         binding =
-            ActivityThumbnailInfoBinding.inflate(layoutInflater).apply { setContentView(root) }
+            ActivityThumbnailInfoBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         savedInstanceState ?: with(viewModel.stateFlow.value) {
             supportFragmentManager.beginTransaction().add(
                 binding.activityContainer.id,
-                ThumbnailInfoFragment.create(argThumbnailVO),
+                ThumbnailInfoFragment.create(thumbnail),
                 TAG_THUMBNAIL_INFO
             ).commit()
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateFlow.collect { state ->
-                    with(state) {
-                        eventShowImageViewerFragment.sign(viewModel) {
-                            ImageViewerFragment.create(it)
-                                .show(supportFragmentManager, TAG_IMAGE_VIEWER)
+                launch {
+                    viewModel.eventFlow.collect { event ->
+                        when (event) {
+                            is ThumbnailInfoActivityViewModel.Event.ShowImage ->
+                                ImageViewerFragment.create(event.imageUrl)
+                                    .show(supportFragmentManager, TAG_IMAGE_VIEWER)
                         }
                     }
                 }
@@ -77,10 +79,5 @@ class ThumbnailInfoActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.removeFragmentOnAttachListener(fragmentOnAttachListener)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.saveState()
-        super.onSaveInstanceState(outState)
     }
 }

@@ -20,6 +20,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.deathhit.my_good_doggo_app.R
 import com.deathhit.my_good_doggo_app.databinding.FragmentImageViewerBinding
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class ImageViewerFragment : DialogFragment() {
@@ -28,9 +30,7 @@ class ImageViewerFragment : DialogFragment() {
         private const val SCALE_MIN = 0.5f
 
         fun create(imageUrl: String) = ImageViewerFragment().apply {
-            val args = Bundle()
-            args.putString(ImageViewerViewModel.KEY_IMAGE_URL, imageUrl)
-            arguments = args
+            arguments = ImageViewerViewModel.createArgs(imageUrl)
         }
     }
 
@@ -47,7 +47,7 @@ class ImageViewerFragment : DialogFragment() {
     private val tempValueArray = previewMatrix.values()
 
     private val onCloseListener = View.OnClickListener {
-        viewModel.closeViewer()
+        viewModel.onClose()
     }
 
     override fun onCreateView(
@@ -133,36 +133,38 @@ class ImageViewerFragment : DialogFragment() {
             }
         }
 
-        with(viewModel.stateFlow.value) {
-            Glide.with(binding.imageView).load(argImageUrl).listener(object :
-                RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean = false
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    resource?.let { resetTransformationMatrix(resource) }
-                    return false
-                }
-            }).into(binding.imageView)
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateFlow.collect { state ->
-                    with(state) {
-                        eventCloseViewer.sign(viewModel) {
-                            dismiss()
+                launch {
+                    viewModel.eventFlow.collect { event ->
+                        when (event) {
+                            ImageViewerViewModel.Event.Close -> dismiss()
                         }
+                    }
+                }
+
+                launch {
+                    viewModel.stateFlow.map { it.imageUrl }.distinctUntilChanged().collect {
+                        Glide.with(binding.imageView).load(it).listener(object :
+                            RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean = false
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                resource?.let { resetTransformationMatrix(resource) }
+                                return false
+                            }
+                        }).into(binding.imageView)
                     }
                 }
             }
@@ -189,11 +191,6 @@ class ImageViewerFragment : DialogFragment() {
     }
 
     override fun getTheme(): Int = R.style.Theme_MyGoodDoggoApp_FullScreenDialog
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.saveState()
-        super.onSaveInstanceState(outState)
-    }
 
     private fun resetTransformationMatrix(drawable: Drawable) {
         with(binding.imageView) {

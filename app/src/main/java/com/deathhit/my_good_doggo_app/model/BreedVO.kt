@@ -1,6 +1,7 @@
 package com.deathhit.my_good_doggo_app.model
 
 import android.os.Parcelable
+import com.deathhit.domain.model.BreedDO
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -12,3 +13,5 @@ data class BreedVO(
     val lifespan: String?,
     val temperament: String?
 ) : Parcelable
+
+fun BreedDO.toVO() = BreedVO(breedId, bredFor, breedGroup, breedName, lifespan, temperament)

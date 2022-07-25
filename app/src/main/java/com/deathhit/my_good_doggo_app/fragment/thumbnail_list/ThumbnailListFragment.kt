@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.deathhit.my_good_doggo_app.databinding.FragmentThumbnailListBinding
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -20,7 +21,7 @@ class ThumbnailListFragment : Fragment() {
         fun create() = ThumbnailListFragment()
     }
 
-    var onStateListener: ((ThumbnailListViewModel.State) -> Unit)? = null
+    var onCallbackListener: ((ThumbnailListViewModel.Callback) -> Unit)? = null
 
     private val binding get() = _binding!!
     private var _binding: FragmentThumbnailListBinding? = null
@@ -52,7 +53,7 @@ class ThumbnailListFragment : Fragment() {
 
             _thumbnailAdapter = object : ThumbnailAdapter() {
                 override fun onClickItem(thumbnailVO: ThumbnailVO) {
-                    viewModel.goToThumbnailInfoActivity(thumbnailVO)
+                    viewModel.onClickItem(thumbnailVO)
                 }
             }
 
@@ -61,15 +62,17 @@ class ThumbnailListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateFlow.collect { state ->
-                    with(state) {
-                        statusThumbnailList.sign(binding) {
-                            thumbnailAdapter.submitData(lifecycle, it)
-                        }
-
-                        onStateListener?.invoke(this)
+                launch {
+                    viewModel.callbackFlow.collect {
+                        onCallbackListener?.invoke(it)
                     }
                 }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewModel.thumbnailPagerFlow.collectLatest {
+                thumbnailAdapter.submitData(lifecycle, it)
             }
         }
     }

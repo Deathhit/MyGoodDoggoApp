@@ -24,7 +24,7 @@ abstract class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
                 false
             )
         ).apply {
-            binding.imageViewBanner.setOnClickListener { onBannerClick(item) }
+            binding.imageViewBanner.setOnClickListener { item?.let { onBannerClick(it) } }
         }
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
@@ -43,5 +43,5 @@ abstract class BannerAdapter : RecyclerView.Adapter<BannerViewHolder>() {
         notifyItemChanged(ITEM_POS)
     }
 
-    abstract fun onBannerClick(item: ThumbnailVO?)
+    abstract fun onBannerClick(item: ThumbnailVO)
 }

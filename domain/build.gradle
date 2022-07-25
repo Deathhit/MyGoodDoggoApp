@@ -44,7 +44,7 @@ dependencies {
     implementation project(':data_source_dog_api')
 
     //Hilt
-    def hilt_version = '2.41'
+    def hilt_version = '2.43'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
 
