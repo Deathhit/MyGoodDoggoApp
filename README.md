@@ -1,5 +1,5 @@
 # MyGoodDoggoApp
-Template Android application of UDF structure implemented using SignAble wrapper class.
+Template Android application of UDF structure.
 # Goal
 Follow the UI layer structure in [Google's guidelines](https://developer.android.com/jetpack/guide/ui-layer), handle single-use events and avoid duplicate view state setting.
 # The Dog Api
