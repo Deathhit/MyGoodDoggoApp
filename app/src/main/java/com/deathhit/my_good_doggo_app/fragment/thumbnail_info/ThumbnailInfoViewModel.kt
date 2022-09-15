@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.deathhit.domain.repository.breed.BreedRepository
+import com.deathhit.domain.use_case.breed.GetBreedListByThumbnailIdUseCase
 import com.deathhit.my_good_doggo_app.model.BreedVO
 import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import com.deathhit.my_good_doggo_app.model.toVO
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ThumbnailInfoViewModel @Inject constructor(
-    private val breedRepository: BreedRepository,
+    private val getBreedListByThumbnailIdUseCase: GetBreedListByThumbnailIdUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     companion object {
@@ -49,7 +49,7 @@ class ThumbnailInfoViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val breedList =
-                breedRepository.getBreedListByThumbnailId(thumbnail.thumbnailId)
+                getBreedListByThumbnailIdUseCase(thumbnail.thumbnailId)
                     .map { it.toVO() }
 
             _stateFlow.update { state ->

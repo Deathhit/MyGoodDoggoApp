@@ -1,7 +1,7 @@
 package com.deathhit.my_good_doggo_app.model
 
 import android.os.Parcelable
-import com.deathhit.domain.model.BreedDO
+import com.deathhit.core.model.BreedDO
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

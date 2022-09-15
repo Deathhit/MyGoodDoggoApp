@@ -71,7 +71,7 @@ class ThumbnailListFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch{
-            viewModel.thumbnailPagerFlow.collectLatest {
+            viewModel.thumbnailListFlow.collectLatest {
                 thumbnailAdapter.submitData(lifecycle, it)
             }
         }

@@ -28,11 +28,11 @@
 
         <!--Dog Api Meta-->
         <meta-data
-            android:name="@string/data_source_dog_api_api_key"
+            android:name="@string/data_dog_api_api_key"
             android:value="@string/app_api_key_dog_api" /> <!--todo provide your own api key!-->
 
         <meta-data
-            android:name="@string/data_source_dog_api_base_url"
+            android:name="@string/data_dog_api_base_url"
             android:value="https://api.thedogapi.com/v1/" />
 
     </application>
