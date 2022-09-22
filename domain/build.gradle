@@ -32,6 +32,7 @@ android {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
         jvmTarget = '1.8'
     }
+    namespace 'com.deathhit.domain'
 }
 
 dependencies {
@@ -39,7 +40,7 @@ dependencies {
     implementation project(':data')
 
     //Hilt
-    def hilt_version = '2.43.2'
+    def hilt_version = '2.44'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
 

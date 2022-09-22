@@ -37,6 +37,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'com.deathhit.data'
 }
 
 dependencies {
@@ -44,7 +45,7 @@ dependencies {
     implementation project(':lib_dog_api')
 
     //Hilt
-    def hilt_version = '2.43.2'
+    def hilt_version = '2.44'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
 
