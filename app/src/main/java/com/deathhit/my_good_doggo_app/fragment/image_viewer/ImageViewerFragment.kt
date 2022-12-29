@@ -105,14 +105,14 @@ class ImageViewerFragment : DialogFragment() {
 
             val gestureDetector = GestureDetectorCompat(requireContext(),
                 object : GestureDetector.SimpleOnGestureListener() {
-                    override fun onDoubleTap(e: MotionEvent?): Boolean {
+                    override fun onDoubleTap(e: MotionEvent): Boolean {
                         resetTransformationMatrix(drawable)
                         return true
                     }
 
                     override fun onScroll(
-                        e1: MotionEvent?,
-                        e2: MotionEvent?,
+                        e1: MotionEvent,
+                        e2: MotionEvent,
                         distanceX: Float,
                         distanceY: Float
                     ): Boolean {
