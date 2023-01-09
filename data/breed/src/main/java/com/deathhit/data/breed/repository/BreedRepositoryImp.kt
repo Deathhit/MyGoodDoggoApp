@@ -1,0 +1,11 @@
+package com.deathhit.data.breed.repository
+
+import com.deathhit.data.breed.BreedDO
+import com.deathhit.data.breed.data_source.BreedLocalDataSource
+import kotlinx.coroutines.flow.Flow
+
+internal class BreedRepositoryImp(private val breedLocalDataSource: BreedLocalDataSource) :
+    BreedRepository {
+    override fun getBreedListFlowByThumbnailId(thumbnailId: String): Flow<List<BreedDO>> =
+        breedLocalDataSource.getBreedListFlowByThumbnailId(thumbnailId)
+}

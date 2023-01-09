@@ -1,26 +1,32 @@
 package com.deathhit.my_good_doggo_app.activity.main
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.deathhit.my_good_doggo_app.model.ThumbnailVO
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor() : ViewModel() {
-    sealed class Event {
-        data class GoToThumbnailInfo(val thumbnail: ThumbnailVO) : Event()
+    data class State(val actions: List<Action>) {
+        sealed interface Action {
+            data class GoToThumbnailInfo(val thumbnailId: String) : Action
+        }
     }
 
-    private val _eventChannel = Channel<Event>()
-    val eventFlow = _eventChannel.receiveAsFlow()
+    private val _stateFlow = MutableStateFlow(State(actions = emptyList()))
+    val stateFlow = _stateFlow.asStateFlow()
 
-    fun onClickThumbnail(thumbnail: ThumbnailVO) {
-        viewModelScope.launch {
-            _eventChannel.send(Event.GoToThumbnailInfo(thumbnail))
+    fun goToThumbnailInfo(thumbnailId: String) {
+        _stateFlow.update { state ->
+            state.copy(actions = state.actions + State.Action.GoToThumbnailInfo(thumbnailId))
+        }
+    }
+
+    fun onAction(action: State.Action) {
+        _stateFlow.update { state ->
+            state.copy(actions = state.actions - action)
         }
     }
 }
