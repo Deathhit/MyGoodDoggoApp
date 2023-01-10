@@ -13,6 +13,6 @@ import javax.inject.Singleton
 internal object DogApiServiceModule {
     @Provides
     @Singleton
-    fun provideImageApiService(@DogApiRetrofitModule.DogApiRetrofit retrofit: Retrofit) =
+    fun provideImageApiService(@DogApiRetrofitModule.DogApiRetrofit retrofit: Retrofit): ImageApiService =
         retrofit.create(ImageApiService::class.java)
 }

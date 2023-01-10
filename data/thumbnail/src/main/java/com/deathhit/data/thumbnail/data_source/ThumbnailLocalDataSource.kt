@@ -1,11 +1,11 @@
 package com.deathhit.data.thumbnail.data_source
 
-import androidx.paging.PagingData
-import com.deathhit.data.thumbnail.ThumbnailDO
+import androidx.paging.PagingSource
+import com.deathhit.core.database.model.ThumbnailEntity
 import kotlinx.coroutines.flow.Flow
 
 internal interface ThumbnailLocalDataSource {
-    fun getThumbnailFlowById(thumbnailId: String): Flow<ThumbnailDO?>
+    fun getThumbnailFlowById(thumbnailId: String): Flow<ThumbnailEntity?>
 
-    fun getThumbnailListFlow(): Flow<PagingData<ThumbnailDO>>
+    fun getThumbnailPagingSource(): PagingSource<Int, ThumbnailEntity>
 }

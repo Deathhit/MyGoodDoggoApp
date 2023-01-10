@@ -53,9 +53,6 @@ dependencies {
     //Constraint Layout
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    //Coroutines
-    //implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-
     //Hilt
     def hilt_version = '2.44.2'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
