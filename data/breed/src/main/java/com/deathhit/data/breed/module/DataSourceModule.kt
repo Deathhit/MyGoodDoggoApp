@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object BreedDataSourceModule {
+internal object DataSourceModule {
     @Provides
     @Singleton
     fun provideBreedLocalDataSource(appDatabase: AppDatabase): BreedLocalDataSource =

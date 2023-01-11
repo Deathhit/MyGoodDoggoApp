@@ -8,7 +8,6 @@ import com.deathhit.core.database.model.ThumbnailEntity
 import com.deathhit.core.dog_api.service.ImageApiService
 import com.deathhit.data.thumbnail.data_source.ImageLocalDataSource
 import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSource
-import retrofit2.HttpException
 
 @ExperimentalPagingApi
 internal class ThumbnailRemoteMediator(
@@ -38,7 +37,7 @@ internal class ThumbnailRemoteMediator(
                     // If you receive null for APPEND, that means you have
                     // reached the end of pagination and there are no more
                     // items to load.
-                    imageLocalDataSource.getNextPage() ?: return MediatorResult.Success(true)
+                    imageLocalDataSource.getNextPageIndex() ?: return MediatorResult.Success(true)
             }
 
             // Suspending network load via Retrofit. This doesn't need to
@@ -55,7 +54,7 @@ internal class ThumbnailRemoteMediator(
             )
 
             MediatorResult.Success(imageList.isEmpty())
-        } catch (e: HttpException) {
+        } catch (e: Throwable) {
             MediatorResult.Error(e)
         }
     }

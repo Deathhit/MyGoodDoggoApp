@@ -27,7 +27,7 @@ internal object DogApiRetrofitModule {
     @DogApiRetrofit
     @Provides
     @Singleton
-    fun provideDogApiRetrofit(@ApplicationContext context: Context) = Retrofit.Builder()
+    fun provideDogApiRetrofit(@ApplicationContext context: Context): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(getBaseUrl(context))
         .client(OkHttpClient.Builder().addInterceptor {

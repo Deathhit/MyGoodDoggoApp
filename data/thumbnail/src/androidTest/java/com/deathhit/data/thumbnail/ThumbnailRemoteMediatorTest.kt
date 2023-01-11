@@ -7,20 +7,19 @@ import com.deathhit.core.dog_api.response.Image
 import com.deathhit.core.dog_api.service.ImageApiService
 import com.deathhit.data.thumbnail.data_source.ImageLocalDataSourceImp
 import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSourceImp
-import com.deathhit.data.thumbnail.data_source.ThumbnailLocalDataSourceImp
 import com.deathhit.data.thumbnail.repository.ThumbnailRemoteMediator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import javax.inject.Inject
 
-@ExperimentalPagingApi
 @HiltAndroidTest
+@OptIn(ExperimentalPagingApi::class)
 internal class ThumbnailRemoteMediatorTest {
     companion object {
         private const val PAGE_SIZE = 25
@@ -86,7 +85,7 @@ internal class ThumbnailRemoteMediatorTest {
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
-    internal lateinit var domainDatabase: AppDatabase
+    internal lateinit var appDatabase: AppDatabase
 
     private lateinit var remoteMediator: ThumbnailRemoteMediator
 
@@ -95,14 +94,14 @@ internal class ThumbnailRemoteMediatorTest {
         hiltRule.inject()
 
         remoteMediator = ThumbnailRemoteMediator(
-            ImageLocalDataSourceImp(domainDatabase),
+            ImageLocalDataSourceImp(appDatabase),
             ImageRemoteDataSourceImp(testImageApiService)
         )
     }
 
     @After
     fun after() {
-        domainDatabase.clearAllTables()
+        appDatabase.clearAllTables()
     }
 
     @Test

@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object RepositoryModule {
+object ThumbnailRepositoryModule {
     @Provides
     @Singleton
     fun provideThumbnailRepository(

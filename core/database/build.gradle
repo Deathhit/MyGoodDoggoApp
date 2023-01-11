@@ -45,7 +45,6 @@ dependencies {
     def hilt_version = '2.44.2'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation "com.google.dagger:hilt-android-testing:$hilt_version"
 
     //Room
     def room_version = '2.4.3'

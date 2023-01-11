@@ -2,8 +2,8 @@ package com.deathhit.data.thumbnail.data_source
 
 import com.deathhit.core.dog_api.response.Image
 
-internal interface ImageLocalDataSource {
-    suspend fun getNextPage(): Int?
+interface ImageLocalDataSource {
+    suspend fun getNextPageIndex(): Int?
 
-    suspend fun insertImagePage(imageList: List<Image>, isRefreshing: Boolean, page: Int)
+    suspend fun insertImagePage(imageList: List<Image>, isRefreshing: Boolean, pageIndex: Int)
 }

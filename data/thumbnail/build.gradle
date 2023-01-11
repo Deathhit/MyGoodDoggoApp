@@ -40,15 +40,25 @@ dependencies {
 
     //Hilt
     def hilt_version = '2.44.2'
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //Hilt Test
+    def hilt_test_version = '2.44.2'
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_test_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_test_version"
+
+    //KTX
+    //androidx.paging:paging-runtime:3.1.1 references androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0
+    //In order to solve the conflict, we specify the version of androidx.lifecycle:lifecycle-viewmodel-ktx to 2.5.1
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
 
     //Paging
     def paging_version = "3.1.1"
     api "androidx.paging:paging-runtime:$paging_version"
 
     testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:core-ktx:1.5.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

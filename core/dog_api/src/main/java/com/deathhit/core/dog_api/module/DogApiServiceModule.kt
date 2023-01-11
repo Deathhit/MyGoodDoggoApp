@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object DogApiServiceModule {
+object DogApiServiceModule {
     @Provides
     @Singleton
     fun provideImageApiService(@DogApiRetrofitModule.DogApiRetrofit retrofit: Retrofit): ImageApiService =
