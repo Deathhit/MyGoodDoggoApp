@@ -14,7 +14,7 @@ internal class ImageLocalDataSourceImp(private val appDatabase: AppDatabase) :
         private const val REMOTE_KEY_LABEL = "62c50cde2d404e13bad1f2128c29988f"
     }
 
-    override suspend fun getNextPageIndex(): Int? = with(appDatabase) {
+    override suspend fun getNextImagePageIndex(): Int? = with(appDatabase) {
         withTransaction {
             remoteKeyDao()
                 .getByLabel(REMOTE_KEY_LABEL)

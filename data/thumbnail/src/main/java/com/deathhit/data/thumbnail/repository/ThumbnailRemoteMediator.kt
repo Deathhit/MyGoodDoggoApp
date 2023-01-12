@@ -37,7 +37,7 @@ internal class ThumbnailRemoteMediator(
                     // If you receive null for APPEND, that means you have
                     // reached the end of pagination and there are no more
                     // items to load.
-                    imageLocalDataSource.getNextPageIndex() ?: return MediatorResult.Success(true)
+                    imageLocalDataSource.getNextImagePageIndex() ?: return MediatorResult.Success(true)
             }
 
             // Suspending network load via Retrofit. This doesn't need to
@@ -45,7 +45,7 @@ internal class ThumbnailRemoteMediator(
             // since Retrofit's Coroutine CallAdapter dispatches on a
             // worker thread.
             val imageList =
-                imageRemoteDataSource.fetchImageListByPage(loadKey, state.config.pageSize)
+                imageRemoteDataSource.fetchImageByPage(loadKey, state.config.pageSize)
 
             imageLocalDataSource.insertImagePage(
                 imageList,

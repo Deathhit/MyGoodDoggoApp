@@ -45,7 +45,7 @@ dependencies {
     implementation project(':use_case:thumbnail')
 
     //Appcompat
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
 
     //Constraint Layout
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -66,6 +66,10 @@ dependencies {
 
     //Material
     implementation 'com.google.android.material:material:1.7.0'
+
+    //Paging
+    def paging_version = "3.1.1"
+    implementation "androidx.paging:paging-runtime:$paging_version"
 
     //Recycler View
     implementation "androidx.recyclerview:recyclerview:1.2.1"
