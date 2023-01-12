@@ -17,11 +17,6 @@ import javax.inject.Singleton
 internal object DataSourceModule {
     @Provides
     @Singleton
-    fun provideImageLocalDataSource(appDatabase: AppDatabase): ImageLocalDataSource =
-        ImageLocalDataSourceImp(appDatabase)
-
-    @Provides
-    @Singleton
     fun provideImageRemoteDataSource(imageApiService: ImageApiService): ImageRemoteDataSource =
         ImageRemoteDataSourceImp(imageApiService)
 

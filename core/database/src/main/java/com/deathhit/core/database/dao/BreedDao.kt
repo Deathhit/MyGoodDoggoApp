@@ -16,5 +16,5 @@ interface BreedDao {
     fun getListFlowByThumbnailId(thumbnailId: String): Flow<List<BreedEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplaceAll(DOList: List<BreedEntity>)
+    suspend fun insertOrReplaceAll(entities: List<BreedEntity>)
 }

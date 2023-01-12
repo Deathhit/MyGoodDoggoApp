@@ -17,5 +17,5 @@ interface RemoteKeyDao {
     suspend fun getByLabel(label: String): RemoteKeyEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplace(DO: RemoteKeyEntity)
+    suspend fun insertOrReplace(entity: RemoteKeyEntity)
 }

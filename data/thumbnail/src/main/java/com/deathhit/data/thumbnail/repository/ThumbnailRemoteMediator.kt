@@ -4,15 +4,17 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import com.deathhit.core.database.model.BreedEntity
+import com.deathhit.core.database.model.BreedThumbnailRefEntity
 import com.deathhit.core.database.model.ThumbnailEntity
 import com.deathhit.core.dog_api.service.ImageApiService
-import com.deathhit.data.thumbnail.data_source.ImageLocalDataSource
 import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSource
+import com.deathhit.data.thumbnail.data_source.ThumbnailLocalDataSource
 
 @ExperimentalPagingApi
 internal class ThumbnailRemoteMediator(
-    private val imageLocalDataSource: ImageLocalDataSource,
-    private val imageRemoteDataSource: ImageRemoteDataSource
+    private val imageRemoteDataSource: ImageRemoteDataSource,
+    private val thumbnailLocalDataSource: ThumbnailLocalDataSource
 ) : RemoteMediator<Int, ThumbnailEntity>() {
     override suspend fun load(
         loadType: LoadType,
@@ -37,7 +39,10 @@ internal class ThumbnailRemoteMediator(
                     // If you receive null for APPEND, that means you have
                     // reached the end of pagination and there are no more
                     // items to load.
-                    imageLocalDataSource.getNextImagePageIndex() ?: return MediatorResult.Success(true)
+                    thumbnailLocalDataSource.getNextThumbnailPageIndex()
+                        ?: return MediatorResult.Success(
+                            true
+                        )
             }
 
             // Suspending network load via Retrofit. This doesn't need to
@@ -47,10 +52,35 @@ internal class ThumbnailRemoteMediator(
             val imageList =
                 imageRemoteDataSource.fetchImageByPage(loadKey, state.config.pageSize)
 
-            imageLocalDataSource.insertImagePage(
-                imageList,
+            val breeds = ArrayList<BreedEntity>(imageList.size)
+            val breedThumbnailRefs = ArrayList<BreedThumbnailRefEntity>(imageList.size)
+            for (record in imageList) {
+                breedThumbnailRefs.addAll(record.breeds.map {
+                    BreedThumbnailRefEntity(it.id, record.id)
+                })
+                breeds.addAll(record.breeds.map {
+                    BreedEntity(
+                        it.id,
+                        it.bred_for,
+                        it.breed_group,
+                        it.name,
+                        it.life_span,
+                        it.temperament
+                    )
+                })
+            }
+            val thumbnails = imageList.map {
+                ThumbnailEntity(it.id, it.url)
+            }
+
+            // Store loaded data, and next key in transaction, so that
+            // they're always consistent.
+            thumbnailLocalDataSource.insertThumbnailPage(
+                breeds,
+                breedThumbnailRefs,
                 loadType == LoadType.REFRESH,
-                loadKey
+                loadKey,
+                thumbnails
             )
 
             MediatorResult.Success(imageList.isEmpty())

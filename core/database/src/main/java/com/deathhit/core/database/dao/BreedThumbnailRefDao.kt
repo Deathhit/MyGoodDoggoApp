@@ -12,5 +12,5 @@ interface BreedThumbnailRefDao {
     suspend fun clearAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplaceAll(DOList: List<BreedThumbnailRefEntity>)
+    suspend fun insertOrReplaceAll(entities: List<BreedThumbnailRefEntity>)
 }

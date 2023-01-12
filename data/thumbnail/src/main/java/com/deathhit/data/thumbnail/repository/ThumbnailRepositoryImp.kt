@@ -3,14 +3,12 @@ package com.deathhit.data.thumbnail.repository
 import androidx.paging.*
 import com.deathhit.core.database.model.ThumbnailEntity
 import com.deathhit.data.thumbnail.ThumbnailDO
-import com.deathhit.data.thumbnail.data_source.ImageLocalDataSource
 import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSource
 import com.deathhit.data.thumbnail.data_source.ThumbnailLocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 internal class ThumbnailRepositoryImp(
-    private val imageLocalDataSource: ImageLocalDataSource,
     private val imageRemoteDataSource: ImageRemoteDataSource,
     private val thumbnailLocalDataSource: ThumbnailLocalDataSource
 ) :
@@ -26,7 +24,7 @@ internal class ThumbnailRepositoryImp(
     override fun getThumbnailListFlow(): Flow<PagingData<ThumbnailDO>> = Pager(
         PagingConfig(PAGE_SIZE),
         null,
-        ThumbnailRemoteMediator(imageLocalDataSource, imageRemoteDataSource)
+        ThumbnailRemoteMediator(imageRemoteDataSource, thumbnailLocalDataSource)
     ) {
         thumbnailLocalDataSource.getThumbnailPagingSource()
     }.flow.map { pagingData -> pagingData.map { it.toDO() } }
