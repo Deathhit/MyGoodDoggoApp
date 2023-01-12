@@ -11,8 +11,7 @@ import kotlinx.coroutines.flow.map
 internal class ThumbnailRepositoryImp(
     private val imageRemoteDataSource: ImageRemoteDataSource,
     private val thumbnailLocalDataSource: ThumbnailLocalDataSource
-) :
-    ThumbnailRepository {
+) : ThumbnailRepository {
     companion object {
         private const val PAGE_SIZE = 25
     }
