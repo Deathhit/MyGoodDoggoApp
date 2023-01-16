@@ -5,8 +5,8 @@ import com.deathhit.core.database.AppDatabase
 import com.deathhit.core.database.model.ThumbnailEntity
 import com.deathhit.core.dog_api.response.Image
 import com.deathhit.core.dog_api.service.ImageApiService
-import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSourceImp
-import com.deathhit.data.thumbnail.data_source.ThumbnailLocalDataSourceImp
+import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSource
+import com.deathhit.data.thumbnail.data_source.ThumbnailLocalDataSource
 import com.deathhit.data.thumbnail.repository.ThumbnailRemoteMediator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -94,8 +94,8 @@ internal class ThumbnailRemoteMediatorTest {
         hiltRule.inject()
 
         remoteMediator = ThumbnailRemoteMediator(
-            ImageRemoteDataSourceImp(testImageApiService),
-            ThumbnailLocalDataSourceImp(appDatabase)
+            ImageRemoteDataSource(testImageApiService),
+            ThumbnailLocalDataSource(appDatabase)
         )
     }
 

@@ -14,6 +14,6 @@ import javax.inject.Singleton
 object BreedRepositoryModule {
     @Provides
     @Singleton
-    fun provideBreedRepository(breedLocalDataSource: BreedLocalDataSource): BreedRepository =
+    internal fun provideBreedRepository(breedLocalDataSource: BreedLocalDataSource): BreedRepository =
         BreedRepositoryImp(breedLocalDataSource)
 }

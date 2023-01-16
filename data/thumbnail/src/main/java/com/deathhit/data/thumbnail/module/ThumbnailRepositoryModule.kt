@@ -15,7 +15,7 @@ import javax.inject.Singleton
 object ThumbnailRepositoryModule {
     @Provides
     @Singleton
-    fun provideThumbnailRepository(
+    internal fun provideThumbnailRepository(
         imageRemoteDataSource: ImageRemoteDataSource,
         thumbnailLocalDataSource: ThumbnailLocalDataSource
     ): ThumbnailRepository =
