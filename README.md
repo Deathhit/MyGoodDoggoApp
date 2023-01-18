@@ -1,7 +1,7 @@
 # MyGoodDoggoApp
 Android application architecture sample.
 # Goal
-Create a code structure which has the benefits described in [Guide to app architecture](https://developer.android.com/topic/architecture) and [Guide to Android app modularization](https://developer.android.com/topic/modularization)
+Create a code structure which has the benefits described in [Guide to app architecture](https://developer.android.com/topic/architecture) and [Guide to Android app modularization](https://developer.android.com/topic/modularization).
 # The Dog Api
 This project requires an api key from [The Dog Api](https://www.thedogapi.com/) to make paging work.  
 Replace the value of the metadata with your api key.
