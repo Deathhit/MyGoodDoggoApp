@@ -11,10 +11,10 @@ Replace the value of the metadata with your api key.
             android:name="@string/data_source_dog_api_api_key"
             android:value="@string/app_api_key_dog_api" /> <!--todo provide your own api key!-->
 ```
-# License
-```
 #Note
 For demonstration purpose, the optional parts like the use cases are not skipped in the project. For simple scenarios, repository can be used directly in view model.
+# License
+```
 Copyright 2021 Deathhit
 
 Licensed under the Apache License, Version 2.0 (the "License");
