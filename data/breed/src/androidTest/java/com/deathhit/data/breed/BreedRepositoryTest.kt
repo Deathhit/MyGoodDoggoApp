@@ -32,7 +32,7 @@ internal class BreedRepositoryTest {
     }
 
     @Test
-    fun sds() = runBlocking {
+    fun getBreedListFlowByThumbnailIdReturnsCorrespondResultsFromDb() = runBlocking {
         //Given
         val fakeBreedList = listOf(
             BreedEntity("0", "0", "0", "0", "0", "0"),
