@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.withTransaction
 import com.deathhit.core.database.dao.BreedDao
 import com.deathhit.core.database.dao.BreedThumbnailRefDao
 import com.deathhit.core.database.dao.RemoteKeyDao
