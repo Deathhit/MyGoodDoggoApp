@@ -16,5 +16,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "My Good Doggo App"
 include ':app'
-include ':data_source_dog_api'
-include ':domain'
+include ':core:database'
+include ':core:dog_api'
+include ':core:ui'
+include ':data:breed'
+include ':data:thumbnail'
+include ':feature:image_viewer'
+include ':feature:thumbnail'
+include ':use_case:breed'
+include ':use_case:thumbnail'

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Metadata Reference-->
+    <string name="core_dog_api_api_key">core_dog_api.API_KEY</string>
+    <string name="core_dog_api_base_url">core_dog_api.BASE_URL</string>
+</resources>

@@ -7,11 +7,12 @@ import androidx.fragment.app.FragmentOnAttachListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.deathhit.feature.thumbnail.thumbnail_list.ThumbnailListFragment
 import com.deathhit.my_good_doggo_app.activity.thumbnail_info.ThumbnailInfoActivity
 import com.deathhit.my_good_doggo_app.databinding.ActivityMainBinding
-import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListFragment
-import com.deathhit.my_good_doggo_app.fragment.thumbnail_list.ThumbnailListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -25,24 +26,20 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainActivityViewModel by viewModels()
 
-    private val fragmentOnAttachListener: FragmentOnAttachListener =
-        FragmentOnAttachListener { _, fragment ->
+    override fun onCreate(savedInstanceState: Bundle?) {
+        supportFragmentManager.addFragmentOnAttachListener { _, fragment ->
             when (fragment) {
-                is ThumbnailListFragment -> {
-                    fragment.onCallbackListener = { callback ->
-                        when (callback) {
-                            is ThumbnailListViewModel.Callback.OnClickItem -> viewModel.onClickThumbnail(
-                                callback.thumbnail
-                            )
+                is ThumbnailListFragment -> fragment.callback =
+                    object : ThumbnailListFragment.Callback {
+                        override fun onOpenThumbnail(thumbnailId: String) {
+                            viewModel.goToThumbnailInfo(thumbnailId)
                         }
                     }
-                }
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        supportFragmentManager.addFragmentOnAttachListener(fragmentOnAttachListener)
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         savedInstanceState ?: supportFragmentManager.beginTransaction().add(
@@ -54,23 +51,22 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.eventFlow.collect { event ->
-                        when (event) {
-                            is MainActivityViewModel.Event.GoToThumbnailInfo -> startActivity(
-                                ThumbnailInfoActivity.createIntent(
-                                    this@MainActivity,
-                                    event.thumbnail
+                    viewModel.stateFlow.map { it.actions }.distinctUntilChanged().collect {
+                        it.forEach { action ->
+                            when (action) {
+                                is MainActivityViewModel.State.Action.GoToThumbnailInfo -> startActivity(
+                                    ThumbnailInfoActivity.createIntent(
+                                        this@MainActivity,
+                                        action.thumbnailId
+                                    )
                                 )
-                            )
+                            }
+
+                            viewModel.onAction(action)
                         }
                     }
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        supportFragmentManager.removeFragmentOnAttachListener(fragmentOnAttachListener)
     }
 }

@@ -11,8 +11,19 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/data_source_dog_api" />
-            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/database" />
+            <option value="$PROJECT_DIR$/core/dog_api" />
+            <option value="$PROJECT_DIR$/core/ui" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/data/breed" />
+            <option value="$PROJECT_DIR$/data/thumbnail" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/image_viewer" />
+            <option value="$PROJECT_DIR$/feature/thumbnail" />
+            <option value="$PROJECT_DIR$/use_case" />
+            <option value="$PROJECT_DIR$/use_case/breed" />
+            <option value="$PROJECT_DIR$/use_case/thumbnail" />
           </set>
         </option>
       </GradleProjectSettings>

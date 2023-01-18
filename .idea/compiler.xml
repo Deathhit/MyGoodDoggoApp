@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="11">
+      <module name="My_Good_Doggo_App.core.android_test" target="11" />
+      <module name="My_Good_Doggo_App.domain" target="11" />
+      <module name="My_Good_Doggo_App.hilt" target="11" />
+      <module name="My_Good_Doggo_App.lib_dog_api" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
