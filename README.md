@@ -1,7 +1,7 @@
 # MyGoodDoggoApp
-Template Android application of UDF structure.
+Android application architecture sample.
 # Goal
-Follow the UI layer structure in [Google's guidelines](https://developer.android.com/jetpack/guide/ui-layer), handle single-use events and avoid duplicate view state setting.
+Create a code structure which has the benefits described in [Guide to app architecture](https://developer.android.com/topic/architecture) and [Guide to Android app modularization](https://developer.android.com/topic/modularization)
 # The Dog Api
 This project requires an api key from [The Dog Api](https://www.thedogapi.com/) to make paging work.  
 Replace the value of the metadata with your api key.
@@ -13,6 +13,8 @@ Replace the value of the metadata with your api key.
 ```
 # License
 ```
+#Note
+For demonstration purpose, the optional parts like the use cases are not skipped in the project. For simple scenarios, repository can be used directly in view model.
 Copyright 2021 Deathhit
 
 Licensed under the Apache License, Version 2.0 (the "License");
