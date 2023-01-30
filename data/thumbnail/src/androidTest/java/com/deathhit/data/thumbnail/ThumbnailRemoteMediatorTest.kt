@@ -32,14 +32,21 @@ class ThumbnailRemoteMediatorTest {
     @Before
     fun before() {
         hiltRule.inject()
+
+        with(fakeImageApiService) {
+            imageList.clear()
+            isThrowingError = false
+        }
     }
 
     @Test
     fun refreshLoadReturnsSuccessResultWhenMoreDataIsPresent() = runBlocking {
         //Given
         with(fakeImageApiService) {
+            val x = 10
+
             val breedList = mutableListOf<Image.Breed>().run {
-                for (i in 0 until 10)
+                for (i in 0 until x)
                     add(
                         Image.Breed(
                             Image.Breed.Weight("$i", "$i"),
@@ -58,7 +65,7 @@ class ThumbnailRemoteMediatorTest {
             }
 
             val testImageList = mutableListOf<Image>().run {
-                for (i in 0 until 10)
+                for (i in 0 until x)
                     add(Image(listOf(breedList[i]), i.toString(), "", i, i))
 
                 toList()
@@ -85,10 +92,6 @@ class ThumbnailRemoteMediatorTest {
     @Test
     fun refreshLoadSuccessAndEndOfPaginationWhenNoMoreData() = runBlocking {
         //Given
-        with(fakeImageApiService) {
-            imageList.clear()
-            isThrowingError = false
-        }
 
         //When
         val pagingState = PagingState<Int, ThumbnailEntity>(
@@ -107,9 +110,7 @@ class ThumbnailRemoteMediatorTest {
     @Test
     fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runBlocking {
         //Given
-        with(fakeImageApiService) {
-            isThrowingError = true
-        }
+        fakeImageApiService.isThrowingError = true
 
         //When
         val pagingState = PagingState<Int, ThumbnailEntity>(

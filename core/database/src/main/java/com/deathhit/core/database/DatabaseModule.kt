@@ -1,7 +1,6 @@
-package com.deathhit.core.database.module
+package com.deathhit.core.database
 
 import android.content.Context
-import com.deathhit.core.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppDatabaseModule {
+object DatabaseModule {
     @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context) = AppDatabase.create(context)

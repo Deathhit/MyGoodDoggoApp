@@ -1,4 +1,4 @@
-package com.deathhit.data.breed.module
+package com.deathhit.data.breed
 
 import com.deathhit.data.breed.data_source.BreedLocalDataSource
 import com.deathhit.data.breed.repository.BreedRepository

@@ -1,4 +1,4 @@
-package com.deathhit.data.thumbnail.module
+package com.deathhit.data.thumbnail
 
 import androidx.paging.ExperimentalPagingApi
 import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSource

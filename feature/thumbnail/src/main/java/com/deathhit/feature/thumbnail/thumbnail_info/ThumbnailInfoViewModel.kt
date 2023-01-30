@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.deathhit.feature.thumbnail.model.BreedVO
 import com.deathhit.feature.thumbnail.model.ThumbnailVO
 import com.deathhit.feature.thumbnail.model.toVO
-import com.deathhit.use_case.breed.GetBreedListFlowByThumbnailIdUseCase
-import com.deathhit.use_case.thumbnail.GetThumbnailFlowByIdUseCase
+import com.deathhit.use_case.breed.use_case.GetBreedListFlowByThumbnailIdUseCase
+import com.deathhit.use_case.thumbnail.use_case.GetThumbnailFlowByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*

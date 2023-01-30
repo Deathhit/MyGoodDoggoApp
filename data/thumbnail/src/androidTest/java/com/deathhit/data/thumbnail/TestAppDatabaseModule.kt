@@ -2,7 +2,7 @@ package com.deathhit.data.thumbnail
 
 import android.content.Context
 import com.deathhit.core.database.AppDatabase
-import com.deathhit.core.database.module.AppDatabaseModule
+import com.deathhit.core.database.DatabaseModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [AppDatabaseModule::class]
+    replaces = [DatabaseModule::class]
 )
 object TestAppDatabaseModule {
     @Provides

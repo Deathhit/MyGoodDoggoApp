@@ -1,9 +1,9 @@
-package com.deathhit.core.dog_api.module
+package com.deathhit.core.dog_api
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.deathhit.core.dog_api.R
+import com.deathhit.core.dog_api.service.ImageApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,17 +17,22 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object DogApiRetrofitModule {
+object DogApiModule {
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
     internal annotation class DogApiRetrofit
 
     private const val NAME_API_KEY = "x-api-key"
 
+    @Provides
+    @Singleton
+    fun provideImageApiService(@DogApiRetrofit retrofit: Retrofit): ImageApiService =
+        retrofit.create(ImageApiService::class.java)
+
     @DogApiRetrofit
     @Provides
     @Singleton
-    fun provideDogApiRetrofit(@ApplicationContext context: Context): Retrofit = Retrofit.Builder()
+    internal fun provideDogApiRetrofit(@ApplicationContext context: Context): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(getBaseUrl(context))
         .client(OkHttpClient.Builder().addInterceptor {
