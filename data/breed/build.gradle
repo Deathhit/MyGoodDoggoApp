@@ -13,7 +13,7 @@ android {
         minSdk 23
         targetSdk 33
 
-        testInstrumentationRunner "com.deathhit.data.breed.HiltTestRunner"
+        testInstrumentationRunner "com.deathhit.data.breed.config.HiltTestRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 

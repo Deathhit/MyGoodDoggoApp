@@ -1,4 +1,4 @@
-package com.deathhit.data.thumbnail
+package com.deathhit.data.thumbnail.config
 
 import com.deathhit.core.dog_api.response.Image
 import com.deathhit.core.dog_api.service.ImageApiService

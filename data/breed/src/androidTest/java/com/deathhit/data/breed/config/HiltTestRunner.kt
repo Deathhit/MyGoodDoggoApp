@@ -1,4 +1,4 @@
-package com.deathhit.data.breed
+package com.deathhit.data.breed.config
 
 import android.app.Application
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.deathhit.data.thumbnail
+package com.deathhit.data.thumbnail.config
 
 import com.deathhit.core.dog_api.DogApiModule
 import com.deathhit.core.dog_api.service.ImageApiService
@@ -13,13 +13,13 @@ import javax.inject.Singleton
     components = [SingletonComponent::class],
     replaces = [DogApiModule::class]
 )
-object TestDogApiServiceModule {
+object TestDogApiModule {
+    @Provides
+    @Singleton
+    fun provideFakeImageApiService(): FakeImageApiService = FakeImageApiService()
+
     @Provides
     @Singleton
     fun provideImageApiService(fakeImageApiService: FakeImageApiService): ImageApiService =
         fakeImageApiService
-
-    @Provides
-    @Singleton
-    fun provideFakeImageApiService(): FakeImageApiService = FakeImageApiService()
 }

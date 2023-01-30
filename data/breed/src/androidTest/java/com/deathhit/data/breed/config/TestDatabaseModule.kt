@@ -1,4 +1,4 @@
-package com.deathhit.data.thumbnail
+package com.deathhit.data.breed.config
 
 import android.content.Context
 import com.deathhit.core.database.AppDatabase
@@ -15,7 +15,7 @@ import javax.inject.Singleton
     components = [SingletonComponent::class],
     replaces = [DatabaseModule::class]
 )
-object TestAppDatabaseModule {
+object TestDatabaseModule {
     @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context) = AppDatabase.createInMemory(context)

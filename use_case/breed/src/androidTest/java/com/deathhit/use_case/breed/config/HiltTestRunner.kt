@@ -1,4 +1,4 @@
-package com.deathhit.data.thumbnail
+package com.deathhit.use_case.breed.config
 
 import android.app.Application
 import android.content.Context
