@@ -1,4 +1,4 @@
-package com.deathhit.feature.image_viewer
+package com.deathhit.feature.image_viewer.fragment
 
 import android.annotation.SuppressLint
 import android.graphics.Matrix
@@ -18,6 +18,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.deathhit.feature.image_viewer.R
 import com.deathhit.feature.image_viewer.databinding.FragmentImageViewerBinding
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

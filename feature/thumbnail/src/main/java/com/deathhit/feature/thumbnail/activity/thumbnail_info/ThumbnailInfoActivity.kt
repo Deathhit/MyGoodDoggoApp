@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.activity.thumbnail_info
+package com.deathhit.feature.thumbnail.activity.thumbnail_info
 
 import android.content.Context
 import android.content.Intent
@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.deathhit.feature.image_viewer.ImageViewerFragment
-import com.deathhit.feature.thumbnail.thumbnail_info.ThumbnailInfoFragment
-import com.deathhit.my_good_doggo_app.databinding.ActivityThumbnailInfoBinding
+import com.deathhit.feature.image_viewer.fragment.ImageViewerFragment
+import com.deathhit.feature.thumbnail.databinding.ActivityThumbnailInfoBinding
+import com.deathhit.feature.thumbnail.fragment.thumbnail_info.ThumbnailInfoFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

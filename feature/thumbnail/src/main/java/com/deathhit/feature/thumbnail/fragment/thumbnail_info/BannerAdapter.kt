@@ -1,4 +1,4 @@
-package com.deathhit.feature.thumbnail.thumbnail_info
+package com.deathhit.feature.thumbnail.fragment.thumbnail_info
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

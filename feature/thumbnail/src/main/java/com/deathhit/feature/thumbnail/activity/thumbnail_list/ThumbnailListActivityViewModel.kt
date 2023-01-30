@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.activity.main
+package com.deathhit.feature.thumbnail.activity.thumbnail_list
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor() : ViewModel() {
+class ThumbnailListActivityViewModel @Inject constructor() : ViewModel() {
     data class State(val actions: List<Action>) {
         sealed interface Action {
             data class GoToThumbnailInfo(val thumbnailId: String) : Action

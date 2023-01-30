@@ -1,4 +1,4 @@
-package com.deathhit.feature.thumbnail.thumbnail_list
+package com.deathhit.feature.thumbnail.fragment.thumbnail_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

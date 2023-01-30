@@ -1,4 +1,4 @@
-package com.deathhit.feature.thumbnail.thumbnail_info
+package com.deathhit.feature.thumbnail.fragment.thumbnail_info
 
 import androidx.recyclerview.widget.RecyclerView
 import com.deathhit.feature.thumbnail.databinding.ItemThumbnailInfoBannerBinding

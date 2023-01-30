@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.main.MainActivity">
+    tools:context="com.deathhit.feature.thumbnail.activity.thumbnail_list.ThumbnailListActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/activity_materialToolbar"

@@ -1,4 +1,4 @@
-package com.deathhit.my_good_doggo_app.activity.thumbnail_info
+package com.deathhit.feature.thumbnail.activity.thumbnail_info
 
 import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
