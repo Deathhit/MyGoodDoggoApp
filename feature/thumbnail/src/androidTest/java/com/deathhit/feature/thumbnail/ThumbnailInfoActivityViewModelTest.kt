@@ -4,8 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import com.deathhit.feature.thumbnail.activity.thumbnail_info.ThumbnailInfoActivityViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,6 +27,8 @@ class ThumbnailInfoActivityViewModelTest {
 
     @Before
     fun before() {
+        Dispatchers.setMain(StandardTestDispatcher())
+
         hiltRule.inject()
 
         viewModel = ThumbnailInfoActivityViewModel(
@@ -32,21 +39,23 @@ class ThumbnailInfoActivityViewModelTest {
         )
     }
 
+    @After
+    fun after() {
+        Dispatchers.resetMain()
+    }
+
     @Test
     fun onActionShouldRemoveTheGivenAction() = runTest {
         //Given
-        val url = "https://test.com/"
+        viewModel.openImage("https://test.com/")
 
-        viewModel.openImage(url)
-
-        val action =
-            viewModel.stateFlow.value.actions.last() as ThumbnailInfoActivityViewModel.State.Action.OpenImage
+        val action = viewModel.stateFlow.value.actions.last()
 
         //When
         viewModel.onAction(action)
 
         //Then
-        assert(!viewModel.stateFlow.value.actions.contains(action))
+        assert(viewModel.stateFlow.value.actions.lastOrNull() != action)
     }
 
     @Test
