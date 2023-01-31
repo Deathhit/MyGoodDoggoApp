@@ -1,4 +1,4 @@
-package com.deathhit.use_case.breed.use_case
+package com.deathhit.use_case.breed
 
 import com.deathhit.data.breed.repository.BreedRepository
 

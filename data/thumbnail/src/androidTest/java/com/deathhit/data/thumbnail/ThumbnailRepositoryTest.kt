@@ -7,6 +7,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,14 +27,18 @@ class ThumbnailRepositoryTest {
     @Before
     fun before() {
         hiltRule.inject()
+    }
 
-        appDatabase.clearAllTables()
+    @After
+    fun after() {
+        appDatabase.close()
     }
 
     @Test
     fun getThumbnailFlowByIdFirstReturnsTheCorrespondObj() = runBlocking {
         //Given
         val entity = ThumbnailEntity("12345", "thumbnailUrl")
+
         appDatabase.thumbnailDao().insertOrReplaceAll(listOf(entity))
 
         //When

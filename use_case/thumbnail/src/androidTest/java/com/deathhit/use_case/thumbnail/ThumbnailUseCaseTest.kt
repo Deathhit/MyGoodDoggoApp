@@ -3,8 +3,6 @@ package com.deathhit.use_case.thumbnail
 import androidx.paging.PagingData
 import com.deathhit.data.thumbnail.ThumbnailDO
 import com.deathhit.use_case.thumbnail.config.FakeThumbnailRepository
-import com.deathhit.use_case.thumbnail.use_case.GetThumbnailFlowByIdUseCase
-import com.deathhit.use_case.thumbnail.use_case.GetThumbnailListFlowUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
@@ -43,6 +41,7 @@ class ThumbnailUseCaseTest {
     fun getThumbnailFlowByIdUseCaseReturnsTheCorrespondObjInRepository() = runBlocking {
         //Given
         val fakeThumbnail = ThumbnailDO("0", "")
+
         fakeThumbnailRepository.thumbnailFlow.update { fakeThumbnail }
 
         //When
@@ -56,6 +55,7 @@ class ThumbnailUseCaseTest {
     fun getThumbnailListFlowUseCaseReturnsTheCorrespondPagingDataInRepository() = runBlocking {
         //Given
         val fakePagingData = PagingData.empty<ThumbnailDO>()
+
         fakeThumbnailRepository.thumbnailPagingDataFlow.update { fakePagingData }
 
         //When

@@ -1,4 +1,4 @@
-package com.deathhit.use_case.thumbnail.use_case
+package com.deathhit.use_case.thumbnail
 
 import androidx.paging.PagingData
 import com.deathhit.data.thumbnail.ThumbnailDO

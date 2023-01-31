@@ -2,7 +2,6 @@ package com.deathhit.use_case.breed
 
 import com.deathhit.data.breed.BreedDO
 import com.deathhit.use_case.breed.config.FakeBreedRepository
-import com.deathhit.use_case.breed.use_case.GetBreedListFlowByThumbnailIdUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
@@ -39,6 +38,7 @@ class BreedUseCaseTest {
             BreedDO("1", "", "", "", "", ""),
             BreedDO("2", "", "", "", "", "")
         )
+
         fakeBreedRepository.breedListFlow.update { fakeBreedList }
 
         //When

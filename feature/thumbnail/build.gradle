@@ -14,7 +14,7 @@ android {
         minSdk 23
         targetSdk 33
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.deathhit.feature.thumbnail.config.HiltTestRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -51,6 +51,11 @@ dependencies {
     //Constraint Layout
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
+    //Coroutine
+    def coroutine_version = '1.6.4'
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+
     //Glide
     def glide_version = '4.14.2'
     kapt "com.github.bumptech.glide:compiler:$glide_version"
@@ -60,6 +65,11 @@ dependencies {
     def hilt_version = '2.44.2'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
+
+    //Hilt Test
+    def hilt_test_version = '2.44.2'
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_test_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_test_version"
 
     //KTX
     implementation 'androidx.fragment:fragment-ktx:1.5.5'

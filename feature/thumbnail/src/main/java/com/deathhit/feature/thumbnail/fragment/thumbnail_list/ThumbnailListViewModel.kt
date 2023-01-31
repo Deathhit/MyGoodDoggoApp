@@ -6,7 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.deathhit.feature.thumbnail.model.ThumbnailVO
 import com.deathhit.feature.thumbnail.model.toVO
-import com.deathhit.use_case.thumbnail.use_case.GetThumbnailListFlowUseCase
+import com.deathhit.use_case.thumbnail.GetThumbnailListFlowUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

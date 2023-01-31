@@ -14,5 +14,5 @@ class FakeImageApiService : ImageApiService {
         order: String?,
         page: Int?,
         limit: Int?
-    ): List<Image> = if (isThrowingError) throw RuntimeException("isThrowingError = true") else imageList
+    ): List<Image> = if (isThrowingError) throw RuntimeException("isThrowingError == true") else imageList
 }

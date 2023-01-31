@@ -1,4 +1,4 @@
-package com.deathhit.use_case.thumbnail.use_case
+package com.deathhit.use_case.thumbnail
 
 import com.deathhit.data.thumbnail.repository.ThumbnailRepository
 

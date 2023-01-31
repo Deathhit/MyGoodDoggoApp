@@ -33,11 +33,25 @@ class ThumbnailRemoteMediatorTest {
     @Before
     fun before() {
         hiltRule.inject()
+    }
 
-        with(fakeImageApiService) {
-            imageList.clear()
-            isThrowingError = false
-        }
+    @Test
+    fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runBlocking {
+        //Given
+        fakeImageApiService.isThrowingError = true
+
+        //When
+        val pagingState = PagingState<Int, ThumbnailEntity>(
+            listOf(),
+            null,
+            PagingConfig(PAGE_SIZE),
+            0
+        )
+
+        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
+
+        //Then
+        assertTrue(result is RemoteMediator.MediatorResult.Error)
     }
 
     @Test
@@ -106,23 +120,5 @@ class ThumbnailRemoteMediatorTest {
         //Then
         assertTrue(result is RemoteMediator.MediatorResult.Success)
         assertTrue((result is RemoteMediator.MediatorResult.Success) && result.endOfPaginationReached)
-    }
-
-    @Test
-    fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runBlocking {
-        //Given
-        fakeImageApiService.isThrowingError = true
-
-        //When
-        val pagingState = PagingState<Int, ThumbnailEntity>(
-            listOf(),
-            null,
-            PagingConfig(PAGE_SIZE),
-            0
-        )
-        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
-
-        //Then
-        assertTrue(result is RemoteMediator.MediatorResult.Error)
     }
 }
