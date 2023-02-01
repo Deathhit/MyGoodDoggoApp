@@ -4,14 +4,16 @@ import com.deathhit.data.breed.BreedDO
 import com.deathhit.use_case.breed.config.FakeBreedRepository
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class BreedUseCaseTest {
     @get:Rule
@@ -31,7 +33,7 @@ class BreedUseCaseTest {
     }
 
     @Test
-    fun getBreedListFlowByThumbnailIdUseCaseReturnsTheCorrespondListInRepository() = runBlocking {
+    fun getBreedListFlowByThumbnailIdUseCaseReturnsTheCorrespondListInRepository() = runTest {
         //Given
         val fakeBreedList = listOf(
             BreedDO("0", "", "", "", "", ""),

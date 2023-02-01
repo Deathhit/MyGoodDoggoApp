@@ -37,15 +37,17 @@ android {
 dependencies {
     api project(':data:breed')
 
+    //Coroutine
+    def coroutine_version = '1.6.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
+
     //Hilt
     def hilt_version = '2.44.2'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-
-    //Hilt Test
-    def hilt_test_version = '2.44.2'
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_test_version"
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_test_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
