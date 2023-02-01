@@ -6,14 +6,16 @@ import com.deathhit.core.database.model.BreedThumbnailRefEntity
 import com.deathhit.data.breed.repository.BreedRepository
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 internal class BreedRepositoryTest {
     @get:Rule
@@ -36,7 +38,7 @@ internal class BreedRepositoryTest {
     }
 
     @Test
-    fun getBreedListFlowByThumbnailIdReturnsCorrespondResultsFromDb() = runBlocking {
+    fun getBreedListFlowByThumbnailIdReturnsCorrespondResultsFromDb() = runTest {
         //Given
         val fakeBreedList = listOf(
             BreedEntity("0", "0", "0", "0", "0", "0"),

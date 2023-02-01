@@ -7,15 +7,16 @@ import com.deathhit.data.thumbnail.config.FakeImageApiService
 import com.deathhit.data.thumbnail.repository.ThumbnailRemoteMediator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalPagingApi::class)
 @HiltAndroidTest
-@OptIn(ExperimentalPagingApi::class)
 class ThumbnailRemoteMediatorTest {
     companion object {
         private const val PAGE_SIZE = 25
@@ -36,7 +37,7 @@ class ThumbnailRemoteMediatorTest {
     }
 
     @Test
-    fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runBlocking {
+    fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runTest {
         //Given
         fakeImageApiService.isThrowingError = true
 
@@ -55,7 +56,7 @@ class ThumbnailRemoteMediatorTest {
     }
 
     @Test
-    fun refreshLoadReturnsSuccessResultWhenMoreDataIsPresent() = runBlocking {
+    fun refreshLoadReturnsSuccessResultWhenMoreDataIsPresent() = runTest {
         //Given
         with(fakeImageApiService) {
             val x = 10
@@ -103,7 +104,7 @@ class ThumbnailRemoteMediatorTest {
     }
 
     @Test
-    fun refreshLoadSuccessAndEndOfPaginationWhenNoMoreData() = runBlocking {
+    fun refreshLoadSuccessAndEndOfPaginationWhenNoMoreData() = runTest {
         //Given
 
         //When

@@ -5,14 +5,16 @@ import com.deathhit.core.database.model.ThumbnailEntity
 import com.deathhit.data.thumbnail.repository.ThumbnailRepository
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class ThumbnailRepositoryTest {
     @get:Rule
@@ -35,7 +37,7 @@ class ThumbnailRepositoryTest {
     }
 
     @Test
-    fun getThumbnailFlowByIdFirstReturnsTheCorrespondObj() = runBlocking {
+    fun getThumbnailFlowByIdFirstReturnsTheCorrespondObj() = runTest {
         //Given
         val entity = ThumbnailEntity("12345", "thumbnailUrl")
         appDatabase.thumbnailDao().insertOrReplaceAll(listOf(entity))
