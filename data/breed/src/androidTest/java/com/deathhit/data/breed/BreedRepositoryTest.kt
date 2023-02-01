@@ -8,6 +8,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,8 +28,11 @@ internal class BreedRepositoryTest {
     @Before
     fun before() {
         hiltRule.inject()
+    }
 
-        appDatabase.clearAllTables()
+    @After
+    fun after() {
+        appDatabase.close()
     }
 
     @Test
@@ -45,7 +49,6 @@ internal class BreedRepositoryTest {
             BreedEntity("7", "7", "7", "7", "7", "7"),
             BreedEntity("8", "8", "8", "8", "8", "8")
         )
-
         val fakeBreedRefList = listOf(
             BreedThumbnailRefEntity("0", "0"),
             BreedThumbnailRefEntity("1", "0"),

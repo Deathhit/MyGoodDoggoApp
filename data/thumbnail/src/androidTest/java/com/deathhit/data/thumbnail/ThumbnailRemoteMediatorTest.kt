@@ -3,6 +3,7 @@ package com.deathhit.data.thumbnail
 import androidx.paging.*
 import com.deathhit.core.database.model.ThumbnailEntity
 import com.deathhit.core.dog_api.response.Image
+import com.deathhit.data.thumbnail.config.FakeImageApiService
 import com.deathhit.data.thumbnail.repository.ThumbnailRemoteMediator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -35,11 +36,31 @@ class ThumbnailRemoteMediatorTest {
     }
 
     @Test
+    fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runBlocking {
+        //Given
+        fakeImageApiService.isThrowingError = true
+
+        //When
+        val pagingState = PagingState<Int, ThumbnailEntity>(
+            listOf(),
+            null,
+            PagingConfig(PAGE_SIZE),
+            0
+        )
+
+        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
+
+        //Then
+        assertTrue(result is RemoteMediator.MediatorResult.Error)
+    }
+
+    @Test
     fun refreshLoadReturnsSuccessResultWhenMoreDataIsPresent() = runBlocking {
         //Given
         with(fakeImageApiService) {
+            val x = 10
             val breedList = mutableListOf<Image.Breed>().run {
-                for (i in 0 until 10)
+                for (i in 0 until x)
                     add(
                         Image.Breed(
                             Image.Breed.Weight("$i", "$i"),
@@ -56,9 +77,8 @@ class ThumbnailRemoteMediatorTest {
 
                 toList()
             }
-
             val testImageList = mutableListOf<Image>().run {
-                for (i in 0 until 10)
+                for (i in 0 until x)
                     add(Image(listOf(breedList[i]), i.toString(), "", i, i))
 
                 toList()
@@ -85,10 +105,6 @@ class ThumbnailRemoteMediatorTest {
     @Test
     fun refreshLoadSuccessAndEndOfPaginationWhenNoMoreData() = runBlocking {
         //Given
-        with(fakeImageApiService) {
-            imageList.clear()
-            isThrowingError = false
-        }
 
         //When
         val pagingState = PagingState<Int, ThumbnailEntity>(
@@ -102,25 +118,5 @@ class ThumbnailRemoteMediatorTest {
         //Then
         assertTrue(result is RemoteMediator.MediatorResult.Success)
         assertTrue((result is RemoteMediator.MediatorResult.Success) && result.endOfPaginationReached)
-    }
-
-    @Test
-    fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runBlocking {
-        //Given
-        with(fakeImageApiService) {
-            isThrowingError = true
-        }
-
-        //When
-        val pagingState = PagingState<Int, ThumbnailEntity>(
-            listOf(),
-            null,
-            PagingConfig(PAGE_SIZE),
-            0
-        )
-        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
-
-        //Then
-        assertTrue(result is RemoteMediator.MediatorResult.Error)
     }
 }
