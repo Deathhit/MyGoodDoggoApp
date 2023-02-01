@@ -38,7 +38,6 @@ class BreedUseCaseTest {
             BreedDO("1", "", "", "", "", ""),
             BreedDO("2", "", "", "", "", "")
         )
-
         fakeBreedRepository.breedListFlow.update { fakeBreedList }
 
         //When

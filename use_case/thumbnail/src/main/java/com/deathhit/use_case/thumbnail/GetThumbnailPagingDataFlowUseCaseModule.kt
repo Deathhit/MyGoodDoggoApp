@@ -8,8 +8,8 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object GetThumbnailListFlowUseCaseModule {
+object GetThumbnailPagingDataFlowUseCaseModule {
     @Provides
-    internal fun provideGetThumbnailListFlowUseCase(thumbnailRepository: ThumbnailRepository): GetThumbnailListFlowUseCase =
-        GetThumbnailListFlowUseCaseImp(thumbnailRepository)
+    internal fun provideGetThumbnailListFlowUseCase(thumbnailRepository: ThumbnailRepository): GetThumbnailPagingDataFlowUseCase =
+        GetThumbnailPagingDataFlowUseCaseImp(thumbnailRepository)
 }

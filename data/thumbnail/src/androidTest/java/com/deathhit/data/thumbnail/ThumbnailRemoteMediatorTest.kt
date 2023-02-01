@@ -59,7 +59,6 @@ class ThumbnailRemoteMediatorTest {
         //Given
         with(fakeImageApiService) {
             val x = 10
-
             val breedList = mutableListOf<Image.Breed>().run {
                 for (i in 0 until x)
                     add(
@@ -78,7 +77,6 @@ class ThumbnailRemoteMediatorTest {
 
                 toList()
             }
-
             val testImageList = mutableListOf<Image>().run {
                 for (i in 0 until x)
                     add(Image(listOf(breedList[i]), i.toString(), "", i, i))

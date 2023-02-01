@@ -53,7 +53,6 @@ class ThumbnailListActivityViewModelTest {
     fun onActionShouldRemoveTheGivenAction() = runTest {
         //Given
         viewModel.goToThumbnailInfo("0")
-
         val action = viewModel.stateFlow.value.actions.last()
 
         //When

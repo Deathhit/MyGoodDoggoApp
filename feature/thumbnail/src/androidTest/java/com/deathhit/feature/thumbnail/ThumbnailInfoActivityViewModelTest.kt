@@ -48,14 +48,13 @@ class ThumbnailInfoActivityViewModelTest {
     fun onActionShouldRemoveTheGivenAction() = runTest {
         //Given
         viewModel.openImage("https://test.com/")
-
         val action = viewModel.stateFlow.value.actions.last()
 
         //When
         viewModel.onAction(action)
 
         //Then
-        assert(viewModel.stateFlow.value.actions.lastOrNull() != action)
+        assert(!viewModel.stateFlow.value.actions.contains(action))
     }
 
     @Test

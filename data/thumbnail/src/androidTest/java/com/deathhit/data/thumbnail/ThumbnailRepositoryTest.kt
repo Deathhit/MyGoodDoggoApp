@@ -38,7 +38,6 @@ class ThumbnailRepositoryTest {
     fun getThumbnailFlowByIdFirstReturnsTheCorrespondObj() = runBlocking {
         //Given
         val entity = ThumbnailEntity("12345", "thumbnailUrl")
-
         appDatabase.thumbnailDao().insertOrReplaceAll(listOf(entity))
 
         //When

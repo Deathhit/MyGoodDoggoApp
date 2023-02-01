@@ -83,7 +83,7 @@ class ThumbnailListFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch{
-            viewModel.thumbnailListFlow.collectLatest {
+            viewModel.thumbnailPagingDataFlow.collectLatest {
                 thumbnailAdapter.submitData(lifecycle, it)
             }
         }

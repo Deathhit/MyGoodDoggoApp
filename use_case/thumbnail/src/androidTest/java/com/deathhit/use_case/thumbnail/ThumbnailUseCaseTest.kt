@@ -25,7 +25,7 @@ class ThumbnailUseCaseTest {
     internal lateinit var getThumbnailFlowByIdUseCase: GetThumbnailFlowByIdUseCase
 
     @Inject
-    internal lateinit var getThumbnailListFlowUseCase: GetThumbnailListFlowUseCase
+    internal lateinit var getThumbnailPagingDataFlowUseCase: GetThumbnailPagingDataFlowUseCase
 
     @Before
     fun before() {
@@ -41,7 +41,6 @@ class ThumbnailUseCaseTest {
     fun getThumbnailFlowByIdUseCaseReturnsTheCorrespondObjInRepository() = runBlocking {
         //Given
         val fakeThumbnail = ThumbnailDO("0", "")
-
         fakeThumbnailRepository.thumbnailFlow.update { fakeThumbnail }
 
         //When
@@ -52,14 +51,13 @@ class ThumbnailUseCaseTest {
     }
 
     @Test
-    fun getThumbnailListFlowUseCaseReturnsTheCorrespondPagingDataInRepository() = runBlocking {
+    fun getThumbnailPagingDataFlowUseCaseReturnsTheCorrespondPagingDataInRepository() = runBlocking {
         //Given
         val fakePagingData = PagingData.empty<ThumbnailDO>()
-
         fakeThumbnailRepository.thumbnailPagingDataFlow.update { fakePagingData }
 
         //When
-        val result = getThumbnailListFlowUseCase().first()
+        val result = getThumbnailPagingDataFlowUseCase().first()
 
         //Then
         assert(fakePagingData == result)

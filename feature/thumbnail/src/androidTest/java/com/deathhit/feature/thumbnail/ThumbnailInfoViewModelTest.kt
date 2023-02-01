@@ -58,9 +58,7 @@ class ThumbnailInfoViewModelTest {
     fun onActionShouldRemoveTheGivenAction() = runTest {
         //Given
         val url = "https://test.com/"
-
         viewModel.openImage(url)
-
         val action =
             viewModel.stateFlow.value.actions.last() as ThumbnailInfoViewModel.State.Action.OpenImage
 
@@ -114,7 +112,6 @@ class ThumbnailInfoViewModelTest {
         //When
         fakeGetBreedListFlowByThumbnailIdUseCase.breedListFlow.update { fakeBreedList }
         fakeGetThumbnailFlowByIdUseCase.thumbnailFlow.update { fakeThumbnail }
-
         advanceUntilIdle()
 
         //Then

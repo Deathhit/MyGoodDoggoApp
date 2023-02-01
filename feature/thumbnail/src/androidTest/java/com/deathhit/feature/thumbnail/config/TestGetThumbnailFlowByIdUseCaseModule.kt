@@ -21,6 +21,6 @@ object TestGetThumbnailFlowByIdUseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetBreedListFlowByThumbnailIdUseCase(fakeGetThumbnailFlowByIdUseCase: FakeGetThumbnailFlowByIdUseCase): GetThumbnailFlowByIdUseCase =
+    fun provideGetThumbnailFlowByIdUseCase(fakeGetThumbnailFlowByIdUseCase: FakeGetThumbnailFlowByIdUseCase): GetThumbnailFlowByIdUseCase =
         fakeGetThumbnailFlowByIdUseCase
 }
