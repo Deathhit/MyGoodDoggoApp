@@ -35,17 +35,10 @@ android {
 }
 
 dependencies {
-    //Coroutine
-    def coroutine_version = '1.6.4'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
-
     //Hilt
     def hilt_version = '2.44.2'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //Retrofit
     def retrofit_version = "2.9.0"
