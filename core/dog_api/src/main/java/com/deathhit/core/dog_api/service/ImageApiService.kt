@@ -1,6 +1,6 @@
 package com.deathhit.core.dog_api.service
 
-import com.deathhit.core.dog_api.response.Image
+import com.deathhit.core.dog_api.model.Image
 import retrofit2.http.GET
 import retrofit2.http.Query
 

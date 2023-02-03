@@ -9,11 +9,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class BreedLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
-    private val breedDao = appDatabase.breedDao()
-
+internal class BreedLocalDataSource @Inject constructor(private val appDatabase: AppDatabase) {
     fun getBreedListFlowByThumbnailId(thumbnailId: String): Flow<List<BreedDO>> =
-        breedDao.getListFlowByThumbnailId(thumbnailId)
+        appDatabase.breedDao().getListFlowByThumbnailId(thumbnailId)
             .map { it.map { breedEntity -> breedEntity.toDO() } }
 
     private fun BreedEntity.toDO() =

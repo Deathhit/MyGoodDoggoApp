@@ -1,4 +1,4 @@
-package com.deathhit.core.dog_api.response
+package com.deathhit.core.dog_api.model
 
 data class Image(
     val breeds: List<Breed>,

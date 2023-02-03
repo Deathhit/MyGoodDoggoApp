@@ -1,3 +1,3 @@
--keepclassmembers class com.deathhit.core.dog_api.response.** {
+-keepclassmembers class com.deathhit.core.dog_api.model.** {
  !transient <fields>;
 }

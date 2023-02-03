@@ -1,6 +1,6 @@
 package com.deathhit.data.thumbnail.data_source
 
-import com.deathhit.core.dog_api.response.Image
+import com.deathhit.core.dog_api.model.Image
 import com.deathhit.core.dog_api.service.ImageApiService
 import javax.inject.Inject
 import javax.inject.Singleton

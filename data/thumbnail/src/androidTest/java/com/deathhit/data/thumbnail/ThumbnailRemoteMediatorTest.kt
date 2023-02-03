@@ -2,7 +2,7 @@ package com.deathhit.data.thumbnail
 
 import androidx.paging.*
 import com.deathhit.core.database.model.ThumbnailEntity
-import com.deathhit.core.dog_api.response.Image
+import com.deathhit.core.dog_api.model.Image
 import com.deathhit.data.thumbnail.config.FakeImageApiService
 import com.deathhit.data.thumbnail.repository.ThumbnailRemoteMediator
 import dagger.hilt.android.testing.HiltAndroidRule

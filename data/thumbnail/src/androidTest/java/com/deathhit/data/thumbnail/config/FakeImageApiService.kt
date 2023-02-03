@@ -1,6 +1,6 @@
 package com.deathhit.data.thumbnail.config
 
-import com.deathhit.core.dog_api.response.Image
+import com.deathhit.core.dog_api.model.Image
 import com.deathhit.core.dog_api.service.ImageApiService
 
 class FakeImageApiService : ImageApiService {

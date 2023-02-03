@@ -17,8 +17,6 @@ internal class ThumbnailLocalDataSource @Inject constructor(private val appDatab
         private const val REMOTE_KEY_LABEL = "62c50cde2d404e13bad1f2128c29988f"
     }
 
-    private val thumbnailDao = appDatabase.thumbnailDao()
-
     suspend fun getNextThumbnailPageIndex(): Int? = with(appDatabase) {
         withTransaction {
             remoteKeyDao()
@@ -27,10 +25,10 @@ internal class ThumbnailLocalDataSource @Inject constructor(private val appDatab
     }
 
     fun getThumbnailFlowById(thumbnailId: String): Flow<ThumbnailEntity?> =
-        thumbnailDao.getEntityById(thumbnailId)
+        appDatabase.thumbnailDao().getEntityById(thumbnailId)
 
     fun getThumbnailPagingSource(): PagingSource<Int, ThumbnailEntity> =
-        thumbnailDao.getPagingSource()
+        appDatabase.thumbnailDao().getPagingSource()
 
     suspend fun insertThumbnailPage(
         breedEntities: List<BreedEntity>,
