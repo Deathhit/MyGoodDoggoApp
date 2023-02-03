@@ -7,7 +7,6 @@ import androidx.paging.RemoteMediator
 import com.deathhit.core.database.model.BreedEntity
 import com.deathhit.core.database.model.BreedThumbnailRefEntity
 import com.deathhit.core.database.model.ThumbnailEntity
-import com.deathhit.core.dog_api.service.ImageApiService
 import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSource
 import com.deathhit.data.thumbnail.data_source.ThumbnailLocalDataSource
 
@@ -27,7 +26,7 @@ internal class ThumbnailRemoteMediator(
             // from where it left off. For REFRESH, pass to load the
             // first page.
             val loadKey = when (loadType) {
-                LoadType.REFRESH -> ImageApiService.PAGE_DEFAULT
+                LoadType.REFRESH -> ImageRemoteDataSource.PAGE_DEFAULT
                 // In this example, you never need to prepend, since REFRESH
                 // will always load the first page in the list. Immediately
                 // return, reporting end of pagination.

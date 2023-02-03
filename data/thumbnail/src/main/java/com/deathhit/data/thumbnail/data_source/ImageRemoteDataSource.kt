@@ -7,6 +7,9 @@ import javax.inject.Singleton
 
 @Singleton
 internal class ImageRemoteDataSource @Inject constructor(private val imageApiService: ImageApiService) {
+    companion object {
+        const val PAGE_DEFAULT = ImageApiService.PAGE_DEFAULT
+    }
     suspend fun fetchImageByPage(page: Int?, pageSize: Int): List<Image> =
         imageApiService.searchImage(
             ImageApiService.SIZE_THUMB,

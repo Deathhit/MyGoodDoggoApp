@@ -19,7 +19,7 @@ internal class ThumbnailRepositoryImp(
     override fun getThumbnailFlowById(thumbnailId: String): Flow<ThumbnailDO?> =
         thumbnailLocalDataSource.getThumbnailFlowById(thumbnailId).map { it?.toDO() }
 
-    override fun getThumbnailListFlow(): Flow<PagingData<ThumbnailDO>> = Pager(
+    override fun getThumbnailPagingDataFlow(): Flow<PagingData<ThumbnailDO>> = Pager(
         PagingConfig(PAGE_SIZE),
         null,
         thumbnailRemoteMediator

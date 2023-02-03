@@ -5,7 +5,6 @@ import com.deathhit.data.thumbnail.ThumbnailDO
 import com.deathhit.data.thumbnail.repository.ThumbnailRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 
 class FakeThumbnailRepository : ThumbnailRepository {
     val thumbnailFlow = MutableStateFlow<ThumbnailDO?>(null)
@@ -13,5 +12,5 @@ class FakeThumbnailRepository : ThumbnailRepository {
 
     override fun getThumbnailFlowById(thumbnailId: String): Flow<ThumbnailDO?> = thumbnailFlow
 
-    override fun getThumbnailListFlow(): Flow<PagingData<ThumbnailDO>> = thumbnailPagingDataFlow
+    override fun getThumbnailPagingDataFlow(): Flow<PagingData<ThumbnailDO>> = thumbnailPagingDataFlow
 }

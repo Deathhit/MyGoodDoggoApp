@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface ThumbnailRepository {
     fun getThumbnailFlowById(thumbnailId: String): Flow<ThumbnailDO?>
 
-    fun getThumbnailListFlow(): Flow<PagingData<ThumbnailDO>>
+    fun getThumbnailPagingDataFlow(): Flow<PagingData<ThumbnailDO>>
 }
