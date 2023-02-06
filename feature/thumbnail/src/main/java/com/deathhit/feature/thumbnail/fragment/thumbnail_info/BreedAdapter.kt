@@ -6,17 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.deathhit.feature.thumbnail.databinding.ItemThumbnailInfoBreedBinding
-import com.deathhit.feature.thumbnail.model.BreedVO
+import com.deathhit.feature.thumbnail.model.Breed
 
-class BreedAdapter : ListAdapter<BreedVO, BreedViewHolder>(COMPARATOR) {
+class BreedAdapter : ListAdapter<Breed, BreedViewHolder>(COMPARATOR) {
     companion object {
-        private val COMPARATOR = object : DiffUtil.ItemCallback<BreedVO>() {
-            override fun areItemsTheSame(oldItem: BreedVO, newItem: BreedVO): Boolean =
-                oldItem.breedId == newItem.breedId
+        private val COMPARATOR =
+            object : DiffUtil.ItemCallback<Breed>() {
+                override fun areItemsTheSame(oldItem: Breed, newItem: Breed): Boolean =
+                    oldItem.breedId == newItem.breedId
 
-            override fun areContentsTheSame(oldItem: BreedVO, newItem: BreedVO): Boolean =
-                oldItem == newItem
-        }
+                override fun areContentsTheSame(oldItem: Breed, newItem: Breed): Boolean =
+                    oldItem == newItem
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreedViewHolder =

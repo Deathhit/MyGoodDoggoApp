@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.deathhit.feature.thumbnail.model.ThumbnailVO
-import com.deathhit.feature.thumbnail.model.toVO
+import com.deathhit.feature.thumbnail.model.Thumbnail
+import com.deathhit.feature.thumbnail.model.toThumbnail
 import com.deathhit.use_case.thumbnail.GetThumbnailPagingDataFlowUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +27,7 @@ class ThumbnailListViewModel @Inject constructor(getThumbnailPagingDataFlowUseCa
     val stateFlow = _stateFlow.asStateFlow()
 
     val thumbnailPagingDataFlow =
-        getThumbnailPagingDataFlowUseCase().map { pagingData -> pagingData.map { it.toVO() } }
+        getThumbnailPagingDataFlowUseCase().map { pagingData -> pagingData.map { it.toThumbnail() } }
             .cachedIn(viewModelScope)
 
     fun onAction(action: State.Action) {
@@ -36,7 +36,7 @@ class ThumbnailListViewModel @Inject constructor(getThumbnailPagingDataFlowUseCa
         }
     }
 
-    fun openThumbnail(thumbnail: ThumbnailVO) {
+    fun openThumbnail(thumbnail: Thumbnail) {
         _stateFlow.update { state ->
             state.copy(actions = state.actions + State.Action.OpenThumbnail(thumbnail.thumbnailId))
         }

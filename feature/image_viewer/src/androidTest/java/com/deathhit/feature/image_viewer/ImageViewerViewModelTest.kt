@@ -1,7 +1,7 @@
 package com.deathhit.feature.image_viewer
 
 import androidx.lifecycle.SavedStateHandle
-import com.deathhit.feature.image_viewer.fragment.ImageViewerViewModel
+import com.deathhit.feature.image_viewer.fragment.image_viewer.ImageViewerViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers

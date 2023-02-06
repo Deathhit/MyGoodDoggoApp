@@ -7,19 +7,19 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.deathhit.feature.thumbnail.databinding.ItemThumbnailListThumbnailBinding
-import com.deathhit.feature.thumbnail.model.ThumbnailVO
-import java.lang.Exception
+import com.deathhit.feature.thumbnail.model.Thumbnail
 
 abstract class ThumbnailAdapter :
-    PagingDataAdapter<ThumbnailVO, ThumbnailViewHolder>(COMPARATOR) {
+    PagingDataAdapter<Thumbnail, ThumbnailViewHolder>(COMPARATOR) {
     companion object {
-        private val COMPARATOR = object : DiffUtil.ItemCallback<ThumbnailVO>() {
-            override fun areItemsTheSame(oldItem: ThumbnailVO, newItem: ThumbnailVO): Boolean =
-                oldItem.thumbnailId == newItem.thumbnailId
+        private val COMPARATOR =
+            object : DiffUtil.ItemCallback<Thumbnail>() {
+                override fun areItemsTheSame(oldItem: Thumbnail, newItem: Thumbnail): Boolean =
+                    oldItem.thumbnailId == newItem.thumbnailId
 
-            override fun areContentsTheSame(oldItem: ThumbnailVO, newItem: ThumbnailVO): Boolean =
-                oldItem == newItem
-        }
+                override fun areContentsTheSame(oldItem: Thumbnail, newItem: Thumbnail): Boolean =
+                    oldItem == newItem
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThumbnailViewHolder =
@@ -34,7 +34,7 @@ abstract class ThumbnailAdapter :
         }
 
     override fun onBindViewHolder(holder: ThumbnailViewHolder, position: Int) {
-        holder.item = getItem(position)?.also { item ->
+        holder.item = peek(position)?.also { item ->
             with(holder.binding.imageViewThumbnail) {
                 Glide.with(this).load(item.thumbnailUrl)
                     .centerCrop().format(DecodeFormat.PREFER_RGB_565).into(this)
@@ -56,5 +56,5 @@ abstract class ThumbnailAdapter :
         }
     }
 
-    abstract fun onClickItem(thumbnailVO: ThumbnailVO)
+    abstract fun onClickItem(thumbnail: Thumbnail)
 }

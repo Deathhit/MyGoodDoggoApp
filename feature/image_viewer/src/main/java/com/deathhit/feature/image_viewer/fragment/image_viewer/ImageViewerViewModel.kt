@@ -1,4 +1,4 @@
-package com.deathhit.feature.image_viewer.fragment
+package com.deathhit.feature.image_viewer.fragment.image_viewer
 
 import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle

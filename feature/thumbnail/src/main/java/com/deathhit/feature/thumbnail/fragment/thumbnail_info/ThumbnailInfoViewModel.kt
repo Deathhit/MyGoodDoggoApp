@@ -4,9 +4,10 @@ import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.deathhit.feature.thumbnail.model.BreedVO
-import com.deathhit.feature.thumbnail.model.ThumbnailVO
-import com.deathhit.feature.thumbnail.model.toVO
+import com.deathhit.feature.thumbnail.model.Breed
+import com.deathhit.feature.thumbnail.model.Thumbnail
+import com.deathhit.feature.thumbnail.model.toBreed
+import com.deathhit.feature.thumbnail.model.toThumbnail
 import com.deathhit.use_case.breed.GetBreedListFlowByThumbnailIdUseCase
 import com.deathhit.use_case.thumbnail.GetThumbnailFlowByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,8 +34,8 @@ class ThumbnailInfoViewModel @Inject constructor(
 
     data class State(
         val actions: List<Action>,
-        val breedList: List<BreedVO>,
-        val thumbnail: ThumbnailVO?,
+        val breedList: List<Breed>,
+        val thumbnail: Thumbnail?,
         val thumbnailId: String
     ) {
         sealed interface Action {
@@ -57,7 +58,7 @@ class ThumbnailInfoViewModel @Inject constructor(
         viewModelScope.launch {
             launch {
                 stateFlow.map { it.thumbnailId }.flatMapLatest { thumbnailId ->
-                    getBreedListFlowByThumbnailIdUseCase(thumbnailId).map { breedDOList -> breedDOList.map { it.toVO() } }
+                    getBreedListFlowByThumbnailIdUseCase(thumbnailId).map { breedDOList -> breedDOList.map { it.toBreed() } }
                 }.distinctUntilChanged().collect {
                     _stateFlow.update { state ->
                         state.copy(breedList = it)
@@ -67,7 +68,7 @@ class ThumbnailInfoViewModel @Inject constructor(
 
             launch {
                 stateFlow.map { it.thumbnailId }.flatMapLatest { thumbnailId ->
-                    getThumbnailFlowByIdUseCase(thumbnailId).map { thumbnailDO -> thumbnailDO?.toVO() }
+                    getThumbnailFlowByIdUseCase(thumbnailId).map { it?.toThumbnail() }
                 }.distinctUntilChanged().collect {
                     _stateFlow.update { state ->
                         state.copy(thumbnail = it)

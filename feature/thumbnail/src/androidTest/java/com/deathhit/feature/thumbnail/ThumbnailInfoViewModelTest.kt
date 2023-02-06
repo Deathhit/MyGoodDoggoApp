@@ -6,7 +6,8 @@ import com.deathhit.data.thumbnail.ThumbnailDO
 import com.deathhit.feature.thumbnail.config.FakeGetBreedListFlowByThumbnailIdUseCase
 import com.deathhit.feature.thumbnail.config.FakeGetThumbnailFlowByIdUseCase
 import com.deathhit.feature.thumbnail.fragment.thumbnail_info.ThumbnailInfoViewModel
-import com.deathhit.feature.thumbnail.model.toVO
+import com.deathhit.feature.thumbnail.model.toBreed
+import com.deathhit.feature.thumbnail.model.toThumbnail
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -115,8 +116,8 @@ class ThumbnailInfoViewModelTest {
 
         //Then
         collectedState?.run {
-            assert(breedList == fakeBreedList.map { it.toVO() })
-            assert(thumbnail == fakeThumbnail.toVO())
+            assert(breedList == fakeBreedList.map { it.toBreed() })
+            assert(thumbnail == fakeThumbnail.toThumbnail())
         } ?: assert(false)
 
         collectJob.cancel()

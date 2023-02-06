@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.deathhit.feature.thumbnail.databinding.FragmentThumbnailListBinding
-import com.deathhit.feature.thumbnail.model.ThumbnailVO
+import com.deathhit.feature.thumbnail.model.Thumbnail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -58,8 +58,8 @@ class ThumbnailListFragment : Fragment() {
             }
 
             _thumbnailAdapter = object : ThumbnailAdapter() {
-                override fun onClickItem(thumbnailVO: ThumbnailVO) {
-                    viewModel.openThumbnail(thumbnailVO)
+                override fun onClickItem(thumbnail : Thumbnail) {
+                    viewModel.openThumbnail(thumbnail)
                 }
             }
 

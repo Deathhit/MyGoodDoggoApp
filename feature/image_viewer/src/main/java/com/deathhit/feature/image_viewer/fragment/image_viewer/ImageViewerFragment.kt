@@ -1,4 +1,4 @@
-package com.deathhit.feature.image_viewer.fragment
+package com.deathhit.feature.image_viewer.fragment.image_viewer
 
 import android.annotation.SuppressLint
 import android.graphics.Matrix

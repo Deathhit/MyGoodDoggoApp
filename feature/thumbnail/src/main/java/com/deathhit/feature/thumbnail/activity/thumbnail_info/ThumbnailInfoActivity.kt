@@ -5,10 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.deathhit.feature.image_viewer.fragment.ImageViewerFragment
+import com.deathhit.feature.image_viewer.fragment.image_viewer.ImageViewerFragment
 import com.deathhit.feature.thumbnail.databinding.ActivityThumbnailInfoBinding
 import com.deathhit.feature.thumbnail.fragment.thumbnail_info.ThumbnailInfoFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,12 +57,12 @@ class ThumbnailInfoActivity : AppCompatActivity() {
         binding =
             ActivityThumbnailInfoBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
-        savedInstanceState ?: run {
-            supportFragmentManager.beginTransaction().add(
+        savedInstanceState ?: supportFragmentManager.commit {
+            add(
                 binding.activityContainer.id,
                 ThumbnailInfoFragment.create(thumbnailId),
                 TAG_THUMBNAIL_INFO
-            ).commit()
+            )
         }
 
         lifecycleScope.launch {

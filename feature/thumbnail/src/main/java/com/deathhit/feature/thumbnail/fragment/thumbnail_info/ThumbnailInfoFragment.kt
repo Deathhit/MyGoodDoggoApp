@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import com.deathhit.feature.thumbnail.databinding.FragmentThumbnailInfoBinding
-import com.deathhit.feature.thumbnail.model.ThumbnailVO
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -57,8 +56,8 @@ class ThumbnailInfoFragment : Fragment() {
             setHasFixedSize(true)
 
             _bannerAdapter = object : BannerAdapter() {
-                override fun onBannerClick(item: ThumbnailVO) {
-                    viewModel.openImage(item.thumbnailUrl)
+                override fun onBannerClick(imageUrl: String) {
+                    viewModel.openImage(imageUrl)
                 }
             }
 
@@ -89,7 +88,7 @@ class ThumbnailInfoFragment : Fragment() {
 
                 launch {
                     viewModel.stateFlow.map { it.thumbnail }.distinctUntilChanged().collect {
-                        bannerAdapter.notifyOnItemChanged(it)
+                        bannerAdapter.notifyBannerUrlChanged(it?.thumbnailUrl)
                     }
                 }
             }
