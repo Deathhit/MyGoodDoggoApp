@@ -34,7 +34,7 @@ abstract class ThumbnailAdapter :
         }
 
     override fun onBindViewHolder(holder: ThumbnailViewHolder, position: Int) {
-        holder.item = peek(position)?.also { item ->
+        holder.item = getItem(position)?.also { item ->
             with(holder.binding.imageViewThumbnail) {
                 Glide.with(this).load(item.thumbnailUrl)
                     .centerCrop().format(DecodeFormat.PREFER_RGB_565).into(this)
