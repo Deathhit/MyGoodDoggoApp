@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.ListUpdateCallback
 import com.deathhit.data.thumbnail.ThumbnailDO
 import com.deathhit.feature.thumbnail.config.FakeGetThumbnailPagingDataFlowUseCase
 import com.deathhit.feature.thumbnail.fragment.thumbnail_list.ThumbnailListViewModel
-import com.deathhit.feature.thumbnail.model.Thumbnail
-import com.deathhit.feature.thumbnail.model.toThumbnail
+import com.deathhit.feature.thumbnail.model.ThumbnailVO
+import com.deathhit.feature.thumbnail.model.toThumbnailVO
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +50,7 @@ class ThumbnailListViewModelTest {
     @Test
     fun openThumbnailShouldAddAnActionWithTheGivenId() = runTest {
         //Given
-        val thumbnail = Thumbnail("0", "")
+        val thumbnail = ThumbnailVO("0", "")
 
         //When
         viewModel.openThumbnail(thumbnail)
@@ -63,7 +63,7 @@ class ThumbnailListViewModelTest {
     @Test
     fun onActionShouldRemoveTheGivenAction() = runTest {
         //Given
-        viewModel.openThumbnail(Thumbnail("0", ""))
+        viewModel.openThumbnail(ThumbnailVO("0", ""))
         val action = viewModel.stateFlow.value.actions.last()
 
         //When
@@ -76,7 +76,7 @@ class ThumbnailListViewModelTest {
     @Test
     fun viewModelShouldCollectThumbnailPagingData() = runTest {
         //Given
-        var collectedThumbnailPagingData: PagingData<Thumbnail>? = null
+        var collectedThumbnailPagingData: PagingData<ThumbnailVO>? = null
         val collectJob = launch {
             viewModel.thumbnailPagingDataFlow.collect {
                 collectedThumbnailPagingData = it
@@ -84,11 +84,11 @@ class ThumbnailListViewModelTest {
         }
 
         val differ = AsyncPagingDataDiffer(
-            object : DiffUtil.ItemCallback<Thumbnail>() {
-                override fun areItemsTheSame(oldItem: Thumbnail, newItem: Thumbnail): Boolean =
+            object : DiffUtil.ItemCallback<ThumbnailVO>() {
+                override fun areItemsTheSame(oldItem: ThumbnailVO, newItem: ThumbnailVO): Boolean =
                     oldItem == newItem
 
-                override fun areContentsTheSame(oldItem: Thumbnail, newItem: Thumbnail): Boolean =
+                override fun areContentsTheSame(oldItem: ThumbnailVO, newItem: ThumbnailVO): Boolean =
                     oldItem == newItem
             }, object : ListUpdateCallback {
                 override fun onInserted(position: Int, count: Int) {}
@@ -112,7 +112,7 @@ class ThumbnailListViewModelTest {
         advanceUntilIdle()
 
         //Then
-        assert(differ.snapshot().items == fakeThumbnailList.map { it.toThumbnail() })
+        assert(differ.snapshot().items == fakeThumbnailList.map { it.toThumbnailVO() })
 
         collectJob.cancel()
     }

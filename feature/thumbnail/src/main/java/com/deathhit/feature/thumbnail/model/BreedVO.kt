@@ -2,7 +2,7 @@ package com.deathhit.feature.thumbnail.model
 
 import com.deathhit.data.breed.BreedDO
 
-data class Breed(
+data class BreedVO(
     val breedId: String,
     val bredFor: String?,
     val breedGroup: String?,
@@ -11,4 +11,4 @@ data class Breed(
     val temperament: String?
 )
 
-fun BreedDO.toBreed() = Breed(breedId, bredFor, breedGroup, breedName, lifespan, temperament)
+fun BreedDO.toBreedVO() = BreedVO(breedId, bredFor, breedGroup, breedName, lifespan, temperament)

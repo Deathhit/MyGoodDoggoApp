@@ -7,17 +7,17 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.deathhit.feature.thumbnail.databinding.ItemThumbnailListThumbnailBinding
-import com.deathhit.feature.thumbnail.model.Thumbnail
+import com.deathhit.feature.thumbnail.model.ThumbnailVO
 
 abstract class ThumbnailAdapter :
-    PagingDataAdapter<Thumbnail, ThumbnailViewHolder>(COMPARATOR) {
+    PagingDataAdapter<ThumbnailVO, ThumbnailViewHolder>(COMPARATOR) {
     companion object {
         private val COMPARATOR =
-            object : DiffUtil.ItemCallback<Thumbnail>() {
-                override fun areItemsTheSame(oldItem: Thumbnail, newItem: Thumbnail): Boolean =
+            object : DiffUtil.ItemCallback<ThumbnailVO>() {
+                override fun areItemsTheSame(oldItem: ThumbnailVO, newItem: ThumbnailVO): Boolean =
                     oldItem.thumbnailId == newItem.thumbnailId
 
-                override fun areContentsTheSame(oldItem: Thumbnail, newItem: Thumbnail): Boolean =
+                override fun areContentsTheSame(oldItem: ThumbnailVO, newItem: ThumbnailVO): Boolean =
                     oldItem == newItem
             }
     }
@@ -56,5 +56,5 @@ abstract class ThumbnailAdapter :
         }
     }
 
-    abstract fun onClickItem(thumbnail: Thumbnail)
+    abstract fun onClickItem(thumbnail: ThumbnailVO)
 }
