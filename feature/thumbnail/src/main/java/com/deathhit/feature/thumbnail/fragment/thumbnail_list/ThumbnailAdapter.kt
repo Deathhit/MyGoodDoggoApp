@@ -17,7 +17,10 @@ abstract class ThumbnailAdapter :
                 override fun areItemsTheSame(oldItem: ThumbnailVO, newItem: ThumbnailVO): Boolean =
                     oldItem.thumbnailId == newItem.thumbnailId
 
-                override fun areContentsTheSame(oldItem: ThumbnailVO, newItem: ThumbnailVO): Boolean =
+                override fun areContentsTheSame(
+                    oldItem: ThumbnailVO,
+                    newItem: ThumbnailVO
+                ): Boolean =
                     oldItem == newItem
             }
     }

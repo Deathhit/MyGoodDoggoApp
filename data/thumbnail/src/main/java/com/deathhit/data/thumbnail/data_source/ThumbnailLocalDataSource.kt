@@ -46,16 +46,16 @@ internal class ThumbnailLocalDataSource @Inject constructor(private val appDatab
             }
 
             // Update RemoteKey for this query.
-            remoteKeyDao().insertOrReplace(
+            remoteKeyDao().upsert(
                 RemoteKeyEntity(REMOTE_KEY_LABEL, pageIndex + 1)
             )
 
             // Insert the new data into database, which invalidates the
             // current PagingData, allowing Paging to present the updates
             // in the DB.
-            breedThumbnailRefDao().insertOrReplaceAll(breedThumbnailRefEntities)
-            breedDao().insertOrReplaceAll(breedEntities)
-            thumbnailDao().insertOrReplaceAll(thumbnailEntities)
+            breedThumbnailRefDao().upsert(breedThumbnailRefEntities)
+            breedDao().upsert(breedEntities)
+            thumbnailDao().upsert(thumbnailEntities)
         }
     }
 }

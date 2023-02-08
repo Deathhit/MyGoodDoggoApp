@@ -40,7 +40,7 @@ class ThumbnailRepositoryTest {
     fun getThumbnailFlowByIdFirstReturnsTheCorrespondObj() = runTest {
         //Given
         val entity = ThumbnailEntity("12345", "thumbnailUrl")
-        appDatabase.thumbnailDao().insertOrReplaceAll(listOf(entity))
+        appDatabase.thumbnailDao().upsert(listOf(entity))
 
         //When
         val domainObj = thumbnailRepository.getThumbnailFlowById(entity.thumbnailId).first()

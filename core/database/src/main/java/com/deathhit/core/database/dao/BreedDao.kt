@@ -1,9 +1,6 @@
 package com.deathhit.core.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.deathhit.core.database.Column
 import com.deathhit.core.database.model.BreedEntity
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +17,6 @@ interface BreedDao {
             "GROUP BY BreedEntity.${Column.BREED_ID}")
     fun getListFlowByThumbnailId(thumbnailId: String): Flow<List<BreedEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplaceAll(entities: List<BreedEntity>)
+    @Upsert
+    suspend fun upsert(entities: List<BreedEntity>)
 }

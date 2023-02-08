@@ -64,8 +64,8 @@ internal class BreedRepositoryTest {
         )
 
         with(appDatabase) {
-            breedDao().insertOrReplaceAll(fakeBreedList)
-            breedThumbnailRefDao().insertOrReplaceAll(fakeBreedRefList)
+            breedDao().upsert(fakeBreedList)
+            breedThumbnailRefDao().upsert(fakeBreedRefList)
         }
 
         //When

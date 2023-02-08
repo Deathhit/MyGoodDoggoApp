@@ -17,6 +17,6 @@ interface ThumbnailDao {
     @Query("SELECT * FROM ThumbnailEntity")
     fun getPagingSource(): PagingSource<Int, ThumbnailEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplaceAll(entities: List<ThumbnailEntity>)
+    @Upsert
+    suspend fun upsert(entities: List<ThumbnailEntity>)
 }
