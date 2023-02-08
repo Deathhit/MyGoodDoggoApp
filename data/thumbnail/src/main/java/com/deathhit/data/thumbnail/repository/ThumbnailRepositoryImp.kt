@@ -1,9 +1,9 @@
 package com.deathhit.data.thumbnail.repository
 
 import androidx.paging.*
-import com.deathhit.core.database.model.ThumbnailEntity
 import com.deathhit.data.thumbnail.ThumbnailDO
 import com.deathhit.data.thumbnail.data_source.ThumbnailLocalDataSource
+import com.deathhit.data.thumbnail.toDO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -26,6 +26,4 @@ internal class ThumbnailRepositoryImp(
     ) {
         thumbnailLocalDataSource.getThumbnailPagingSource()
     }.flow.map { pagingData -> pagingData.map { it.toDO() } }
-
-    private fun ThumbnailEntity.toDO() = ThumbnailDO(thumbnailId, thumbnailUrl)
 }

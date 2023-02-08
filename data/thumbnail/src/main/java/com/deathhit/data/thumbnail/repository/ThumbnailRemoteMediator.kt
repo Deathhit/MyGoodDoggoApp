@@ -9,6 +9,8 @@ import com.deathhit.core.database.model.BreedThumbnailRefEntity
 import com.deathhit.core.database.model.ThumbnailEntity
 import com.deathhit.data.thumbnail.data_source.ImageRemoteDataSource
 import com.deathhit.data.thumbnail.data_source.ThumbnailLocalDataSource
+import com.deathhit.data.thumbnail.toBreedEntity
+import com.deathhit.data.thumbnail.toThumbnailEntity
 
 @ExperimentalPagingApi
 internal class ThumbnailRemoteMediator(
@@ -57,20 +59,9 @@ internal class ThumbnailRemoteMediator(
                 breedThumbnailRefs.addAll(record.breeds.map {
                     BreedThumbnailRefEntity(it.id, record.id)
                 })
-                breeds.addAll(record.breeds.map {
-                    BreedEntity(
-                        it.id,
-                        it.bred_for,
-                        it.breed_group,
-                        it.name,
-                        it.life_span,
-                        it.temperament
-                    )
-                })
+                breeds.addAll(record.breeds.map { it.toBreedEntity() })
             }
-            val thumbnails = imageList.map {
-                ThumbnailEntity(it.id, it.url)
-            }
+            val thumbnails = imageList.map { it.toThumbnailEntity() }
 
             // Store loaded data, and next key in transaction, so that
             // they're always consistent.
